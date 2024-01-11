@@ -6,69 +6,70 @@ import { number } from "zod";
 import { generateOTP } from "../utils/Utils";
 import axios from "axios";
 
-
 class UserController {
   async create(req: Request, res: Response) {
     try {
-      const SMS_API_BASE_URL = process.env.SMS_API_BASE_URL || "";
-      const SMS_API_TOKEN = process.env.SMS_API_TOKEN || "";
-      const SMS_OTP_EXP_S = process.env.SMS_OTP_EXP_S || "120";
-      const mobileNumber = req.body.mobileNumber;
+      const {
+        SMS_API_BASE_URL = "",
+        SMS_API_TOKEN = "",
+        SMS_OTP_EXP_S = "120",
+      } = process.env;
+      const { mobileNumber, fullName, email, password } = req.body;
 
-      const existUser = await new UserRepo().getByMobileCheck(mobileNumber);
-      if (!existUser || existUser !== null) {
-        const otpCode = generateOTP();
-        const response = await axios.post(
-          `${SMS_API_BASE_URL}/sms/send`,
-          {
-            recipient: mobileNumber,
-            sender_id: "Lapel",
-            message: `Your OTP is ${otpCode}. Do not share this code.`,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${SMS_API_TOKEN}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
+      const userRepo = new UserRepo();
+      const existUser = await userRepo.getByMobileCheck(mobileNumber);
 
-        if (response.status) {
-          const model = new User();
-          model.fullName = req.body.fullName;
-          model.mobileNumber = req.body.mobileNumber;
-          model.email = req.body.email;
-          model.password = req.body.password;
-          model.otp = otpCode;
-          model.isMobileVerified = false;
-
-          await new UserRepo().create(model);
-
-          res
-            .status(200)
-            .json({
-              status: true,
-              message: "User created successfully! | OTP Send",
-              data: User,
-            });
-        } else {
-          res
-            .status(200)
-            .json({
-              status: false,
-              message: "Failed to send OTP!",
-              data: null,
-            });
-        }
+      if (existUser) {
+        return res.status(200).json({
+          status: false,
+          message:
+            "Failed to create User!| User with this mobile number already exists!",
+          data: null,
+        });
       }
-      else{
-        res
-            .status(200)
-            .json({
-              status: false,
-              message: "Failed to create User!| User with this mobile number already exists!",
-              data: null,
-            });
+
+      const otpCode = generateOTP();
+      const axiosConfig = {
+        headers: {
+          Authorization: `Bearer ${SMS_API_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+      };
+
+      const smsPayload = {
+        recipient: mobileNumber,
+        sender_id: "Lapel",
+        message: `Your OTP is ${otpCode}. Do not share this code.`,
+      };
+
+      const response = await axios.post(
+        `${SMS_API_BASE_URL}/sms/send`,
+        smsPayload,
+        axiosConfig
+      );
+
+      if (response.status) {
+        const model = new User();
+        model.fullName = fullName;
+        model.mobileNumber = mobileNumber;
+        model.email = email;
+        model.password = password;
+        model.otp = otpCode;
+        model.isMobileVerified = false;
+
+        await userRepo.create(model);
+
+        res.status(200).json({
+          status: true,
+          message: "User created successfully! | OTP Send",
+          data: null,
+        });
+      } else {
+        res.status(200).json({
+          status: false,
+          message: "Failed to send OTP!",
+          data: null,
+        });
       }
     } catch (err) {
       res.status(400).json({ status: false, message: "" + err, data: null });
@@ -107,31 +108,24 @@ class UserController {
 
           await new UserRepo().updateOtp(model);
 
-          res
-            .status(200)
-            .json({
-              status: true,
-              message: "OTP code is resend",
-              data: User,
-            });
+          res.status(200).json({
+            status: true,
+            message: "OTP code is resend",
+            data: User,
+          });
         } else {
-          res
-            .status(200)
-            .json({
-              status: false,
-              message: "Failed to send OTP!",
-              data: null,
-            });
+          res.status(200).json({
+            status: false,
+            message: "Failed to send OTP!",
+            data: null,
+          });
         }
-      }
-      else{
-        res
-            .status(200)
-            .json({
-              status: false,
-              message: "Otp code is already verifyied",
-              data: null,
-            });
+      } else {
+        res.status(200).json({
+          status: false,
+          message: "Otp code is already verifyied",
+          data: null,
+        });
       }
     } catch (err) {
       res.status(400).json({ status: false, message: "" + err, data: null });
@@ -147,30 +141,24 @@ class UserController {
         const otpVerificationResult = result.otp.toString().match(req.body.otp);
         if (otpVerificationResult) {
           await new UserRepo().updateMobileVerificationStatus(result.id, true);
-          res
-            .status(200)
-            .json({
-              status: true,
-              message: "Mobile number verified successfully!",
-              data: null,
-            });
-        } else {
-          res
-            .status(200)
-            .json({
-              status: false,
-              message: "Failed to verify OTP!",
-              data: null,
-            });
-        }
-      } else {
-        res
-          .status(200)
-          .json({
-            status: false,
-            message: "No OTP found for the given User!",
+          res.status(200).json({
+            status: true,
+            message: "Mobile number verified successfully!",
             data: null,
           });
+        } else {
+          res.status(200).json({
+            status: false,
+            message: "Failed to verify OTP!",
+            data: null,
+          });
+        }
+      } else {
+        res.status(200).json({
+          status: false,
+          message: "No OTP found for the given User!",
+          data: null,
+        });
       }
     } catch (err) {
       res.status(400).json({ status: false, message: "" + err, data: null });
@@ -179,19 +167,20 @@ class UserController {
 
   async login(req: Request, res: Response) {
     try {
-      const result = await new UserRepo().login( req.body.mobileNumber, req.body.password );
+      const result = await new UserRepo().login(
+        req.body.mobileNumber,
+        req.body.password
+      );
       if (result) {
-        res
-          .status(200)
-          .json({
-            status: true,
-            message: "Login successfully!",
-            data: req.body.mobileNumber,
-          });
+        res.status(200).json({
+          status: true,
+          message: "Login successfully!",
+          data: req.body.mobileNumber,
+        });
       } else {
         res
           .status(200)
-          .json({ status: false, message: "Login Failed!", data: null });
+          .json({ status: false, message: "Login Failed! Password is incorrect", data: null });
       }
     } catch (err) {
       res.status(400).json({ status: false, message: "" + err, data: null });
@@ -200,18 +189,20 @@ class UserController {
 
   async update(req: Request, res: Response) {
     try {
+      const mobile = req.params["id"];
       const modal = new User();
       modal.fullName = req.body.fullName;
-      modal.mobileNumber = req.body.mobileNumber;
+      modal.mobileNumber = mobile;
       modal.email = req.body.email;
 
-      await new UserRepo().update(modal);
+      const user = await new UserRepo().update(modal);
 
       res.status(200).json({
-        status: true,
-        message: "Successfuly!",
-        data: modal,
+        status: user? true : false,
+        message: user? "Successfully!" : "Data Not Found!",
+        data: user? modal : null,
       });
+
     } catch (err) {
       res.status(400).json({
         status: false,
@@ -224,13 +215,45 @@ class UserController {
   async delete(req: Request, res: Response) {
     try {
       let mid = parseInt(req.params["id"]);
-      await new UserRepo().delete(mid);
+      const modal = await new UserRepo().delete(mid);
 
       res.status(200).json({
-        status: true,
-        message: "Successfuly!",
-        data: mid,
+        status: modal? true:false,
+        message: modal? "Successfully!":"Data Not Found!",
+        data: modal? mid:null,
       });
+
+    } catch (err) {
+      res.status(400).json({
+        status: false,
+        message: "" + err,
+        data: null,
+      });
+    }
+  }
+
+  async deleteByMobile(req: Request, res: Response) {
+    try {
+      let mobile = req.params["id"];
+      const user = await new UserRepo().getByMobileCheck(mobile);
+      if(user){
+        const modal = await new UserRepo().delete(user.id);
+
+        res.status(200).json({
+          status: modal? true:false,
+          message: modal? "Successfully!":"Data Not Found!",
+          data: modal? mobile : null,
+        });
+      }
+      else{
+        res.status(200).json({
+          status: false,
+          message: "Data Not Found!",
+          data: mobile,
+        });
+      }
+      
+
     } catch (err) {
       res.status(400).json({
         status: false,
@@ -246,7 +269,7 @@ class UserController {
 
       res.status(200).json({
         status: true,
-        message: "Successfuly!",
+        message: "Successfully!",
         data: modal,
       });
     } catch (err) {
@@ -264,10 +287,11 @@ class UserController {
       const modal = await new UserRepo().getById(mid);
 
       res.status(200).json({
-        status: true,
-        message: "Successfuly!",
-        data: modal,
+        status: modal? true:false,
+        message: modal? "Successfully!":"Data Not Found!",
+        data: modal? modal:null,
       });
+
     } catch (err) {
       res.status(400).json({
         status: false,
@@ -279,13 +303,13 @@ class UserController {
 
   async getByMobile(req: Request, res: Response) {
     try {
-      let mobile = req.params["mobile"];
-      const modal = await new UserRepo().getByMobile(mobile);
+      let mobile = req.params["id"];
+      const modal = await new UserRepo().getByMobileCheck(mobile);
 
       res.status(200).json({
-        status: true,
-        message: "Successfuly!",
-        data: modal,
+        status: modal? true:false,
+        message: modal? "Successfully!":"Data Not Found!",
+        data: modal? modal:null,
       });
     } catch (err) {
       res.status(400).json({

@@ -16,10 +16,11 @@ class UserRouts extends BaseRoutes{
         this.router.post("/create/resendotp/", UserController.resendOtp);
         this.router.post("/verifyMobile/", UserController.verifyMobile);
         this.router.post("/login/", UserController.login);
-        this.router.patch("/update/:id", validate(updateUserSchema), UserController.update);
+        this.router.patch("/update/:id", UserController.update);
         this.router.delete("/delete/:id", UserController.delete);
+        this.router.delete("/deleteByMobile/:id", UserController.deleteByMobile);
         this.router.get("/getById/:id", UserController.getById);
-        this.router.get("/mobile/:id", UserController.getByMobile);
+        this.router.get("/getByMobile/:id", UserController.getByMobile);
         this.router.get("/get/", UserController.get);
     }
 }

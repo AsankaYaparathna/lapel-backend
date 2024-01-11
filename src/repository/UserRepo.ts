@@ -5,9 +5,9 @@ interface IUserRepo {
   create(user: User): Promise<void>;
   updateMobileVerificationStatus(UserId: number, isVerified: boolean): Promise<void>;
   getOtpByUserMobile(mobileNumber: string): Promise<User | null>;
-  update(modal: User): Promise<void>;
-  delete(mId: number): Promise<void>;
-  getById(mId: number): Promise<User>;
+  update(modal: User): Promise<any>;
+  delete(mId: number): Promise<any>;
+  getById(mId: number): Promise<any>;
   get(): Promise<User[]>;
   login(mobileNumber: string, password: string): Promise<Boolean | null>;
 }
@@ -98,7 +98,7 @@ export class UserRepo implements IUserRepo {
           }
         }
         else{
-          throw new Error("Password is not match!");
+          return false;
         }
       } else {
         return null;
@@ -108,19 +108,17 @@ export class UserRepo implements IUserRepo {
     }
   }
 
-  async update(modal: User): Promise<void> {
+  async update(modal: User): Promise<any> {
     try {
-      const result = await User.findOne({ where: { id: modal.id } });
-      
+      const result = await User.findOne({ where: { mobileNumber: modal.mobileNumber } });
       if (!result) {
-        throw new Error("Data not found!");
+        return false;
       }
-
       result.fullName = modal.fullName;
-      result.mobileNumber = modal.mobileNumber;
+      //result.mobileNumber = modal.mobileNumber;
       result.email = modal.email;
       await result.save();
-      
+      return true;
     } catch (err : any) {
       throw new Error("Failed to update! | "+err.message);
     }
@@ -142,24 +140,24 @@ export class UserRepo implements IUserRepo {
     }
   }
 
-
-  async delete(mId: number): Promise<void> {
+  async delete(mId: number): Promise<any> {
     try {
       const result = await User.findOne({ where: { id: mId } });
       if (!result) {
-        throw new Error("Data not found!");
+        return null;
       }
       await result.destroy();
+      return true;
     } catch (err : any) {
       throw new Error("Failed to delete! | "+err.message);
     }
   }
   
-  async getById(mId: number): Promise<User> {
+  async getById(mId: number): Promise<any> {
     try {
       const result = await User.findOne({ where: { id: mId } });
       if (!result) {
-        throw new Error("Data not found!");
+        return null;
       }
       return result;
     } catch (err : any) {
@@ -167,41 +165,17 @@ export class UserRepo implements IUserRepo {
     }
   }
 
-  async getByMobile(mobile: string): Promise<User> {
+  async getByMobileCheck(mobile: string): Promise<any> {
     try {
       const result = await User.findOne({ where: { mobileNumber : mobile } });
       if (!result) {
-        throw new Error("Data not found!");
+        return null;
       }
       return result;
     } catch (err : any) {
       throw new Error("Failed to get! | "+err.message);
     }
   }
-
-  async getByMobileCheck(mobile: string): Promise<User> {
-    try {
-      const result = await User.findOne({ where: { mobileNumber : mobile } });
-      if (!result) {
-        return new User()
-      }
-      return result;
-    } catch (err : any) {
-      throw new Error("Failed to get! | "+err.message);
-    }
-  }
-
-  // async getByMobileNumber(mobile: string): Promise<User> {
-  //   try {
-  //     const result = await User.findOne({ where: { mobileNumber : mobile } });
-  //     if (!result) {
-  //       throw new Error("Data not found!");
-  //     }
-  //     return result;
-  //   } catch (err : any) {
-  //     throw new Error("Failed to get! | "+err.message);
-  //   }
-  // }
 
   async get(): Promise<User[]> {
     try {

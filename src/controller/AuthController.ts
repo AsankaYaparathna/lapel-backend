@@ -50,10 +50,10 @@ class AuthController {
             expiresIn : expiresIn
           }});
         } else {
-          return res.status(401).json({ message: "Unauthorized: Invalid client credentials" });
+          return res.status(403).json({ message: "Unauthorized: Invalid client credentials" });
         }
       } else {
-        return res.status(401).json({ message: "Unauthorized: Invalid client credentials" });
+        return res.status(401).json({ message: "Unauthorized: Invalid client credentials2" });
       }
     } catch (err) {
       res.status(400).json({ status: false, message: "" + err, data: null });
@@ -64,7 +64,7 @@ class AuthController {
     const token = req.headers["authorization"];
     const skey = process.env.JWT_SC_KEY || "";
     if (!token) {
-        return res.status(401).json({ message: "Unauthorized: Token missing" });
+        return res.status(400).json({ message: "Unauthorized: Token missing" });
     }
 
     jwt.verify(token, skey, (err : any, user : any) => {
