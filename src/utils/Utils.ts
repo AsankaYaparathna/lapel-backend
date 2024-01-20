@@ -2,6 +2,7 @@
 import { createHash } from "crypto";
 import  { AES, enc,  } from "crypto-js";
 import dotenv from "dotenv";
+import { User } from "../model/Customer/User";
 const crypto = require("crypto");
 
 dotenv.config();
@@ -32,4 +33,15 @@ export const generateSecret = () => {
 export const generateId = () => {
     return crypto.randomBytes(16).toString("hex");
 };
+
+export const generateCustomerId = (latestUser : User) : string => {
+    const nextCustomerId = latestUser ? getNextCustomerId(latestUser.customerId) : 1;
+    const prefix = "LPLC";
+    return `${prefix}${nextCustomerId.toString().padStart(6, "0")}`;
+}
+
+function getNextCustomerId(prevCustomerId: string): number {
+    const numericPart = parseInt(prevCustomerId.replace("LPLC", ""), 10);
+    return numericPart + 1;
+}
 

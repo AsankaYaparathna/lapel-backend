@@ -1,12 +1,12 @@
 // AuthController.ts
 import { NextFunction, Request, Response } from "express";
-import { User } from "../model/User";
+import { User } from "../model/Customer/User";
 import { UserRepo } from "../repository/UserRepo";
 import { number } from "zod";
 import { generateId, generateSecret } from "../utils/Utils";
 import axios from "axios";
 import { AuthRepo } from "../repository/AuthRepo";
-import { Auth } from "../model/Auth";
+import { Auth } from "../model/Auth/Auth";
 import jwt from "jsonwebtoken";
 
 class AuthController {

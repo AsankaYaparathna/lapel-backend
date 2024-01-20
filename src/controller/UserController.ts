@@ -1,9 +1,7 @@
-// UserController.ts
 import { Request, Response } from "express";
-import { User } from "../model/User";
+import { User } from "../model/Customer/User";
 import { UserRepo } from "../repository/UserRepo";
-import { number } from "zod";
-import { generateOTP } from "../utils/Utils";
+import { generateCustomerId, generateOTP } from "../utils/Utils";
 import axios from "axios";
 
 class UserController {
@@ -19,6 +17,7 @@ class UserController {
       const userRepo = new UserRepo();
       const existUser = await userRepo.getByMobileCheck(mobileNumber);
 
+      
       if (existUser) {
         return res.status(200).json({
           status: false,
@@ -29,6 +28,8 @@ class UserController {
       }
 
       const otpCode = generateOTP();
+      const customerId = await  generateCustomerId(existUser);
+      
       const axiosConfig = {
         headers: {
           Authorization: `Bearer ${SMS_API_TOKEN}`,
@@ -39,7 +40,7 @@ class UserController {
       const smsPayload = {
         recipient: mobileNumber,
         sender_id: "Lapel",
-        message: `Your OTP is ${otpCode}. Do not share this code.`,
+        message: `LAPEL\nCustomer Id : ${customerId}\nYour OTP is ${otpCode}\nDo not share this code.`,
       };
 
       const response = await axios.post(
@@ -56,6 +57,9 @@ class UserController {
         model.password = password;
         model.otp = otpCode;
         model.isMobileVerified = false;
+        model.customerId = customerId;
+        model.isActive = true;
+
 
         await userRepo.create(model);
 

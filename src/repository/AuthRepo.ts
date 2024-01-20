@@ -1,4 +1,4 @@
-import { Auth } from "../model/Auth";
+import { Auth } from "../model/Auth/Auth";
 import { hashPassword, verifyPassword } from "../utils/Utils";
 
 interface IAuthRepo {

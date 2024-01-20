@@ -1,4 +1,4 @@
-import { User } from "../model/User";
+import { User } from "../model/Customer/User";
 import { hashPassword, verifyPassword } from "../utils/Utils";
 
 interface IUserRepo {
@@ -16,14 +16,17 @@ export class UserRepo implements IUserRepo {
   
   async create(model: User): Promise<void> {
     try {
-      const encpw = hashPassword(model.password);//hashPassword(model.password);
+      const encpw = hashPassword(model.password);
+      model.password = encpw;
       await User.create({
         fullName: model.fullName,
         mobileNumber: model.mobileNumber,
         email: model.email,
         password: encpw,
         otp: model.otp,
-        isMobileVerified: model.isMobileVerified
+        isMobileVerified: model.isMobileVerified,
+        customerId : model.customerId,
+        isActive : model.isActive
       });
     } catch (err : any) {
       const result = await User.findOne({ where: { mobileNumber : model.mobileNumber } });
