@@ -7,7 +7,7 @@ class MaterialRouts extends BaseRoutes{
        
         // Protected routes
         //Auth
-        //this.router.use(AuthController.authenticateToken);
+        this.router.use(AuthController.authenticateToken);
 
         //Fabric
         this.router.post("/fabric/create/", MaterialController.createFabric);
