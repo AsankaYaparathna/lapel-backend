@@ -1,3 +1,4 @@
+import AuthController from "../../controller/AuthController";
 import MaterialController from "../../controller/material/MaterialController";
 import BaseRoutes from "../base/BaseRouter";
 
