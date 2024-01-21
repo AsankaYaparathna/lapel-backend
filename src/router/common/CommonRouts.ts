@@ -49,6 +49,10 @@ class CommonRouts extends BaseRoutes{
         this.router.post("/weight/create/", CommonController.createWeight);
         this.router.get("/weight/get/", CommonController.getWeight);
 
+        //Supplier
+        this.router.post("/supplier/create/", CommonController.createSupplier);
+        this.router.get("/supplier/get/", CommonController.getSupplier);
+
         //Category Type
         this.router.post("/categorytype/create/", CommonController.createCategoryType);
         this.router.get("/categorytype/get/", CommonController.getCategoryType);

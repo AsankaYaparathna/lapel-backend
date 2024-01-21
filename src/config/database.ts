@@ -20,6 +20,18 @@ import { Series } from "../model/Common/Series";
 import { UnitType } from "../model/Common/UnitType";
 import { Material } from "../model/Common/Material";
 import { Weight } from "../model/Common/Weight";
+import { CustomId } from "../model/Common/CustomId";
+import { Fabric } from "../model/Metirial/Fabric/Fabric";
+import { FabricImages } from "../model/Metirial/Fabric/FabricImages";
+import { RelatedFabric } from "../model/Metirial/Fabric/RelatedFabric";
+import { MaterialStock } from "../model/Metirial/Stock/MaterialStock";
+import { MainStock } from "../model/Metirial/Stock/MainStock";
+import { Cost } from "../model/Metirial/Cost/Cost";
+import { FabricItem } from "../model/Metirial/Fabric/FabricItem";
+import { Supplier } from "../model/Metirial/Supplier/Supplier";
+import { RowMaterial } from "../model/Metirial/RowMaterial/RowMaterial";
+import { RowMaterialImages } from "../model/Metirial/RowMaterial/RowMaterialImages";
+import { RelatedRowMaterial } from "../model/Metirial/RowMaterial/RelatedRowMaterial";
 
 dotenv.config()
 
@@ -52,8 +64,10 @@ export default class Database{
                 Color, Pattern, Characteristics, Material, Opacity, Series, UnitType, Weight,
                 CategoryType, Category, SubCategory,
                 Wearhouse, WarehouseImage,
-                Showroom, ShowroomImages, OpenTime
-
+                Showroom, ShowroomImages, OpenTime,
+                CustomId, Supplier,
+                Fabric, FabricImages, RelatedFabric, MaterialStock, MainStock, Cost, FabricItem,
+                RowMaterial, RowMaterialImages, RelatedRowMaterial
             ]
         });
 

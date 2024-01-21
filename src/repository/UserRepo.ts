@@ -10,6 +10,8 @@ interface IUserRepo {
   getById(mId: number): Promise<any>;
   get(): Promise<User[]>;
   login(mobileNumber: string, password: string): Promise<Boolean | null>;
+  forgetPassword(model: User): Promise<void>;
+  verifyPassword(user: User, providedPassword: string): Promise<boolean>;
 }
 
 export class UserRepo implements IUserRepo {
@@ -39,6 +41,30 @@ export class UserRepo implements IUserRepo {
     }
   }
 
+  async forgetPassword(model: User): Promise<void> {
+    try {
+      const encpw = hashPassword(model.password);
+
+      const existUser = await User.findOne({ where: { mobileNumber : model.mobileNumber } });
+      
+      
+      if(existUser){
+        
+        if(existUser.otp.toString().match(model.otp.toString())){
+          existUser.password = encpw;
+          existUser.isMobileVerified = true;
+          await existUser.save();
+        }
+        else{
+          throw new Error("OTP is invalied!");
+        }
+      }
+      
+      
+    } catch (err : any) {
+      throw new Error("Failed to update password!| | "+err.message);
+    }
+  }
   async verifyPassword(user: User, providedPassword: string): Promise<boolean> {
     return verifyPassword(user.password, providedPassword);
   }

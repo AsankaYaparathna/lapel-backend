@@ -1,5 +1,4 @@
 import { Column, DataType, HasMany, Model, Table } from "sequelize-typescript";
-import { RowMaterial } from "../RowMaterial/RowMaterial";
 
 @Table({
     tableName: "LAPEL_SUPPLIER",
@@ -26,6 +25,4 @@ export class Supplier extends Model {
     @Column({ type: DataType.STRING(20), field: Supplier.SUPPLIER_CONTACT_NO })
     contactNo!: string;
 
-    @HasMany(() => RowMaterial, { foreignKey: Supplier.SUPPLIER_ID })
-    rowMaterials!: RowMaterial[];
 }

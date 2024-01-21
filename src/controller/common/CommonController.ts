@@ -12,6 +12,7 @@ import { Category } from "../../model/Common/Category/Category";
 import { SubCategory } from "../../model/Common/Category/SubCategory";
 import { Material } from "../../model/Common/Material";
 import { Weight } from "../../model/Common/Weight";
+import { Supplier } from "../../model/Metirial/Supplier/Supplier";
 
 class CommonController {
     //Color
@@ -212,6 +213,25 @@ class CommonController {
             res.status(400).json({ status: false, message: "" + err, data: null });
         }
     }
+
+    //Supplier
+    async createSupplier(req: Request, res: Response) {
+        try {
+            await new CommonRepo().createSupplier(req.body as Supplier);
+            res.status(200).json({ status: true, message: "successfully!", data: null });
+        } catch (err) {
+            res.status(400).json({ status: false, message: "" + err, data: null });
+        }
+    }
+    async getSupplier(req: Request, res: Response) {
+        try {
+            const modal = await new CommonRepo().getSupplier();
+            res.status(200).json({ status: true, message: "Successfully!", data: modal });
+        } catch (err) {
+            res.status(400).json({ status: false, message: "" + err, data: null });
+        }
+    }
+    
     
     //Category Type
     async createCategoryType(req: Request, res: Response) {

@@ -10,6 +10,7 @@ import { Opacity } from "../../Common/Opacity";
 import { Weight } from "../../Common/Weight";
 import { UnitType } from "../../Common/UnitType";
 import { CustomId } from "../../Common/CustomId";
+import { Supplier } from "../Supplier/Supplier";
 
 @Table({ 
     tableName: "LAPEL_FABRIC",
@@ -18,44 +19,23 @@ import { CustomId } from "../../Common/CustomId";
     createdAt: 'createdAt'
 })
 export class Fabric extends Model {
-    public static FABRIC_TABLE_NAME = "LAPEL_FABRIC" as string;
-    public static FABRIC_ID = "id" as string;
-    public static FABRIC_NAME = "name" as string;
-    public static FABRIC_CUSTOM_ID = "customId" as string;
-    public static FABRIC_DESCRIPTION = "description" as string;
-    public static FABRIC_INFORMATION = "information" as string;
-    public static FABRIC_WEIGHT = "weight" as string;
-    public static FABRIC_LISTING_PRIORITY = "listingPriority" as string;
-    public static FABRIC_ICON = "icon" as string;
-    public static FABRIC_QR = "qr" as string;
-    public static FABRIC_IMAGE_LIST = "imageList" as string;
-    public static FABRIC_RELATED_LIST = "relatedList" as string;
-    public static FABRIC_STOCK_ALERT = "stockAlert" as string;
-    public static FABRIC_STOCK_ALERT_VALUE = "stockAlertValue" as string;
-    public static FABRIC_FEATURED = "featured" as string;
-    public static FABRIC_LIVE = "live" as string;
-    public static FABRIC_STOCK = "stock" as string;
-    public static FABRIC_STOCK_VALUE = "stockValue" as string;
-    public static FABRIC_LEVEL_OF_SAFTY = "levelOfSafty" as string;
-    public static FABRIC_LEVEL_OF_SAFTY_VALUE = "levelOfSaftyValue" as string;
-
-    @Column({ type: DataType.INTEGER, primaryKey: true, autoIncrement: true, field: Fabric.FABRIC_ID })
+    @Column({ type: DataType.INTEGER, primaryKey: true, autoIncrement: true, field: "id" })
     id!: number;
 
-    @Column({ type: DataType.STRING(100), field: Fabric.FABRIC_NAME })
+    @Column({ type: DataType.STRING(100), field: "name" })
     name!: string;
 
     @ForeignKey(() => CustomId)
-    @Column({ type: DataType.INTEGER })
+    @Column({ type: DataType.STRING })
     customId!: string;
 
-    @Column({ type: DataType.TEXT, field: Fabric.FABRIC_DESCRIPTION })
+    @Column({ type: DataType.TEXT, field: "description" })
     description!: string;
 
-    @Column({ type: DataType.TEXT, field: Fabric.FABRIC_INFORMATION })
+    @Column({ type: DataType.TEXT, field: "information" })
     information!: string;
     
-    @Column({ type: DataType.TEXT, field: Fabric.FABRIC_LISTING_PRIORITY })
+    @Column({ type: DataType.INTEGER, field: "listingPriority" })
     listingPriority!: number;
 
     @ForeignKey(() => Color)
@@ -91,36 +71,29 @@ export class Fabric extends Model {
     unitTypeId!: number;
 
     @ForeignKey(() => Image)
-    @Column({ type: DataType.INTEGER, field: Fabric.FABRIC_ICON })
+    @Column({ type: DataType.INTEGER, field: "icon" })
     icon!: number;
 
     @ForeignKey(() => Image)
-    @Column({ type: DataType.INTEGER, field: Fabric.FABRIC_QR })
+    @Column({ type: DataType.INTEGER, field: "qr" })
     qr!: number;
 
-    @Column({ type: DataType.BOOLEAN, field: Fabric.FABRIC_LEVEL_OF_SAFTY })
-    levelOfSafty!: boolean;
+    @Column({ type: DataType.JSON, field: "levelOfSafty" })
+    levelOfSafty!: { status : boolean, value : string };
 
-    @Column({ type: DataType.BOOLEAN, field: Fabric.FABRIC_LEVEL_OF_SAFTY_VALUE })
-    levelOfSaftyValue!: number;
+    @Column({ type: DataType.JSON, field: "stockAlert" })
+    stockAlert!: { status : boolean, value : string };
 
-    @Column({ type: DataType.BOOLEAN, field: Fabric.FABRIC_STOCK_ALERT })
-    isStockAlert!: boolean;
-
-    @Column({ type: DataType.BOOLEAN, field: Fabric.FABRIC_STOCK_ALERT_VALUE })
-    stockAlertValue!: number;
-
-    @Column({ type: DataType.BOOLEAN, field: Fabric.FABRIC_FEATURED })
+    @Column({ type: DataType.BOOLEAN, field: "featured" })
     featured!: boolean;
 
-    @Column({ type: DataType.BOOLEAN, field: Fabric.FABRIC_LIVE })
+    @Column({ type: DataType.BOOLEAN, field: "live" })
     live!: boolean;
 
-    @Column({ type: DataType.BOOLEAN, field: Fabric.FABRIC_STOCK })
-    stock!: boolean;
+    @Column({ type: DataType.JSON, field: "stockMinus" })
+    stockMinus!: { status : boolean, value : string };
 
-    @Column({ type: DataType.BOOLEAN, field: Fabric.FABRIC_STOCK_VALUE })
-    stockValue!: number;
-
-
+    @ForeignKey(() => Supplier)
+    @Column({ type: DataType.INTEGER, field: "supplierId" })
+    supplierId!: number;
 }

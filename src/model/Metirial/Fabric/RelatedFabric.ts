@@ -8,10 +8,7 @@ import { Fabric } from "./Fabric";
 })
 
 export class RelatedFabric extends Model {
-    public static RELATED_FABRIC_TABLE_NAME = "LAPEL_RELATED_FABRIC" as string;
-    public static RELATED_FABRIC_ID = "id" as string;
-
-    @Column({ type: DataType.INTEGER, primaryKey: true, autoIncrement: true, field: RelatedFabric.RELATED_FABRIC_ID })
+    @Column({ type: DataType.INTEGER, primaryKey: true, autoIncrement: true, field: "id" })
     id!: number;
 
     @ForeignKey(() => Fabric)

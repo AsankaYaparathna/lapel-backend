@@ -10,6 +10,7 @@ import { Pattern } from "../../model/Common/Pattern";
 import { Series } from "../../model/Common/Series";
 import { UnitType } from "../../model/Common/UnitType";
 import { Weight } from "../../model/Common/Weight";
+import { Supplier } from "../../model/Metirial/Supplier/Supplier";
 
 interface ICommonRepo {
   //Color
@@ -70,6 +71,10 @@ interface ICommonRepo {
   getSubCategoryById(id: number): Promise<SubCategory>;
   updateSubCategory(model: SubCategory): Promise<any>;
   deleteSubCategory(id: number): Promise<any>;
+
+  //Supplier
+  createSupplier(model: Supplier): Promise<void>;
+  getSupplier(): Promise<Supplier[]>;
 }
 
 export class CommonRepo implements ICommonRepo {
@@ -315,7 +320,7 @@ export class CommonRepo implements ICommonRepo {
     }
   }
 
-   //Weight
+  //Weight
    async createWeight(model: Weight): Promise<void> {
     try {
       await Weight.create({
@@ -333,6 +338,36 @@ export class CommonRepo implements ICommonRepo {
   async getWeight(): Promise<Weight[]> {
     try {
       const result = await Weight.findAll();
+
+      if (!result) {
+        throw new Error("Data not found!");
+      }
+      return result;
+    } catch (err: any) {
+      throw new Error("Failed to get Load data! | " + err.message);
+    }
+  }
+
+  //Supplier
+  async createSupplier(model: Supplier): Promise<void> {
+    try {
+      await Supplier.create({
+        name : model.name,
+        description : model.description,
+        contactNo : model.contactNo
+      });
+    } catch (err: any) {
+      const result = await Supplier.findOne({ where: { name: model.name } });
+
+      if (result) {
+        throw new Error("Failed to create! this is already exists!");
+      }
+      throw new Error("Failed to create! | " + err.message);
+    }
+  }
+  async getSupplier(): Promise<Supplier[]> {
+    try {
+      const result = await Supplier.findAll();
 
       if (!result) {
         throw new Error("Data not found!");

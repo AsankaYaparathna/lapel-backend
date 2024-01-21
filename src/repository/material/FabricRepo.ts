@@ -1,4 +1,3 @@
-import { OpenTime } from "../../model/Warehouse/Showroom/OpeningTime";
 import { Showroom } from "../../model/Warehouse/Showroom/Showroom";
 import { ShowroomImages } from "../../model/Warehouse/Showroom/ShowroomImages";
 import { Image } from "../../model/Common/Images";
@@ -6,7 +5,11 @@ import { Fabric } from "../../model/Metirial/Fabric/Fabric";
 import { CustomId } from "../../model/Common/CustomId";
 import { FabricImages } from "../../model/Metirial/Fabric/FabricImages";
 import { RelatedFabric } from "../../model/Metirial/Fabric/RelatedFabric";
-import { MaterialStock } from "../../model/Metirial/Common/MaterialStock";
+import { MaterialStock } from "../../model/Metirial/Stock/MaterialStock";
+import { MainStock } from "../../model/Metirial/Stock/MainStock";
+import { Cost } from "../../model/Metirial/Cost/Cost";
+import { FabricItem } from "../../model/Metirial/Fabric/FabricItem";
+import { Supplier } from "../../model/Metirial/Supplier/Supplier";
 
 interface IFabricRepo {
   create(model: any): Promise<void>;
@@ -19,30 +22,28 @@ interface IFabricRepo {
 export class FabricRepo implements IFabricRepo {
   async create(model: any): Promise<void> {
     try {
-
       const newCustomId = await CustomId.create({
-        customId : model.customId,
-        referanceTable : "Fabric"
+        customId: model.customId,
+        referanceTable: "Fabric",
       });
 
-      if(!newCustomId){
+      if (!newCustomId) {
         throw new Error("This Custom Id is already exists! Try again");
-      }
-      else{
+      } else {
         const newIcon = await Image.create({
-          imageName : model.icon.imageName,
-          imageData : model.icon.imageData,
-          imageURL : model.icon.imageURL,
-          imagelocation : model.icon.imagelocation,
-          imageDescription : model.icon.imageDescription,
+          imageName: model.icon.imageName,
+          imageData: model.icon.imageData,
+          imageURL: model.icon.imageURL,
+          imagelocation: model.icon.imagelocation,
+          imageDescription: model.icon.imageDescription,
         });
 
         const newQR = await Image.create({
-          imageName : model.qr.imageName,
-          imageData : model.qr.imageData,
-          imageURL : model.qr.imageURL,
-          imagelocation : model.qr.imagelocation,
-          imageDescription : model.qr.imageDescription,
+          imageName: model.qr.imageName,
+          imageData: model.qr.imageData,
+          imageURL: model.qr.imageURL,
+          imagelocation: model.qr.imagelocation,
+          imageDescription: model.qr.imageDescription,
         });
 
         const createdFabric = await Fabric.create({
@@ -62,54 +63,97 @@ export class FabricRepo implements IFabricRepo {
           icon: newIcon.id,
           qr: newQR.id,
           levelOfSafty: model.levelOfSafty,
-          levelOfSaftyValue: model.levelOfSaftyValue,
-          isStockAlert: model.isStockAlert,
-          stockAlertValue: model.stockAlertValue,
+          stockAlert: model.stockAlert,
           featured: model.featured,
           live: model.live,
-          stock: model.stock,
-          stockValue: model.stockValue,
+          stockMinus: model.stockMinus,
+          supplierId: model.supplierId,
         });
 
         const imgList = model.imageList as Image[];
-        imgList.forEach(async element => {
+        imgList.forEach(async (element) => {
           const img = await Image.create({
-            imageName : element.imageName,
-            imageData : element.imageData,
-            imageURL : element.imageURL,
-            imagelocation : element.imagelocation,
-            imageDescription : element.imageDescription,
+            imageName: element.imageName,
+            imageData: element.imageData,
+            imageURL: element.imageURL,
+            imagelocation: element.imagelocation,
+            imageDescription: element.imageDescription,
           });
-  
+
           const modelImages = await FabricImages.create({
-            fabricId : createdFabric.id,
-            imageId : img.id,
+            fabricId: createdFabric.id,
+            imageId: img.id,
           });
         });
 
         const relatedFabList = model.relatedFabric as RelatedFabric[];
-        relatedFabList.forEach(async element => {
-          const newRelatedFabric = await RelatedFabric.create({
-            fabricId : createdFabric.id,
-            relatedFabricId : element.relatedFabricId,
+        if(relatedFabList){
+          relatedFabList.forEach(async (element) => {
+            const newRelatedFabric = await RelatedFabric.create({
+              fabricId: createdFabric.id,
+              relatedFabricId: element.relatedFabricId,
+            });
           });
-        });
+        }
+        
+        let totalStock = 0;
+        const stocckList = model.stockData as MaterialStock[];
+        if(stocckList){
+          stocckList.forEach(async (element) => {
+            const newStock = await MaterialStock.create({
+              customId: newCustomId.customId,
+              wearhouseId: element.wearhouseId,
+              showroomId: element.showroomId,
+              value: element.value,
+            });
+            totalStock += element.value;
+          });
+  
+          const mainStock = await MainStock.create({
+            customId: newCustomId.customId,
+            mainStock: totalStock,
+            liveStock: totalStock,
+            pendingStock: 0,
+            usedStock: 0,
+            totalStock: totalStock,
+          });
+        }
+        
+      
+        const costData = model.cost as Cost;
+        if(costData){
+          const newCost = await Cost.create({
+            customId: newCustomId.customId,
+            totalUnit: costData.totalUnit,
+            unitCost: costData.unitCost,
+            totalCost: costData.totalCost,
+          });
+        }
 
-        const stocckList = model.relatedFabric as MaterialStock[];
-        stocckList.forEach(async element => {
-          const newStock = await RelatedFabric.create({
-            wearhouseId : element.wearhouseId,
-            showroomId : element.showroomId,
-            value : element.value,
+        const categoryList = model.category as FabricItem[];
+        if(categoryList){
+          categoryList.forEach(async (element) => {
+            const newFabricItem = await FabricItem.create({
+              customId: newCustomId.customId,
+              categoryId: element.categoryId,
+              currency: element.currency,
+              price: element.price,
+              visibility: element.visibility,
+              stockAlert: element.stockAlert,
+              levelOfSafty: element.levelOfSafty,
+              discount: element.discount,
+            });
           });
-        });
+        }
+        
       }
-
     } catch (err: any) {
       const result = await Fabric.findOne({ where: { name: model.name } });
 
       if (result) {
-        throw new Error("Failed to create Fabric! Fabric with this name already exists!");
+        throw new Error(
+          "Failed to create Fabric! Fabric with this name already exists!"
+        );
       }
       throw new Error("Failed to create Fabric! | " + err.message);
     }
@@ -117,58 +161,94 @@ export class FabricRepo implements IFabricRepo {
 
   async update(model: any): Promise<any> {
     try {
-      const result = await Showroom.findOne({ where: { id: model.id } });
+      const result = await Fabric.findOne({ where: { id: model.id } });
       if (!result) {
         return false;
       }
+      else{
+        result.name = model.name;
+        result.description = model.description;
+        result.information = model.information;
+        result.listingPriority = model.listingPriority;
+        result.colorId = model.colorId;
+        result.patterrnId = model.patterrnId;
+        result.materialId = model.materialId;
+        result.characteristicsId = model.characteristicsId;
+        result.seriesId = model.seriesId;
+        result.opacity = model.opacity;
+        result.weightId = model.weightId;
+        result.unitTypeId = model.unitTypeId;
+        result.levelOfSafty = model.levelOfSafty;
+        result.stockAlert = model.stockAlert;
+        result.featured = model.featured;
+        result.live = model.live;
+        result.stockMinus = model.stockMinus;
+        result.supplierId = model.supplierId;
+        await result.save();
+      }
 
-      result.name = model.name;
-      result.address = model.address;
-      result.googleLocation = model.googleLocation;
-      result.contactNo = model.contactNo;
-      result.description = model.description;
-      result.isLive = model.isLive;
-      await result.save();
+      const icon = await Image.findOne({ where: { id: result.icon } });
+      if (icon) {
+        icon.imageName = model.icon.imageName;
+        icon.imageData = model.icon.imageData;
+        icon.imageURL = model.icon.imageURL;
+        icon.imagelocation = model.icon.imagelocation;
+        icon.imageDescription = model.icon.imageDescription;
+        await icon.save();
+      }
 
-      const wimgList = await ShowroomImages.findAll({ where: { showroomId: model.id } }) as ShowroomImages[];
-        
-      await Promise.all(wimgList.map(async (imgElement) => {
-        await Image.destroy({ where: { id: imgElement.imageId } });
-      }));
-      
-      await ShowroomImages.destroy({ where: { showroomId: model.id } });
-      await OpenTime.destroy({ where: { showroomId: model.id } });
+      const qr = await Image.findOne({ where: { id: result.qr } });
+      if (qr) {
+        qr.imageName = model.qr.imageName;
+        qr.imageData = model.qr.imageData;
+        qr.imageURL = model.qr.imageURL;
+        qr.imagelocation = model.qr.imagelocation;
+        qr.imageDescription = model.qr.imageDescription;
+        await qr.save();
+      }
+
+      const wimgList = (await FabricImages.findAll({
+        where: { fabricId: model.id },
+      })) as FabricImages[];
+
+      await Promise.all(
+        wimgList.map(async (imgElement) => {
+          await Image.destroy({ where: { id: imgElement.imageId } });
+        })
+      );
+
+      await FabricImages.destroy({ where: { fabricId: model.id } });
 
       const imgList = model.imageList as Image[];
-
-      imgList.forEach(async element => {
+      imgList.forEach(async (element) => {
         const img = await Image.create({
-          imageName : element.imageName,
-          imageData : element.imageData,
-          imageURL : element.imageURL,
-          imagelocation : element.imagelocation,
-          imageDescription : element.imageDescription,
+          imageName: element.imageName,
+          imageData: element.imageData,
+          imageURL: element.imageURL,
+          imagelocation: element.imagelocation,
+          imageDescription: element.imageDescription,
         });
 
-        const showroomImages = await ShowroomImages.create({
-          showroomId : model.id,
-          imageId : img.id,
+        const modelImages = await FabricImages.create({
+          fabricId: model.id,
+          imageId: img.id,
         });
       });
 
-      const timeList = model.timeList as OpenTime[];
-      timeList.forEach(async element => {
-        const time = await OpenTime.create({
-          showroomId : model.id,
-          day : element.day,
-          isOpen : element.isOpen,
-          openFrom : element.openFrom,
-          openTo : element.openTo
+      await RelatedFabric.destroy({ where: { fabricId: model.id } })
+      const relatedFabList = model.relatedFabric as RelatedFabric[];
+      relatedFabList.forEach(async (element) => {
+        const newRelatedFabric = await RelatedFabric.create({
+          fabricId: model.id,
+          relatedFabricId: element.relatedFabricId,
         });
       });
+
+
+
       return true;
     } catch (err: any) {
-      throw new Error("Failed to update Showroom! | " + err.message);
+      throw new Error("Failed to update Fabric! | " + err.message);
     }
   }
 
@@ -178,17 +258,23 @@ export class FabricRepo implements IFabricRepo {
       if (!result || result.length === 0) {
         throw new Error("Data not found!");
       }
-  
-      await Promise.all(result.map(async (element) => {
-        const wimgList = await ShowroomImages.findAll({ where: { showroomId: element.id } }) as ShowroomImages[];
-        
-        await Promise.all(wimgList.map(async (imgElement) => {
-          await Image.destroy({ where: { id: imgElement.imageId } });
-        }));
-        await ShowroomImages.destroy({ where: { showroomId: element.id } });
-      }));
-  
-      await Showroom.destroy({ where: { id: id }});
+
+      await Promise.all(
+        result.map(async (element) => {
+          const wimgList = (await ShowroomImages.findAll({
+            where: { showroomId: element.id },
+          })) as ShowroomImages[];
+
+          await Promise.all(
+            wimgList.map(async (imgElement) => {
+              await Image.destroy({ where: { id: imgElement.imageId } });
+            })
+          );
+          await ShowroomImages.destroy({ where: { showroomId: element.id } });
+        })
+      );
+
+      await Showroom.destroy({ where: { id: id } });
       return true;
     } catch (err: any) {
       throw new Error("Failed to delete Showroom! | " + err.message);
@@ -197,113 +283,191 @@ export class FabricRepo implements IFabricRepo {
 
   async getById(id: number): Promise<any> {
     try {
-      const result = await Showroom.findAll({ where: { id: id } });
+      const result = await Fabric.findAll({ where: { id: id } });
       if (!result || result.length === 0) {
         throw new Error("Data not found!");
       }
-  
-      const Wlist: { 
-        id: number; 
-        name: string; 
-        address: { no: string; street: string; city: string; }; 
-        contactNo: {no1 : string; no2 : string}; 
-        googleLocation : string;
-        description: string; 
-        imageList: Image[]; 
-        timeList: OpenTime[]; 
-        isLive : Boolean;
-        createdAt: any; 
-        updatedAt: any; 
+      const Wlist: {
+        id: number;
+        name: string;
+        customId: string;
+        description: string;
+        information: string;
+        listingPriority: number;
+        stockData: MaterialStock[];
+        colorId: number;
+        patterrnId: number;
+        materialId: number;
+        characteristicsId: number;
+        seriesId: number;
+        opacity: number;
+        weightId: number;
+        unitTypeId: number;
+        icon: Image;
+        qr: Image;
+        imageList: Image[];
+        relatedFabric: RelatedFabric[];
+        levelOfSafty: { status : boolean, value : string };
+        stockAlert: { status : boolean, value : string };
+        featured: boolean;
+        live: boolean;
+        stockMinus: { status : boolean, value : string };
+        category:FabricItem[];
+        supplierId: Supplier;
+        cost: Cost;
       }[] = [];
       
-      await Promise.all(result.map(async (element) => {
-        const wimgList = await ShowroomImages.findAll({ where: { showroomId: element.id } }) as ShowroomImages[];
-        
-        let imgList: Image[] = [];
-        await Promise.all(wimgList.map(async (imgElement) => {
-          const img = await Image.findOne({ where: { id: imgElement.imageId } }) as Image;
-          imgList.push(img);
-        }));
-        const tmList = await OpenTime.findAll({ where: { showroomId: element.id } }) as OpenTime[];
-        
-        
-        const showroomTemp = {
-          id: element.id,
-          name: element.name,
-          address: element.address,
-          contactNo: element.contactNo,
-          googleLocation : element.googleLocation,
-          description: element.description,
-          imageList: imgList,
-          timeList: tmList,
-          isLive : element.isLive,
-          createdAt: element.createdAt,
-          updatedAt: element.updatedAt,
-        };
-  
-        Wlist.push(showroomTemp);
-      }));
-  
+      await Promise.all(
+        result.map(async (element) => {
+          const stocData = (await MaterialStock.findAll({ where: { customId: element.customId }})) as MaterialStock[];
+          const iconData = (await Image.findOne({ where: { id: element.icon }})) as Image;
+          const qrData = (await Image.findOne({ where: { id: element.qr }})) as Image;
+          const wimgList = (await FabricImages.findAll({ where: { fabricId: element.id }})) as FabricImages[];
+          let imgList: Image[] = [];
+          await Promise.all(
+            wimgList.map(async (imgElement) => {
+              const img = (await Image.findOne({where: { id: imgElement.imageId }})) as Image;
+              imgList.push(img);
+            })
+          );
+          const relatedFab = (await RelatedFabric.findAll({ where: { fabricId: element.id }})) as RelatedFabric[];
+          const categoryData = (await FabricItem.findAll({ where: { customId: element.customId }})) as FabricItem[];
+          const costData = (await Cost.findOne({ where: { customId: element.customId }})) as Cost;
+          const supplierData = (await Supplier.findOne({ where: { id: element.supplierId }})) as Supplier;
+
+          const tempModel = {
+            id: element.id,
+            name: element.name,
+            customId: element.customId,
+            description: element.description,
+            information: element.information,
+            listingPriority:element.listingPriority,
+            stockData: stocData,
+            colorId:element.colorId,
+            patterrnId:element.patterrnId,
+            materialId:element.materialId,
+            characteristicsId:element.characteristicsId,
+            seriesId:element.seriesId,
+            opacity:element.opacity,
+            weightId:element.weightId,
+            unitTypeId:element.unitTypeId,
+            icon: iconData,
+            qr: qrData,
+            imageList: imgList,
+            relatedFabric: relatedFab,
+            levelOfSafty: element.levelOfSafty,
+            stockAlert: element.stockAlert,
+            featured: element.featured,
+            live: element.live,
+            stockMinus: element.stockMinus,
+            category: categoryData,
+            supplierId: supplierData,
+            cost: costData,
+          };
+
+          Wlist.push(tempModel);
+        })
+      );
+
       return Wlist;
-    }  catch (err: any) {
-      throw new Error("Failed to get Showroom! | " + err.message);
+    } catch (err: any) {
+      throw new Error("Failed to get Fabric! | " + err.message);
     }
   }
 
   async get(): Promise<any[]> {
     try {
-      const result = await Showroom.findAll();
+      const result = await Fabric.findAll();
       if (!result || result.length === 0) {
         throw new Error("Data not found!");
       }
-  
-      const Wlist: { 
-        id: number; 
-        name: string; 
-        address: { no: string; street: string; city: string; }; 
-        contactNo: {no1 : string; no2 : string}; 
-        googleLocation : string;
-        description: string; 
-        imageList: Image[]; 
-        timeList: OpenTime[]; 
-        isLive: Boolean;
-        createdAt: any; 
-        updatedAt: any; 
+
+      const Wlist: {
+        id: number;
+        name: string;
+        customId: string;
+        description: string;
+        information: string;
+        listingPriority: number;
+        stockData: MaterialStock[];
+        colorId: number;
+        patterrnId: number;
+        materialId: number;
+        characteristicsId: number;
+        seriesId: number;
+        opacity: number;
+        weightId: number;
+        unitTypeId: number;
+        icon: Image;
+        qr: Image;
+        imageList: Image[];
+        relatedFabric: RelatedFabric[];
+        levelOfSafty: { status : boolean, value : string };
+        stockAlert: { status : boolean, value : string };
+        featured: boolean;
+        live: boolean;
+        stockMinus: { status : boolean, value : string };
+        category:FabricItem[];
+        supplierId: Supplier;
+        cost: Cost;
       }[] = [];
       
-      await Promise.all(result.map(async (element) => {
-        const wimgList = await ShowroomImages.findAll({ where: { showroomId: element.id } }) as ShowroomImages[];
-        
-        let imgList: Image[] = [];
-        await Promise.all(wimgList.map(async (imgElement) => {
-          const img = await Image.findOne({ where: { id: imgElement.imageId } }) as Image;
-          imgList.push(img);
-        }));
-        const tmList = await OpenTime.findAll({ where: { showroomId: element.id } }) as OpenTime[];
-        
-        
-        const showroomTemp = {
-          id: element.id,
-          name: element.name,
-          address: element.address,
-          contactNo: element.contactNo,
-          googleLocation : element.googleLocation,
-          description: element.description,
-          imageList: imgList,
-          timeList: tmList,
-          isLive : element.isLive,
-          createdAt: element.createdAt,
-          updatedAt: element.updatedAt,
-        };
-  
-        Wlist.push(showroomTemp);
-      }));
-  
-      return Wlist;
 
-    
-    }  catch (err: any) {
-      throw new Error("Failed to get Showroom! | " + err.message);
+      await Promise.all(
+        result.map(async (element) => {
+          const stocData = (await MaterialStock.findAll({ where: { customId: element.customId }})) as MaterialStock[];
+          const iconData = (await Image.findOne({ where: { id: element.icon }})) as Image;
+          const qrData = (await Image.findOne({ where: { id: element.qr }})) as Image;
+          const wimgList = (await FabricImages.findAll({ where: { fabricId: element.id }})) as FabricImages[];
+          let imgList: Image[] = [];
+          await Promise.all(
+            wimgList.map(async (imgElement) => {
+              const img = (await Image.findOne({where: { id: imgElement.imageId }})) as Image;
+              imgList.push(img);
+            })
+          );
+          const relatedFab = (await RelatedFabric.findAll({ where: { fabricId: element.id }})) as RelatedFabric[];
+          const categoryData = (await FabricItem.findAll({ where: { customId: element.customId }})) as FabricItem[];
+          const costData = (await Cost.findOne({ where: { customId: element.customId }})) as Cost;
+          const supplierData = (await Supplier.findOne({ where: { id: element.supplierId }})) as Supplier;
+
+          const tempModel = {
+            id: element.id,
+            name: element.name,
+            customId: element.customId,
+            description: element.description,
+            information: element.information,
+            listingPriority:element.listingPriority,
+            stockData: stocData,
+            colorId:element.colorId,
+            patterrnId:element.patterrnId,
+            materialId:element.materialId,
+            characteristicsId:element.characteristicsId,
+            seriesId:element.seriesId,
+            opacity:element.opacity,
+            weightId:element.weightId,
+            unitTypeId:element.unitTypeId,
+            icon: iconData,
+            qr: qrData,
+            imageList: imgList,
+            relatedFabric: relatedFab,
+            levelOfSafty: element.levelOfSafty,
+            stockAlert: element.stockAlert,
+            featured: element.featured,
+            live: element.live,
+            stockMinus: element.stockMinus,
+            category: categoryData,
+            supplierId: supplierData,
+            cost: costData,
+          };
+
+          Wlist.push(tempModel);
+        })
+      );
+
+      return Wlist;
+    } catch (err: any) {
+      throw new Error("Failed to get Fabric! | " + err.message);
     }
   }
 }

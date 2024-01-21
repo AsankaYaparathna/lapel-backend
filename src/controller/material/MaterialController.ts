@@ -72,7 +72,7 @@ class MaterialController {
     //Row Material
     async createRowMaterial(req: Request, res: Response) {
         try {
-            await new MaterialRepo().create(req.body as Category);
+            await new MaterialRepo().create(req.body);
             res.status(200).json({ status: true, message: "successfully!", data: null });
         } catch (err) {
             res.status(400).json({ status: false, message: "" + err, data: null });
@@ -97,7 +97,7 @@ class MaterialController {
     }
     async updateRowMaterial(req: Request, res: Response) {
         try {
-            const modal = req.body as Category;
+            const modal = req.body;
             modal.id = parseInt(req.params["id"], 10);
             const user = await new MaterialRepo().update(modal);
             res.status(200).json({

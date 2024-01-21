@@ -4,6 +4,7 @@ import { Category } from "../../Common/Category/Category";
 import { SubCategory } from "../../Common/Category/SubCategory";
 import { UnitType } from "../../Common/UnitType";
 import { Supplier } from "../Supplier/Supplier";
+import { CustomId } from "../../Common/CustomId";
 
 @Table({
     tableName: "LAPEL_ROW_MATERIAL",
@@ -12,78 +13,58 @@ import { Supplier } from "../Supplier/Supplier";
     createdAt: 'createdAt'
 })
 export class RowMaterial extends Model {
-    public static ROW_MATERIAL_TABLE_NAME = "LAPEL_ROW_MATERIAL" as string;
-    public static ROW_MATERIAL_ID = "id" as string;
-    public static ROW_MATERIAL_NAME = "name" as string;
-    public static ROW_MATERIAL_CUSTOM_ID = "customId" as string;
-    public static ROW_MATERIAL_DESCRIPTION = "description" as string;
-    public static ROW_MATERIAL_INFORMATION = "information" as string;
-    public static ROW_MATERIAL_SUPPLIER = "supplier" as string;
-    public static ROW_MATERIAL_CATEGORY = "category" as string;
-    public static ROW_MATERIAL_SUB_CATEGORY = "subCategory" as string;
-    public static ROW_MATERIAL_UNIT = "unit" as string;
-    public static ROW_MATERIAL_QR = "qr" as string;
-    public static ROW_MATERIAL_PRODUCT_IMAGE_LIST = "productImageList" as string;
-    public static ROW_MATERIAL_LEVEL_OF_SAFETY = "levelOfSafety" as string;
-    public static ROW_MATERIAL_DISCOUNT = "discount" as string;
-    public static ROW_MATERIAL_STOCK_ALERT = "stockAlert" as string;
-    public static ROW_MATERIAL_FEATURED = "featured" as string;
-    public static ROW_MATERIAL_LIVE = "live" as string;
-    public static ROW_MATERIAL_STOCK = "stock" as string;
 
-    @Column({ type: DataType.INTEGER, primaryKey: true, autoIncrement: true, field: RowMaterial.ROW_MATERIAL_ID })
+    @Column({ type: DataType.INTEGER, primaryKey: true, autoIncrement: true, field: "id"})
     id!: number;
 
-    @Column({ type: DataType.STRING(100), field: RowMaterial.ROW_MATERIAL_NAME })
+    @Column({ type: DataType.STRING(100), field: "name" })
     name!: string;
 
-    @Column({ type: DataType.STRING(50), unique: true, field: RowMaterial.ROW_MATERIAL_CUSTOM_ID })
+    @ForeignKey(() => CustomId)
+    @Column({ type: DataType.STRING, field: "customId" })
     customId!: string;
 
-    @Column({ type: DataType.TEXT, field: RowMaterial.ROW_MATERIAL_DESCRIPTION })
+    @Column({ type: DataType.TEXT, field: "description" })
     description!: string;
 
-    @Column({ type: DataType.TEXT, field: RowMaterial.ROW_MATERIAL_INFORMATION })
+    @Column({ type: DataType.TEXT, field: "information" })
     information!: string;
 
     @ForeignKey(() => Supplier)
-    @Column({ type: DataType.INTEGER, field: RowMaterial.ROW_MATERIAL_SUPPLIER })
+    @Column({ type: DataType.INTEGER, field: "supplierId" })
     supplierId!: number;
 
     @ForeignKey(() => Category)
-    @Column({ type: DataType.INTEGER, field: RowMaterial.ROW_MATERIAL_CATEGORY })
+    @Column({ type: DataType.INTEGER, field: "categoryId" })
     categoryId!: number;
 
     @ForeignKey(() => SubCategory)
-    @Column({ type: DataType.INTEGER, field: RowMaterial.ROW_MATERIAL_SUB_CATEGORY })
+    @Column({ type: DataType.INTEGER, field: "subCategoryId" })
     subCategoryId!: number;
 
     @ForeignKey(() => UnitType)
-    @Column({ type: DataType.INTEGER, field: RowMaterial.ROW_MATERIAL_UNIT })
+    @Column({ type: DataType.INTEGER, field: "unitTypeId" })
     unitTypeId!: number;
 
     @ForeignKey(() => Image)
-    @Column({ type: DataType.INTEGER, field: RowMaterial.ROW_MATERIAL_QR })
+    @Column({ type: DataType.INTEGER, field: "qr" })
     qr!: number;
 
-    @Column({ type: DataType.BOOLEAN, field: RowMaterial.ROW_MATERIAL_LEVEL_OF_SAFETY })
-    levelOfSafety!: boolean;
+    @Column({ type: DataType.JSON, field: "levelOfSafty" })
+    levelOfSafty!: { status : boolean, value : string };
 
-    @Column({ type: DataType.BOOLEAN, field: RowMaterial.ROW_MATERIAL_DISCOUNT })
-    discount!: boolean;
+    @Column({ type: DataType.JSON, field: "discount" })
+    discount!: { status : boolean, fixedValue: string, fixedRate : string};
 
-    @Column({ type: DataType.BOOLEAN, field: RowMaterial.ROW_MATERIAL_STOCK_ALERT })
-    stockAlert!: boolean;
+    @Column({ type: DataType.JSON, field: "stockAlert" })
+    stockAlert!: { status : boolean, value : string };
 
-    @Column({ type: DataType.BOOLEAN, field: RowMaterial.ROW_MATERIAL_FEATURED })
+    @Column({ type: DataType.BOOLEAN, field: "featured" })
     featured!: boolean;
 
-    @Column({ type: DataType.BOOLEAN, field: RowMaterial.ROW_MATERIAL_LIVE })
+    @Column({ type: DataType.BOOLEAN, field: "live" })
     live!: boolean;
 
-    @Column({ type: DataType.BOOLEAN, field: RowMaterial.ROW_MATERIAL_STOCK })
-    stock!: boolean;
-
-    @Column({ type: DataType.BOOLEAN, field: RowMaterial.ROW_MATERIAL_STOCK })
-    stockValue!: boolean;
+    @Column({ type: DataType.JSON, field: "stockMinus" })
+    stockMinus!: { status : boolean, value : string };
 }

@@ -80,6 +80,96 @@ class UserController {
     }
   }
 
+  async forgetPasswordOtpSend(req: Request, res: Response) {
+    try {
+      const { SMS_API_BASE_URL = "", SMS_API_TOKEN = "", SMS_OTP_EXP_S = "120", } = process.env;
+      const { mobileNumber } = req.body;
+      const userRepo = new UserRepo();
+      const existUser = await userRepo.getByMobileCheck(mobileNumber);
+
+      if (!existUser) {
+        return res.status(200).json({
+          status: false,
+          message: "Failed!| User with this mobile number does not exists!",
+          data: null,
+        });
+      }
+
+      const otpCode = generateOTP();
+      const axiosConfig = {
+        headers: { Authorization: `Bearer ${SMS_API_TOKEN}`, "Content-Type": "application/json" }};
+
+      const smsPayload = {
+        recipient: mobileNumber,
+        sender_id: "Lapel",
+        message: `LAPEL\nCustomer Id : ${existUser.customerId}\nYour OTP is ${otpCode}\nDo not share this code.`,
+      };
+
+      const response = await axios.post(
+        `${SMS_API_BASE_URL}/sms/send`,
+        smsPayload,
+        axiosConfig
+      );
+
+      if (response.status) {
+        existUser.otp = otpCode;
+        existUser.isMobileVerified = false;
+        await existUser.save();
+
+        res.status(200).json({
+          status: true,
+          message: "Forget Password successfully! | OTP Send",
+          data: null,
+        });
+      } else {
+        res.status(200).json({
+          status: false,
+          message: "Failed to send OTP!",
+          data: null,
+        });
+      }
+    } catch (err) {
+      res.status(400).json({ status: false, message: "" + err, data: null });
+    }
+  }
+
+  async forgetPassword(req: Request, res: Response) {
+    try {
+      const { mobileNumber, password, otp } = req.body;
+
+      const userRepo = new UserRepo();
+      const existUser = await userRepo.getByMobileCheck(mobileNumber);
+
+      
+      if (!existUser) {
+        return res.status(200).json({
+          status: false,
+          message:
+            "Failed!| User with this mobile number does not exists!",
+          data: null,
+        });
+      }
+      
+      const model = new User();
+        model.mobileNumber = mobileNumber;
+        model.password = password;
+        model.otp = otp;
+
+
+        await userRepo.forgetPassword(model);
+
+        res.status(200).json({
+          status: true,
+          message: "Forget Password successfully!",
+          data: null,
+        });
+     
+      
+    } catch (err) {
+      res.status(400).json({ status: false, message: "" + err, data: null });
+    }
+  }
+
   async resendOtp(req: Request, res: Response) {
     try {
       const SMS_API_BASE_URL = process.env.SMS_API_BASE_URL || "";
