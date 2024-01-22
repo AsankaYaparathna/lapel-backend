@@ -28,7 +28,10 @@ class UserController {
       }
 
       const otpCode = generateOTP();
-      const customerId = await  generateCustomerId(existUser);
+      const lastUser = await User.findOne({
+        order: [['createdAt', 'DESC']], // Order by 'createdAt' column in descending order
+      }) as User;
+      const customerId = await  generateCustomerId(lastUser);
       
       const axiosConfig = {
         headers: {
