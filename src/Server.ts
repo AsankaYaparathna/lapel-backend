@@ -7,6 +7,7 @@ import ShowroomRoutes from "./router/wearhouse/ShowroomRouts";
 import CommonRouts from "./router/common/CommonRouts";
 import MaterialRouts from "./router/Material/MaterialRouts";
 import cors from "cors";
+import AdminRouter from "./router/admin/AdminRouter";
 class App {
   public app: Application;
 
@@ -38,6 +39,7 @@ class App {
     this.app.use("/api/v1/showroom", ShowroomRoutes);
     this.app.use("/api/v1/common", CommonRouts);
     this.app.use("/api/v1/material", MaterialRouts);
+    this.app.use("/api/v1/admin", AdminRouter);
   }
 }
 

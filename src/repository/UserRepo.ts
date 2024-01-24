@@ -37,7 +37,7 @@ export class UserRepo implements IUserRepo {
         throw new Error("Failed to create User!| User with this mobile number already exists!");
           return;
       }
-      throw new Error("Failed to create User!| | "+err.message);
+      throw new Error("Failed to create User!| "+err.message);
     }
   }
 

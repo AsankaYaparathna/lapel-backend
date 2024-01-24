@@ -32,6 +32,7 @@ import { Supplier } from "../model/Metirial/Supplier/Supplier";
 import { RowMaterial } from "../model/Metirial/RowMaterial/RowMaterial";
 import { RowMaterialImages } from "../model/Metirial/RowMaterial/RowMaterialImages";
 import { RelatedRowMaterial } from "../model/Metirial/RowMaterial/RelatedRowMaterial";
+import { Admin } from "../model/Admin/Admin";
 
 dotenv.config()
 
@@ -67,7 +68,8 @@ export default class Database{
                 Showroom, ShowroomImages, OpenTime,
                 CustomId, Supplier,
                 Fabric, FabricImages, RelatedFabric, MaterialStock, MainStock, Cost, FabricItem,
-                RowMaterial, RowMaterialImages, RelatedRowMaterial
+                RowMaterial, RowMaterialImages, RelatedRowMaterial,
+                Admin,
             ]
         });
 

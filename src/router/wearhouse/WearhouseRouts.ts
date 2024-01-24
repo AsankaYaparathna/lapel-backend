@@ -7,7 +7,7 @@ class WearhouseRouts extends BaseRoutes{
         // Public routes
        
         // Protected routes
-        this.router.use(AuthController.authenticateToken);
+        //this.router.use(AuthController.authenticateToken);
         this.router.post("/create/", WearhouseController.create);
         this.router.patch("/update/:id", WearhouseController.update);
         this.router.delete("/delete/:id", WearhouseController.delete);
