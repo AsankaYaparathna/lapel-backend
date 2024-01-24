@@ -17,7 +17,6 @@ class App {
     this.plugins();
     this.routes();
   }
-
   protected plugins(): void {
     this.app.use(cors());
     this.app.use(express.json());
