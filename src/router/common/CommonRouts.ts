@@ -1,4 +1,4 @@
-import AuthController from "../../controller/AuthController";
+import AuthController from "../../controller/auth/AuthController";
 import CommonController from "../../controller/common/CommonController";
 import BaseRoutes from "../base/BaseRouter";
 
@@ -64,6 +64,7 @@ class CommonRouts extends BaseRoutes{
         this.router.post("/category/create/", CommonController.createCategory);
         this.router.get("/category/get/", CommonController.getCategory);
         this.router.get("/category/getById/:id", CommonController.getCategoryById);
+        this.router.get("/category/getByCategoryTypeId/:id", CommonController.getByCategoryTypeId);
         this.router.patch("/category/update/:id", CommonController.updateCategory);
         this.router.delete("/category/delete/:id", CommonController.deleteCategory);
 

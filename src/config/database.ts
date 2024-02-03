@@ -1,6 +1,5 @@
 import { Sequelize } from "sequelize-typescript";
 import * as dotenv from "dotenv";
-import { Not } from "sequelize-typescript";
 import { User } from "../model/Customer/User";
 import { Auth } from "../model/Auth/Auth";
 import { Image } from "../model/Common/Images";
@@ -33,6 +32,12 @@ import { RowMaterial } from "../model/Metirial/RowMaterial/RowMaterial";
 import { RowMaterialImages } from "../model/Metirial/RowMaterial/RowMaterialImages";
 import { RelatedRowMaterial } from "../model/Metirial/RowMaterial/RelatedRowMaterial";
 import { Admin } from "../model/Admin/Admin";
+import { CustomProduct } from "../model/Product/Custom Product/CustomProduct";
+import { CustomProductOption } from "../model/Product/Custom Product/CustomProductOption";
+import { OptionHidenRule } from "../model/Product/Custom Product/OptionHidenRule";
+import { SubOption } from "../model/Product/Custom Product/SubOption";
+import { SubOptionFabric } from "../model/Product/Custom Product/SubOptionFabric";
+import { SubOptionHidenRule } from "../model/Product/Custom Product/SubOptionHidenRule";
 
 dotenv.config()
 
@@ -70,6 +75,7 @@ export default class Database{
                 Fabric, FabricImages, RelatedFabric, MaterialStock, MainStock, Cost, FabricItem,
                 RowMaterial, RowMaterialImages, RelatedRowMaterial,
                 Admin,
+                CustomProduct, CustomProductOption, OptionHidenRule, SubOption, SubOptionHidenRule, SubOptionFabric, 
             ]
         });
 

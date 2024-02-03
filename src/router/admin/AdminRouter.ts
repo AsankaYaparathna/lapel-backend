@@ -1,5 +1,4 @@
 import AdminController from "../../controller/admin/AdminController";
-import MaterialController from "../../controller/material/MaterialController";
 import BaseRoutes from "../base/BaseRouter";
 
 class AdminRouts extends BaseRoutes{

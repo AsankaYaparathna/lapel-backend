@@ -1,4 +1,4 @@
-import AuthController from "../../controller/AuthController";
+import AuthController from "../../controller/auth/AuthController";
 import WearhouseController from "../../controller/wearhouse/WearhouseController";
 import BaseRoutes from "../base/BaseRouter";
 

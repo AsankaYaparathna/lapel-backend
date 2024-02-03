@@ -1,6 +1,6 @@
 import BaseRoutes from "../base/BaseRouter";
-import UserController from "../../controller/UserController";
-import AuthController from "../../controller/AuthController";
+import UserController from "../../controller/user/UserController";
+import AuthController from "../../controller/auth/AuthController";
 
 class UserRouts extends BaseRoutes{
     public routes(): void {
@@ -9,7 +9,7 @@ class UserRouts extends BaseRoutes{
         // Protected routes
         //this.router.use(AuthController.authenticateToken);
         this.router.post("/create/", UserController.create);
-        this.router.post("/startSession/:id", UserController.create);
+        this.router.post("/startSession/:id", UserController.startSession);
         this.router.post("/forgetPassword/", UserController.forgetPassword);
         this.router.post("/forgetPassword/otpSend/", UserController.forgetPasswordOtpSend);
         this.router.post("/create/resendotp/", UserController.resendOtp);

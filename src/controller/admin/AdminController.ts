@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import axios from "axios";
-import { UserRepo } from "../../repository/UserRepo";
+import { UserRepo } from "../../repository/user/UserRepo";
 import { AdminRepo } from "../../repository/admin/AdminRepo";
 import { Admin } from "../../model/Admin/Admin";
 

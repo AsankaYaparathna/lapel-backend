@@ -322,6 +322,15 @@ class CommonController {
             res.status(400).json({ status: false, message: "" + err, data: null });
         }
     }
+    async getByCategoryTypeId(req: Request, res: Response) {
+        try {
+            const id = parseInt(req.params["id"], 10);
+            const modal = await new CommonRepo().getByCategoryTypeId(id);
+            res.status(200).json({ status: true, message: "Successfully!", data: modal });
+        } catch (err) {
+            res.status(400).json({ status: false, message: "" + err, data: null });
+        }
+    }
     async updateCategory(req: Request, res: Response) {
         try {
             const modal = req.body as Category;

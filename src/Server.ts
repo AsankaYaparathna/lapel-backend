@@ -8,6 +8,7 @@ import CommonRouts from "./router/common/CommonRouts";
 import MaterialRouts from "./router/Material/MaterialRouts";
 import cors from "cors";
 import AdminRouter from "./router/admin/AdminRouter";
+import ProductRouts from "./router/product/ProductRouts";
 class App {
   public app: Application;
 
@@ -17,6 +18,7 @@ class App {
     this.plugins();
     this.routes();
   }
+
   protected plugins(): void {
     this.app.use(cors());
     this.app.use(express.json());
@@ -39,6 +41,8 @@ class App {
     this.app.use("/api/v1/common", CommonRouts);
     this.app.use("/api/v1/material", MaterialRouts);
     this.app.use("/api/v1/admin", AdminRouter);
+    this.app.use("/api/v1/shop", AdminRouter);
+    this.app.use("/api/v1/product", ProductRouts);
   }
 }
 

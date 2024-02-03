@@ -457,6 +457,17 @@ export class CommonRepo implements ICommonRepo {
       throw new Error("Failed to get Category Type data! | " + err.message);
     }
   }
+  async getByCategoryTypeId(id: number): Promise<any> {
+    try {
+      const result = await Category.findAll({ where : { categoryType: id}});
+      if (!result) {
+        throw new Error("Data not found!");
+      }
+      return result;
+    } catch (err: any) {
+      throw new Error("Failed to get Category Type data! | " + err.message);
+    }
+  }
   async getCategory(): Promise<Category[]> {
     try {
       const result = await Category.findAll();
