@@ -32,18 +32,25 @@ export class SubOption extends Model {
     description!: string;
 
     @ForeignKey(() => Image)
-    @Column({ type: DataType.INTEGER, field: "image1" })
-    image1!: number;
+    @Column({ type: DataType.INTEGER, field: "image" })
+    image!: number;
     
     @ForeignKey(() => Image)
-    @Column({ type: DataType.INTEGER, field: "image2" })
-    image2!: number;
+    @Column({ type: DataType.INTEGER, field: "closeUpImage" })
+    closeUpImage!: number;
 
     @HasMany(() => SubOptionHidenRule, { foreignKey:"hideRules" })
     hideRules!: SubOptionHidenRule[];
 
     @HasMany(() => SubOptionFabric, { foreignKey:"fabric" })
     fabric!: SubOptionFabric[];
+
+    @Column({ type: DataType.INTEGER, field: "image1" })
+    order!: number;
+
+    @Column({ type: DataType.BOOLEAN, field: "isDefault" })
+    isDefault!: boolean;
+    
 }
 
 

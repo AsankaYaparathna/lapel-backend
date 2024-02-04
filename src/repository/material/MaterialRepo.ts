@@ -164,9 +164,7 @@ export class MaterialRepo implements IMaterialRepo {
         await qr.save();
       }
 
-      const wimgList = (await RowMaterialImages.findAll({
-        where: { fabricId: model.id },
-      })) as RowMaterialImages[];
+      const wimgList = (await RowMaterialImages.findAll({ where: { fabricId: model.id }, })) as RowMaterialImages[];
 
       await Promise.all(
         wimgList.map(async (imgElement) => {
@@ -200,9 +198,7 @@ export class MaterialRepo implements IMaterialRepo {
           rowMaterialId: element.rowMaterialId,
         });
       });
-
-
-
+      
       return true;
     } catch (err: any) {
       throw new Error("Failed to update Fabric! | " + err.message);

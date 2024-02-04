@@ -31,7 +31,6 @@ export class CustomProduct extends Model {
     @HasMany(() => CustomProductOption, { foreignKey:"customProductOption" })
     customProductOption!: CustomProductOption[];
 
-
 }
 
 

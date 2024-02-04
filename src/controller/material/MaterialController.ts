@@ -34,7 +34,7 @@ class MaterialController {
     }
     async updateFabric(req: Request, res: Response) {
         try {
-            const modal = req.body as CategoryType;
+            const modal = req.body;
             modal.id = parseInt(req.params["id"], 10);
             const user = await new FabricRepo().update(modal);
             res.status(200).json({

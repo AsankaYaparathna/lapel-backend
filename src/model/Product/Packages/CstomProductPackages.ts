@@ -1,15 +1,14 @@
 import { Column, DataType, ForeignKey, HasMany, Model, Table } from "sequelize-typescript";
-import { Category } from "../../Common/Category/Category";
-import { CategoryType } from "../../Common/Category/CategoryType";
 import { Image } from "../../Common/Images";
 
-@Table({ tableName: "LAPEL_CUSTOM_PRODUCT",
+@Table({ tableName: "LAPEL_CUSTOM_PRODUCT_PACKAGES",
     timestamps: true,
     updatedAt: 'updatedAt',
     createdAt: 'createdAt'
 })
 
-export class CstomProductPackages extends Model {
+export class 
+CstomProductPackages extends Model {
 
     @Column({ type: DataType.INTEGER, primaryKey: true, autoIncrement: true, field: "id" })
     id!: number;
@@ -36,11 +35,6 @@ export class CstomProductPackages extends Model {
     @Column({ type: DataType.INTEGER, field: "icon" })
     icon!: number;
     
-
-    @ForeignKey(() => CategoryType)
-    @Column({ type: DataType.STRING, field: "categoryTypeId" })
-    categoryTypeId!: string;
-
     @Column({ type: DataType.BOOLEAN, field: "isActive" })
     isActive!: boolean;
 

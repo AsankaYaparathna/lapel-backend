@@ -58,6 +58,8 @@ export class CustomProductRepo implements ICustomProductRepo {
             front: element.front,
             back: element.back,
             description: element.description,
+            frontViewOrder: element.frontViewOrder,
+            backViewOrder: element.backViewOrder,
           });
 
           const optionHiddenRule = element.hideRules as OptionHidenRule[];
@@ -74,20 +76,20 @@ export class CustomProductRepo implements ICustomProductRepo {
           subOption.forEach(async (element) => {
             const subOptionModel = opModel.subOptions[j];
 
-            const image1 = await Image.create({
-              imageName: subOptionModel.images1.imageName,
-              imageData: subOptionModel.images1.imageData,
-              imageURL: subOptionModel.images1.imageURL,
-              imagelocation: subOptionModel.images1.imagelocation,
-              imageDescription: subOptionModel.images1.imageDescription,
+            const image = await Image.create({
+              imageName: subOptionModel.image.imageName,
+              imageData: subOptionModel.image.imageData,
+              imageURL: subOptionModel.image.imageURL,
+              imagelocation: subOptionModel.image.imagelocation,
+              imageDescription: subOptionModel.image.imageDescription,
             });
 
-            const image2 = await Image.create({
-              imageName: subOptionModel.images2.imageName,
-              imageData: subOptionModel.images2.imageData,
-              imageURL: subOptionModel.images2.imageURL,
-              imagelocation: subOptionModel.images2.imagelocation,
-              imageDescription: subOptionModel.images2.imageDescription,
+            const closeUpImage = await Image.create({
+              imageName: subOptionModel.closeUpImage.imageName,
+              imageData: subOptionModel.closeUpImage.imageData,
+              imageURL: subOptionModel.closeUpImage.imageURL,
+              imagelocation: subOptionModel.closeUpImage.imagelocation,
+              imageDescription: subOptionModel.closeUpImage.imageDescription,
             });
 
             const subOption = await SubOption.create({
@@ -96,9 +98,22 @@ export class CustomProductRepo implements ICustomProductRepo {
               price: element.price,
               viewStockItem: element.viewStockItem,
               description: element.description,
-              image1: image1.id,
-              image2: image2.id,
+              image: image.id,
+              closeUpImage: closeUpImage.id,
+              order : element.order,
+              isDefault : element.isDefault
             });
+
+            if(element.isDefault){
+              const opNew = await CustomProductOption.findOne({ where : { id : customProductOption.id }})
+              if(opNew){
+                opNew.defaultLoadingOption = subOption.id;
+                await opNew.save();
+              }
+            }
+
+
+
 
             const subOptionHiddenRule = subOptionModel.hideRules as SubOptionHidenRule[];
             subOptionHiddenRule.forEach(async (element) => {
@@ -218,6 +233,8 @@ export class CustomProductRepo implements ICustomProductRepo {
               front: element.front,
               back: element.back,
               description: element.description,
+              frontViewOrder: element.frontViewOrder,
+              backViewOrder: element.backViewOrder,
             });
   
             const optionHiddenRule = element.hideRules as OptionHidenRule[];
@@ -234,20 +251,20 @@ export class CustomProductRepo implements ICustomProductRepo {
             await subOption.forEach(async (element) => {
               const subOptionModel = opModel.subOptions[j];
 
-              const image1 = await Image.create({
-                imageName: subOptionModel.images1.imageName,
-                imageData: subOptionModel.images1.imageData,
-                imageURL: subOptionModel.images1.imageURL,
-                imagelocation: subOptionModel.images1.imagelocation,
-                imageDescription: subOptionModel.images1.imageDescription,
+              const image = await Image.create({
+                imageName: subOptionModel.image.imageName,
+                imageData: subOptionModel.image.imageData,
+                imageURL: subOptionModel.image.imageURL,
+                imagelocation: subOptionModel.image.imagelocation,
+                imageDescription: subOptionModel.image.imageDescription,
               });
 
-              const image2 = await Image.create({
-                imageName: subOptionModel.images2.imageName,
-                imageData: subOptionModel.images2.imageData,
-                imageURL: subOptionModel.images2.imageURL,
-                imagelocation: subOptionModel.images2.imagelocation,
-                imageDescription: subOptionModel.images2.imageDescription,
+              const closeUpImage = await Image.create({
+                imageName: subOptionModel.closeUpImage.imageName,
+                imageData: subOptionModel.closeUpImage.imageData,
+                imageURL: subOptionModel.closeUpImage.imageURL,
+                imagelocation: subOptionModel.closeUpImage.imagelocation,
+                imageDescription: subOptionModel.closeUpImage.imageDescription,
               });
 
               const subOption = await SubOption.create({
@@ -256,9 +273,19 @@ export class CustomProductRepo implements ICustomProductRepo {
                 price: element.price,
                 viewStockItem: element.viewStockItem,
                 description: element.description,
-                image1: image1.id,
-                image2: image2.id,
+                image: image.id,
+                closeUpImage: closeUpImage.id,
+                order : element.order,
+                isDefault : element.isDefault
               });
+  
+              if(element.isDefault){
+                const opNew = await CustomProductOption.findOne({ where : { id : customProductOption.id }})
+                if(opNew){
+                  opNew.defaultLoadingOption = subOption.id;
+                  await opNew.save();
+                }
+              }
 
               const subOptionHiddenRule = subOptionModel.hideRules as SubOptionHidenRule[];
               await subOptionHiddenRule.forEach(async (element) => {
@@ -345,6 +372,8 @@ export class CustomProductRepo implements ICustomProductRepo {
             resultOption.front = element.front;
             resultOption.back = element.back;
             resultOption.description = element.description;
+            resultOption.frontViewOrder = element.frontViewOrder;
+            resultOption.backViewOrder = element.backViewOrder;
             await resultOption.save();
 
             await OptionHidenRule.destroy({ where: { optionId: resultOption.id }, });
@@ -363,20 +392,20 @@ export class CustomProductRepo implements ICustomProductRepo {
               const resultSubOption = await SubOption.findOne({ where: { id: subElement.id }, });
               const subOptionModel = subOpModel[j];
               if (!resultSubOption) {
-                const image1 = await Image.create({
-                  imageName: subOptionModel.images1.imageName,
-                  imageData: subOptionModel.images1.imageData,
-                  imageURL: subOptionModel.images1.imageURL,
-                  imagelocation: subOptionModel.images1.imagelocation,
-                  imageDescription: subOptionModel.images1.imageDescription,
+                const image = await Image.create({
+                  imageName: subOptionModel.image.imageName,
+                  imageData: subOptionModel.image.imageData,
+                  imageURL: subOptionModel.image.imageURL,
+                  imagelocation: subOptionModel.image.imagelocation,
+                  imageDescription: subOptionModel.image.imageDescription,
                 });
     
-                const image2 = await Image.create({
-                  imageName: subOptionModel.images2.imageName,
-                  imageData: subOptionModel.images2.imageData,
-                  imageURL: subOptionModel.images2.imageURL,
-                  imagelocation: subOptionModel.images2.imagelocation,
-                  imageDescription: subOptionModel.images2.imageDescription,
+                const closeUpImage = await Image.create({
+                  imageName: subOptionModel.closeUpImage.imageName,
+                  imageData: subOptionModel.closeUpImage.imageData,
+                  imageURL: subOptionModel.closeUpImage.imageURL,
+                  imagelocation: subOptionModel.closeUpImage.imagelocation,
+                  imageDescription: subOptionModel.closeUpImage.imageDescription,
                 });
     
                 const subOption = await SubOption.create({
@@ -385,9 +414,19 @@ export class CustomProductRepo implements ICustomProductRepo {
                   price: subOptionModel.price,
                   viewStockItem: subOptionModel.viewStockItem,
                   description: subOptionModel.description,
-                  image1: image1.id,
-                  image2: image2.id,
+                  image: image.id,
+                  closeUpImage: closeUpImage.id,
+                  order : subOptionModel.order,
+                  isDefault : subOptionModel.isDefault
                 });
+    
+                if(subOptionModel.isDefault){
+                  const opNew = await CustomProductOption.findOne({ where : { id : resultOption.id }})
+                  if(opNew){
+                    opNew.defaultLoadingOption = subOption.id;
+                    await opNew.save();
+                  }
+                }
 
                 const subOptionHiddenRule = subOptionModel.hideRules as SubOptionHidenRule[];
                 await subOptionHiddenRule.forEach(async (element) => {
@@ -450,25 +489,25 @@ export class CustomProductRepo implements ICustomProductRepo {
                 });
 
               } else {
-                const image1 = await Image.findOne({ where: { id: resultSubOption.image1 }, });
-                if (image1) {
-                  image1.imageName = subOptionModel.images1.imageName;
-                  image1.imageData = subOptionModel.images1.imageData;
-                  image1.imageURL = subOptionModel.images1.imageURL;
-                  image1.imagelocation = subOptionModel.images1.imagelocation;
-                  image1.imageDescription = subOptionModel.images1.imageDescription;
-                  await image1.save();
+                const image = await Image.findOne({ where: { id: resultSubOption.image }, });
+                if (image) {
+                  image.imageName = subOptionModel.image.imageName;
+                  image.imageData = subOptionModel.image.imageData;
+                  image.imageURL = subOptionModel.image.imageURL;
+                  image.imagelocation = subOptionModel.image.imagelocation;
+                  image.imageDescription = subOptionModel.image.imageDescription;
+                  await image.save();
                 }
 
-                const image2 = await Image.findOne({ where: { id: resultSubOption.image2 }, });
-                if (image2) {
-                  image2.imageName = subOptionModel.images2.imageName;
-                  image2.imageData = subOptionModel.images2.imageData;
-                  image2.imageURL = subOptionModel.images2.imageURL;
-                  image2.imagelocation = subOptionModel.images2.imagelocation;
-                  image2.imageDescription =
-                    subOptionModel.images2.imageDescription;
-                  await image2.save();
+                const closeUpImage = await Image.findOne({ where: { id: resultSubOption.closeUpImage }, });
+                if (closeUpImage) {
+                  closeUpImage.imageName = subOptionModel.closeUpImage.imageName;
+                  closeUpImage.imageData = subOptionModel.closeUpImage.imageData;
+                  closeUpImage.imageURL = subOptionModel.closeUpImage.imageURL;
+                  closeUpImage.imagelocation = subOptionModel.closeUpImage.imagelocation;
+                  closeUpImage.imageDescription =
+                    subOptionModel.closeUpImage.imageDescription;
+                  await closeUpImage.save();
                 }
 
                 resultSubOption.optionId = resultOption.id;
@@ -476,9 +515,19 @@ export class CustomProductRepo implements ICustomProductRepo {
                 resultSubOption.price = subElement.price;
                 resultSubOption.viewStockItem = subElement.viewStockItem;
                 resultSubOption.description = subElement.description;
-                // resultSubOption.image1 = subElement.image1;
-                // resultSubOption.image2 = subElement.image2;
+                // resultSubOption.image = subElement.image;
+                // resultSubOption.closeUpImage = subElement.closeUpImage;
+                resultSubOption.order = subElement.order;
+                resultSubOption.isDefault = subElement.isDefault;
                 await resultSubOption.save();
+
+                if(subElement.isDefault){
+                  const opNew = await CustomProductOption.findOne({ where : { id : resultOption.id }})
+                  if(opNew){
+                    opNew.defaultLoadingOption = resultSubOption.id;
+                    await opNew.save();
+                  }
+                }
 
                 await SubOptionHidenRule.destroy({ where: { subOptionId: resultSubOption.id }, });
                 const subOptionHidenRule = subOptionModel.hideRules as SubOptionHidenRule[];
@@ -634,8 +683,8 @@ export class CustomProductRepo implements ICustomProductRepo {
             await SubOption.destroy({ where: { optionId: elementCPO.id } });
             await Promise.all(subOptionData.map(async (elementCPSO) => {
               
-              await Image.destroy({ where: { id: elementCPSO.image1 } });
-              await Image.destroy({ where: { id: elementCPSO.image2 } });
+              await Image.destroy({ where: { id: elementCPSO.image } });
+              await Image.destroy({ where: { id: elementCPSO.closeUpImage } });
               await SubOptionHidenRule.destroy({ where: { subOptionId: elementCPSO.id }, });
 
               const subOptionFabData = await SubOptionFabric.findAll({ where: { subOptionId: elementCPSO.id }, });
@@ -687,8 +736,8 @@ export class CustomProductRepo implements ICustomProductRepo {
         price: number;
         viewStockItem: boolean;
         description: string;
-        images1: Image;
-        images2: Image;
+        image: Image;
+        closeUpImage: Image;
         hideRules: newSubOptionHideRule[];
         fabric: newCustomProdSubOptionFab[];
       }
@@ -736,8 +785,8 @@ export class CustomProductRepo implements ICustomProductRepo {
             const subOptionData = await SubOption.findAll({ where: { optionId: elementCPO.id }, });
             await Promise.all(subOptionData.map(async (elementCPSO) => {
               
-              const subImage1 = (await Image.findOne({ where: { id: elementCPSO.image1 }, })) as Image;
-              const subImage2 = (await Image.findOne({ where: { id: elementCPSO.image2 }, })) as Image;
+              const subimage = (await Image.findOne({ where: { id: elementCPSO.image }, })) as Image;
+              const subcloseUpImage = (await Image.findOne({ where: { id: elementCPSO.closeUpImage }, })) as Image;
 
               const tempCuProSubOpFab: newCustomProdSubOptionFab[] = [];
               const subOptionFabData = await SubOptionFabric.findAll({ where: { subOptionId: elementCPSO.id }, });
@@ -784,8 +833,8 @@ export class CustomProductRepo implements ICustomProductRepo {
                 price: elementCPSO.price,
                 viewStockItem: elementCPSO.viewStockItem,
                 description: elementCPSO.description,
-                images1: subImage1,
-                images2: subImage2,
+                image: subimage,
+                closeUpImage: subcloseUpImage,
                 hideRules: tempCuProSubOpHR,
                 fabric: tempCuProSubOpFab,
               };
@@ -873,10 +922,11 @@ export class CustomProductRepo implements ICustomProductRepo {
         price: number;
         viewStockItem: boolean;
         description: string;
-        images1: Image;
-        images2: Image;
+        image: Image;
+        closeUpImage: Image;
         hideRules: newSubOptionHideRule[];
         fabric: newCustomProdSubOptionFab[];
+        order : number;
       }
 
       interface newCustomProdOption {
@@ -892,6 +942,7 @@ export class CustomProductRepo implements ICustomProductRepo {
         description: string;
         hideRules: newOptionHideRule[];
         subOptions: newCustomProdSubOption[];
+        defaultLoadingOption : number;
       }
 
       interface newCustomProd {
@@ -922,8 +973,8 @@ export class CustomProductRepo implements ICustomProductRepo {
             const subOptionData = await SubOption.findAll({ where: { optionId: elementCPO.id }, });
             await Promise.all(subOptionData.map(async (elementCPSO) => {
               
-              const subImage1 = (await Image.findOne({ where: { id: elementCPSO.image1 }, })) as Image;
-              const subImage2 = (await Image.findOne({ where: { id: elementCPSO.image2 }, })) as Image;
+              const subimage = (await Image.findOne({ where: { id: elementCPSO.image }, })) as Image;
+              const subcloseUpImage = (await Image.findOne({ where: { id: elementCPSO.closeUpImage }, })) as Image;
 
               const tempCuProSubOpFab: newCustomProdSubOptionFab[] = [];
               const subOptionFabData = await SubOptionFabric.findAll({ where: { subOptionId: elementCPSO.id }, });
@@ -970,10 +1021,11 @@ export class CustomProductRepo implements ICustomProductRepo {
                 price: elementCPSO.price,
                 viewStockItem: elementCPSO.viewStockItem,
                 description: elementCPSO.description,
-                images1: subImage1,
-                images2: subImage2,
+                image: subimage,
+                closeUpImage: subcloseUpImage,
                 hideRules: tempCuProSubOpHR,
                 fabric: tempCuProSubOpFab,
+                order : elementCPSO.order
               };
               
               tempCuProSubOp.push(temp);
@@ -1003,7 +1055,8 @@ export class CustomProductRepo implements ICustomProductRepo {
               back: elementCPO.back,
               description: elementCPO.description,
               hideRules: tempCuProOpHR,
-              subOptions: tempCuProSubOp
+              subOptions: tempCuProSubOp,
+              defaultLoadingOption : elementCPO.defaultLoadingOption
             };
             
             tempCuProOp.push(temp);
@@ -1024,6 +1077,128 @@ export class CustomProductRepo implements ICustomProductRepo {
 
       
       return await tempCuProduct;
+    } catch (err: any) {
+      throw new Error("Failed to get Custom Product! | " + err.message);
+    }
+  }
+
+  async getSubOptionById(id: number): Promise<any> {
+    try {
+      interface newOptionHideRule {
+        id: number;
+        optionId: number;
+        ruleId: number;
+      }
+
+      interface newSubOptionHideRule {
+        id: number;
+        subOptionId: number;
+        ruleId: number;
+      }
+
+      interface newCustomProdSubOptionFab {
+        id: number;
+        customId: string;
+        name: string;
+        front: Image;
+        frontFull: Image;
+        back: Image;
+        backFull: Image;
+      }
+
+      interface newCustomProdSubOption {
+        id: number;
+        title: string;
+        price: number;
+        viewStockItem: boolean;
+        description: string;
+        image: Image;
+        closeUpImage: Image;
+        hideRules: newSubOptionHideRule[];
+        fabric: newCustomProdSubOptionFab[];
+      }
+
+      interface newCustomProdOption {
+        id: number;
+        name: string;
+        image: Image;
+        style: boolean;
+        accent: boolean;
+        optionGroup: boolean;
+        hidden: boolean;
+        front: boolean;
+        back: boolean;
+        description: string;
+        hideRules: newOptionHideRule[];
+        subOptions: newCustomProdSubOption[];
+      }
+
+      interface newCustomProd {
+        id: number;
+        categoryId: string;
+        categoryName: string;
+        categoryTypeId: string;
+        options: newCustomProdOption[];
+        isActive: boolean;
+      }
+
+      
+      const subOptionData = await SubOption.findOne({ where: { id: id } });
+      if (!subOptionData ) {
+        throw new Error("Data not found!");
+      }
+
+      const cuProSubOp: newCustomProdSubOption[] = [];
+     
+      const subimage = (await Image.findOne({ where: { id: subOptionData.image }, })) as Image;
+      const subcloseUpImage = (await Image.findOne({ where: { id: subOptionData.closeUpImage }, })) as Image;
+      
+      const tempCuProSubOpFab: newCustomProdSubOptionFab[] = [];
+      const subOptionFabData = await SubOptionFabric.findAll({ where: { subOptionId: subOptionData.id }, });
+      await Promise.all(subOptionFabData.map(async (elementCPSOF) => {
+        const front = (await Image.findOne({ where: { id: elementCPSOF.front }, })) as Image;
+        const frontFull = (await Image.findOne({ where: { id: elementCPSOF.frontFull }, })) as Image;
+        const back = (await Image.findOne({  where: { id: elementCPSOF.back }, })) as Image;
+        const backFull = (await Image.findOne({ where: { id: elementCPSOF.backFull }, })) as Image;
+
+        const tempFab: newCustomProdSubOptionFab = {
+          id: elementCPSOF.id,
+          customId: elementCPSOF.customId,
+          name: elementCPSOF.name,
+          front: front,
+          frontFull: frontFull,
+          back: back,
+          backFull: backFull,
+        };
+        tempCuProSubOpFab.push(tempFab);
+      }));
+
+      const tempCuProSubOpHR: newSubOptionHideRule[] = [];
+      const subOptionHideRuleData = await SubOptionHidenRule.findAll({ where: { subOptionId: subOptionData.id }, });
+      await Promise.all(subOptionHideRuleData.map(async (elementCPSOFHR) => {
+        const temp: newSubOptionHideRule = {
+          id: elementCPSOFHR.id,
+          subOptionId: elementCPSOFHR.subOptionId,
+          ruleId: elementCPSOFHR.ruleId,
+        };
+        tempCuProSubOpHR.push(temp);
+      }));
+
+      const temp: newCustomProdSubOption = {
+        id: subOptionData.id,
+        title: subOptionData.title,
+        price: subOptionData.price,
+        viewStockItem: subOptionData.viewStockItem,
+        description: subOptionData.description,
+        image: subimage,
+        closeUpImage: subcloseUpImage,
+        hideRules: tempCuProSubOpHR,
+        fabric: tempCuProSubOpFab,
+      };
+      
+      cuProSubOp.push(temp);
+
+      return await cuProSubOp;
     } catch (err: any) {
       throw new Error("Failed to get Custom Product! | " + err.message);
     }

@@ -55,8 +55,19 @@ export class CustomProductOption extends Model {
     @HasMany(() => OptionHidenRule, { foreignKey:"hideRules" })
     hideRules!: OptionHidenRule[];
 
+    @ForeignKey(() => SubOption)
+    @Column({ type: DataType.INTEGER, field: "defaultLoadingOption" })
+    defaultLoadingOption!: number;
+
     @HasMany(() => SubOption, { foreignKey:"subOptions" })
     subOptions!: SubOption[];
+
+    
+    @Column({ type: DataType.INTEGER, field: "frontViewOrder" })
+    frontViewOrder!: number;
+
+    @Column({ type: DataType.INTEGER, field: "backViewOrder" })
+    backViewOrder!: number;
 }
 
 

@@ -38,6 +38,11 @@ import { OptionHidenRule } from "../model/Product/Custom Product/OptionHidenRule
 import { SubOption } from "../model/Product/Custom Product/SubOption";
 import { SubOptionFabric } from "../model/Product/Custom Product/SubOptionFabric";
 import { SubOptionHidenRule } from "../model/Product/Custom Product/SubOptionHidenRule";
+import { CstomProductPackages } from "../model/Product/Packages/CstomProductPackages";
+import { MeasurementPackage } from "../model/Product/Packages/MeasurementPackage";
+import { PackageElement } from "../model/Product/Packages/PackageElement";
+import { PackageImages } from "../model/Product/Packages/PackageImages";
+import { PackageProfImages } from "../model/Product/Packages/PackageProfImages";
 
 dotenv.config()
 
@@ -76,6 +81,7 @@ export default class Database{
                 RowMaterial, RowMaterialImages, RelatedRowMaterial,
                 Admin,
                 CustomProduct, CustomProductOption, OptionHidenRule, SubOption, SubOptionHidenRule, SubOptionFabric, 
+                CstomProductPackages, MeasurementPackage, PackageElement, PackageImages, PackageProfImages
             ]
         });
 
