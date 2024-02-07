@@ -1,3 +1,15 @@
+import { Image } from "../../model/Common/Images";
+import { BlazerBodyMeasurement } from "../../model/Customer/Measurements/Blazer/BlazerBodyMeasurement";
+import { BlazerStandardSize } from "../../model/Customer/Measurements/Blazer/BlazerStandardSize";
+import { FullBodyMeasurement } from "../../model/Customer/Measurements/FullBody/FullBodyMeasurement";
+import { ShirtBodyMeasurement } from "../../model/Customer/Measurements/Shirt/ShirtBodyMeasurement";
+import { ShirtCopyFavorite } from "../../model/Customer/Measurements/Shirt/ShirtCopyFavorite";
+import { ShirtStandardSize } from "../../model/Customer/Measurements/Shirt/ShirtStandardSize";
+import { TrouserBodyMeasurement } from "../../model/Customer/Measurements/Trouser/TrouserBodyMeasurement";
+import { TrouserCopyFavorite } from "../../model/Customer/Measurements/Trouser/TrouserCopyFavorite";
+import { TrouserStandardSize } from "../../model/Customer/Measurements/Trouser/TrouserStandardSize";
+import { WaistcoatBodyMeasurement } from "../../model/Customer/Measurements/Waistcoat/WaistcoatBodyMeasurement";
+import { WaistcoatStandardSize } from "../../model/Customer/Measurements/Waistcoat/WaistcoatStandardSize";
 import { User } from "../../model/Customer/User";
 import { hashPassword, verifyPassword } from "../../utils/Utils";
 
@@ -12,6 +24,12 @@ interface IUserRepo {
   login(mobileNumber: string, password: string): Promise<Boolean | null>;
   forgetPassword(model: User): Promise<void>;
   verifyPassword(user: User, providedPassword: string): Promise<boolean>;
+  updateInfo(modal: any): Promise<any>;
+  updateSecurity(modal: any): Promise<any>;
+  updateAvatar(modal: any): Promise<any>;
+  updateBillingAddress(modal: any): Promise<any>;
+  updateDeliveryAddress(modal: any): Promise<any>;
+  measurementGetByMobile(id : string): Promise<any>;
 }
 
 export class UserRepo implements IUserRepo {
@@ -28,7 +46,8 @@ export class UserRepo implements IUserRepo {
         otp: model.otp,
         isMobileVerified: model.isMobileVerified,
         customerId : model.customerId,
-        isActive : model.isActive
+        isActive : model.isActive,
+        userType : model.userType
       });
     } catch (err : any) {
       const result = await User.findOne({ where: { mobileNumber : model.mobileNumber } });
@@ -217,4 +236,146 @@ export class UserRepo implements IUserRepo {
       throw new Error("Failed to get! | "+err.message);
     }
   }
+
+  //profile
+  async updateInfo(modal: any): Promise<any> {
+    try {
+      const result = await User.findOne({ where: { mobileNumber: modal.mobileNumber } });
+      if (!result) { return false; }
+
+      result.fullName = modal.fullName;
+      result.email = modal.email;
+      await result.save();
+      return true;
+    } catch (err : any) {
+      throw new Error("Failed to update! | "+err.message);
+    }
+  }
+
+  async updateSecurity(modal: any): Promise<any> {
+    try {
+      const result = await User.findOne({ where: { mobileNumber: modal.mobileNumber } });
+      if (!result) { return false; }
+      const encpw = hashPassword(modal.newPassword);
+
+      if(verifyPassword(result.password, modal.currentPassword)){
+        result.password = encpw;
+        await result.save();
+        return true;
+      }
+      else{
+        return false;
+      }
+      
+    } catch (err : any) {
+      throw new Error("Failed to update! | "+err.message);
+    }
+  }
+
+  async updateAvatar(modal: any): Promise<any> {
+    try {
+      const result = await User.findOne({ where: { mobileNumber: modal.mobileNumber } });
+      if (!result) { return false; }
+
+      const avatar = await Image.create({
+        imageName: modal.avatar.imageName,
+        imageData: modal.avatar.imageData,
+        imageURL: modal.avatar.imageURL,
+        imagelocation: modal.avatar.imagelocation,
+        imageDescription: modal.avatar.imageDescription,
+      });
+      result.avatar = avatar.id;
+      await result.save();
+      return true;
+    } catch (err : any) {
+      throw new Error("Failed to update! | "+err.message);
+    }
+  }
+  
+  async updateBillingAddress(modal: any): Promise<any> {
+    try {
+      const result = await User.findOne({ where: { mobileNumber: modal.mobileNumber } });
+      if (!result) { return false; }
+
+      result.billing = modal.billing;
+      await result.save();
+      return true;
+
+    } catch (err : any) {
+      throw new Error("Failed to update! | "+err.message);
+    }
+  }
+  
+  async updateDeliveryAddress(modal: any): Promise<any> {
+    try {
+      const result = await User.findOne({ where: { mobileNumber: modal.mobileNumber } });
+      if (!result) { return false; }
+
+      if(result.billing == null){ return false; }
+      
+      const newDelivery = modal.sameAsBilling ? result.billing : modal.delivery;
+      result.delivery = newDelivery;
+      result.sameAsBilling = modal.sameAsBilling;
+      await result.save();
+      return true;
+      
+    } catch (err : any) {
+      throw new Error("Failed to update! | "+err.message);
+    }
+  }
+
+  //Measurements
+  async measurementGetByMobile(id : string): Promise<any> {
+    try {
+      const result = await User.findOne({ where: { mobileNumber : id } });
+      if (!result) {
+        return null;
+      }
+
+      const shirtBodyMeasurement = await ShirtBodyMeasurement.findOne({ where: { customerId : result.id } });
+      const shirtCopyFavorite = await ShirtCopyFavorite.findOne({ where: { customerId : result.id } });
+      const shirtStandardSize = await ShirtStandardSize.findOne({ where: { customerId : result.id } });
+
+      const trouserBodyMeasurement = await TrouserBodyMeasurement.findOne({ where: { customerId : result.id } });
+      const trouserCopyFavorite = await TrouserCopyFavorite.findOne({ where: { customerId : result.id } });
+      const trouserStandardSize = await TrouserStandardSize.findOne({ where: { customerId : result.id } });
+
+      const blazerBodyMeasurement = await BlazerBodyMeasurement.findOne({ where: { customerId : result.id } });
+      const blazerStandardSize = await BlazerStandardSize.findOne({ where: { customerId : result.id} });
+
+      const waistcoatBodyMeasurement = await WaistcoatBodyMeasurement.findOne({ where: { customerId : result.id } });
+      const waistcoatStandardSize = await WaistcoatStandardSize.findOne({ where: { customerId : result.id } });
+
+      const fullBodyMeasurement = await FullBodyMeasurement.findOne({ where: { customerId : result.id } });
+    
+      var measurementData = {
+        shirt : {
+          bodyMeasurement : shirtBodyMeasurement,
+          standerdSize : shirtStandardSize,
+          copyFavorite : shirtCopyFavorite,
+        },
+        trouser : {
+          bodyMeasurement : trouserBodyMeasurement,
+          standerdSize : trouserStandardSize,
+          copyFavorite : trouserCopyFavorite,
+        },
+        blazer : {
+          bodyMeasurement : blazerBodyMeasurement,
+          standerdSize : blazerStandardSize,
+        },
+        waistcoat : {
+          bodyMeasurement : waistcoatBodyMeasurement,
+          standerdSize : waistcoatStandardSize,
+        },
+        fullBody : {
+          bodyMeasurement : fullBodyMeasurement
+        }
+      }
+
+      return measurementData;
+    } catch (err : any) {
+      throw new Error("Failed to get! | "+err.message);
+    }
+  }
+
 }

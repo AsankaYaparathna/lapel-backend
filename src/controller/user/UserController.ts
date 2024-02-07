@@ -3,7 +3,7 @@ import { User } from "../../model/Customer/User";
 import { UserRepo } from "../../repository/user/UserRepo";
 import { generateCustomerId, generateOTP, generateTempPassword } from "../../utils/Utils";
 import axios from "axios";
-import { Console } from "console";
+import { UserShirtMeasurementRepo } from "../../repository/user/Measurements/UserShirtMeasurementRepo";
 
 class UserController {
   async create(req: Request, res: Response) {
@@ -29,17 +29,10 @@ class UserController {
       }
 
       const otpCode = generateOTP();
-      const lastUser = await User.findOne({
-        order: [['createdAt', 'DESC']], // Order by 'createdAt' column in descending order
-      }) as User;
+      const lastUser = await User.findOne({ order: [['createdAt', 'DESC']] }) as User;
       const customerId = await  generateCustomerId(lastUser);
       
-      const axiosConfig = {
-        headers: {
-          Authorization: `Bearer ${SMS_API_TOKEN}`,
-          "Content-Type": "application/json",
-        },
-      };
+      const axiosConfig = { headers: { Authorization: `Bearer ${SMS_API_TOKEN}`, "Content-Type": "application/json", } };
 
       const smsPayload = {
         recipient: mobileNumber,
@@ -47,11 +40,7 @@ class UserController {
         message: `Customer Id : ${customerId}\nYour OTP is ${otpCode}\nDo not share this code.`,
       };
 
-      const response = await axios.post(
-        `${SMS_API_BASE_URL}/sms/send`,
-        smsPayload,
-        axiosConfig
-      );
+      const response = await axios.post( `${SMS_API_BASE_URL}/sms/send`, smsPayload, axiosConfig );
 
       if (response.status) {
         const model = new User();
@@ -63,7 +52,7 @@ class UserController {
         model.isMobileVerified = false;
         model.customerId = customerId;
         model.isActive = true;
-
+        model.userType = 0;
 
         await userRepo.create(model);
 
@@ -489,6 +478,138 @@ class UserController {
       });
     }
   }
+
+  //profile
+  async updateInfo(req: Request, res: Response) {
+    try {
+      const mobile = req.params["id"];
+      
+      const modal = new User();
+      modal.fullName = req.body.fullName;
+      modal.mobileNumber = mobile;
+      modal.email = req.body.email;
+
+      const user = await new UserRepo().updateInfo(modal);
+
+      res.status(200).json({
+        status: user? true : false,
+        message: user? "Successfully!" : "Data Not Found!",
+        data: user? modal : null,
+      });
+
+    } catch (err) {
+      res.status(400).json({
+        status: false,
+        message: "" + err,
+        data: null,
+      });
+    }
+  }
+  
+  async updateSecurity(req: Request, res: Response) {
+    try {
+      const modal = req.body;
+      modal.mobileNumber = req.params["id"];
+      const user = await new UserRepo().updateSecurity(modal);
+      res.status(200).json({
+        status: user? true : false,
+        message: user? "Successfully!" : "Password not match!",
+        data: null,
+      });
+
+    } catch (err) {
+      res.status(400).json({
+        status: false,
+        message: "" + err,
+        data: null,
+      });
+    }
+  }
+  
+  async updateAvatar(req: Request, res: Response) {
+    try {
+      const modal = req.body;
+      modal.mobileNumber = req.params["id"];
+      const user = await new UserRepo().updateAvatar(modal);
+
+      res.status(200).json({
+        status: user? true : false,
+        message: user? "Successfully!" : "Data Not Found!",
+        data: null,
+      });
+
+    } catch (err) {
+      res.status(400).json({
+        status: false,
+        message: "" + err,
+        data: null,
+      });
+    }
+  }
+  
+  async updateBillingAddress(req: Request, res: Response) {
+    try {
+      const modal = req.body;
+      modal.mobileNumber = req.params["id"];
+      const user = await new UserRepo().updateBillingAddress(modal);
+
+      res.status(200).json({
+        status: user? true : false,
+        message: user? "Successfully!" : "Data Not Found!",
+        data: null,
+      });
+
+    } catch (err) {
+      res.status(400).json({
+        status: false,
+        message: "" + err,
+        data: null,
+      });
+    }
+  }
+  
+  async updateDeliveryAddress(req: Request, res: Response) {
+    try {
+      const modal = req.body;
+      modal.mobileNumber = req.params["id"];
+      const user = await new UserRepo().updateDeliveryAddress(modal);
+
+      res.status(200).json({
+        status: user? true : false,
+        message: user? "Successfully!" : "Data Not Found!",
+        data: null,
+      });
+
+    } catch (err) {
+      res.status(400).json({
+        status: false,
+        message: "" + err,
+        data: null,
+      });
+    }
+  }
+
+  //Measurements
+  async measurementGetByMobile(req: Request, res: Response) {
+    try {
+      const id = req.params["id"];
+      const modal = await new UserRepo().measurementGetByMobile(id);
+
+      res.status(200).json({
+        status: modal? true:false,
+        message: modal? "Successfully!":"Data Not Found!",
+        data: modal? modal:null,
+      });
+    } catch (err) {
+      res.status(400).json({
+        status: false,
+        message: "" + err,
+        data: null,
+      });
+    }
+  }
+
+
 }
 
 export default new UserController();

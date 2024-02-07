@@ -43,6 +43,17 @@ import { MeasurementPackage } from "../model/Product/Packages/MeasurementPackage
 import { PackageElement } from "../model/Product/Packages/PackageElement";
 import { PackageImages } from "../model/Product/Packages/PackageImages";
 import { PackageProfImages } from "../model/Product/Packages/PackageProfImages";
+import { BlazerBodyMeasurement } from "../model/Customer/Measurements/Blazer/BlazerBodyMeasurement";
+import { BlazerStandardSize } from "../model/Customer/Measurements/Blazer/BlazerStandardSize";
+import { FullBodyMeasurement } from "../model/Customer/Measurements/FullBody/FullBodyMeasurement";
+import { ShirtBodyMeasurement } from "../model/Customer/Measurements/Shirt/ShirtBodyMeasurement";
+import { ShirtCopyFavorite } from "../model/Customer/Measurements/Shirt/ShirtCopyFavorite";
+import { ShirtStandardSize } from "../model/Customer/Measurements/Shirt/ShirtStandardSize";
+import { TrouserBodyMeasurement } from "../model/Customer/Measurements/Trouser/TrouserBodyMeasurement";
+import { TrouserCopyFavorite } from "../model/Customer/Measurements/Trouser/TrouserCopyFavorite";
+import { TrouserStandardSize } from "../model/Customer/Measurements/Trouser/TrouserStandardSize";
+import { WaistcoatBodyMeasurement } from "../model/Customer/Measurements/Waistcoat/WaistcoatBodyMeasurement";
+import { WaistcoatStandardSize } from "../model/Customer/Measurements/Waistcoat/WaistcoatStandardSize";
 
 dotenv.config()
 
@@ -81,8 +92,13 @@ export default class Database{
                 RowMaterial, RowMaterialImages, RelatedRowMaterial,
                 Admin,
                 CustomProduct, CustomProductOption, OptionHidenRule, SubOption, SubOptionHidenRule, SubOptionFabric, 
-                CstomProductPackages, MeasurementPackage, PackageElement, PackageImages, PackageProfImages
-            ]
+                CstomProductPackages, MeasurementPackage, PackageElement, PackageImages, PackageProfImages,
+                BlazerBodyMeasurement, BlazerStandardSize,
+                FullBodyMeasurement,
+                ShirtBodyMeasurement, ShirtStandardSize, ShirtCopyFavorite,
+                TrouserBodyMeasurement, TrouserStandardSize, TrouserCopyFavorite,
+                WaistcoatBodyMeasurement, WaistcoatStandardSize,
+            ]   
         });
 
         this.sequelize

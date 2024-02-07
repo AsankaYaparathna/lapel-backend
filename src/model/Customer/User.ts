@@ -1,51 +1,59 @@
-import { BeforeCreate, BeforeUpdate, Column, DataType, Model, Table } from "sequelize-typescript";
+import { BeforeCreate, BeforeUpdate, ForeignKey, Column, DataType, Model, Table } from "sequelize-typescript";
 import { hashPassword } from "../../utils/Utils";
+import { Image } from "../Common/Images";
 
 
-@Table({ tableName: User.User_TABLE_NAME,
+@Table({ 
+    tableName: "LAPEL_USER",
     timestamps: true,
     updatedAt: 'updatedAt',
     createdAt: 'createdAt'
 })
 
 export class User extends Model {
-    public static User_TABLE_NAME = "LAPEL_USER" as string;
-    public static User_ID = "id" as string;
-    public static User_FULL_NAME = "fullName" as string;
-    public static User_MOBILE_NUMBER = "mobileNumber" as string;
-    public static User_EMAIL = "email" as string;
-    public static User_PASSWORD = "password" as string;
-    public static User_OTP = "otp" as string;
-    public static User_IS_MOBILE_VERIFIED = "isMobileVerified" as string;
-    public static User_CUSTOMER_ID = "customerId" as string;
-    public static User_IS_ACTIVE = "isActive" as string;
 
-    @Column({ type: DataType.INTEGER, primaryKey: true, autoIncrement: true, field: User.User_ID })
+    @Column({ type: DataType.INTEGER, primaryKey: true, autoIncrement: true, field: "id" })
     id!: number;
 
-    @Column({ type: DataType.STRING(10), unique : true, field: User.User_CUSTOMER_ID })
+    @Column({ type: DataType.STRING(10), unique : true, field: "customerId" })
     customerId!: string;
 
-    @Column({ type: DataType.STRING(100), field: User.User_FULL_NAME })
+    @Column({ type: DataType.STRING(100), field: "fullName" })
     fullName!: string;
 
-    @Column({ type: DataType.STRING(20), field: User.User_MOBILE_NUMBER, unique: true })
+    @Column({ type: DataType.STRING(20), field: "mobileNumber", unique: true })
     mobileNumber!: string;
 
-    @Column({ type: DataType.STRING(100), field: User.User_EMAIL, unique: true })
+    @Column({ type: DataType.STRING(100), field: "email", unique: true })
     email!: string;
 
-    @Column({ type: DataType.STRING(255), field: User.User_PASSWORD })
+    @Column({ type: DataType.STRING(255), field: "password" })
     password!: string;
 
-    @Column({ type: DataType.INTEGER, field: User.User_OTP })
+    @Column({ type: DataType.INTEGER, field: "otp" })
     otp!: number;
 
-    @Column({ type: DataType.BOOLEAN, field: User.User_IS_MOBILE_VERIFIED })
+    @Column({ type: DataType.BOOLEAN, field: "isMobileVerified" })
     isMobileVerified!: boolean;
 
-    @Column({ type: DataType.BOOLEAN, field: User.User_IS_ACTIVE })
+    @Column({ type: DataType.BOOLEAN, field: "isActive" })
     isActive!: boolean;
+
+    @ForeignKey(() => Image)
+    @Column({ type: DataType.INTEGER, field: "avatar" })
+    avatar!: number;
+
+    @Column({ type: DataType.JSON, field: "billing" })
+    billing!: { address1 : string, address2 : string, zipCode : string, city : string};
+
+    @Column({ type: DataType.JSON, field: "delivery" })
+    delivery!: { address1 : string, address2 : string, zipCode : string, city : string};
+
+    @Column({ type: DataType.BOOLEAN, field: "sameAsBilling" })
+    sameAsBilling!: boolean;
+
+    @Column({ type: DataType.INTEGER, field: "userType" })
+    userType!: number;
 
     @BeforeCreate
     @BeforeUpdate
