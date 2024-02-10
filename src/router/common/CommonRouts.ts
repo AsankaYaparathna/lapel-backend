@@ -1,6 +1,8 @@
 import AuthController from "../../controller/auth/AuthController";
 import CommonController from "../../controller/common/CommonController";
 import BaseRoutes from "../base/BaseRouter";
+import multer from 'multer';
+
 
 class CommonRouts extends BaseRoutes{
     public routes(): void {
@@ -8,7 +10,7 @@ class CommonRouts extends BaseRoutes{
        
         // Protected routes
         //Auth
-        this.router.use(AuthController.authenticateToken);
+        //this.router.use(AuthController.authenticateToken);
 
         //Color
         this.router.post("/color/create/", CommonController.createColor);
@@ -31,7 +33,9 @@ class CommonRouts extends BaseRoutes{
         this.router.get("/image/get/:id", CommonController.getImageById);
         this.router.patch("/image/update/:id", CommonController.updateImage);
         this.router.delete("/image/delete/:id", CommonController.deleteImage);
-        
+        const upload = multer({ dest: "uploads/" });
+        this.router.post("/image/upload/", upload.single("image"), CommonController.uploadImage);
+
         //Opacity
         this.router.post("/opacity/create/", CommonController.createOpacity);
         this.router.get("/opacity/get/", CommonController.getOpacity);
@@ -78,3 +82,4 @@ class CommonRouts extends BaseRoutes{
 }
 
 export default new CommonRouts().router
+

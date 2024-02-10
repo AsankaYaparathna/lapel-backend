@@ -24,10 +24,10 @@ export class TrouserStandardSize extends Model {
     @Column({ type: DataType.JSON, field: "bodyFit" })
     bodyFit!: { regularFit : boolean, slimFit : boolean, tightFit : boolean};
 
-    @Column({ type: DataType.DOUBLE, field: "waits" })
+    @Column({ type: DataType.DECIMAL(10, 2), field: "waits" })
     waits!: number;
 
-    @Column({ type: DataType.DOUBLE, field: "trouserLength" })
+    @Column({ type: DataType.DECIMAL(10, 2), field: "trouserLength" })
     trouserLength!: number;
 }
 

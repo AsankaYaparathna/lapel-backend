@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { CategoryType } from "../../model/Common/Category/CategoryType";
 import { CustomProductRepo } from "../../repository/product/CustomProductRepo";
 import { PackageRepo } from "../../repository/product/PackageRepo";
 
@@ -36,6 +35,24 @@ class ProductController {
             const modal = req.body;
             modal.id = parseInt(req.params["id"], 10);
             const user = await new CustomProductRepo().update(modal);
+            res.status(200).json({
+            status: user ? true : false,
+            message: user ? "Successfully!" : "Data Not Found!",
+            data: user ? modal : null,
+            });
+        } catch (err) {
+            res.status(400).json({
+            status: false,
+            message: "" + err,
+            data: null,
+            });
+        }
+    }
+    async updateCustomProductOption(req: Request, res: Response) {
+        try {
+            const modal = req.body;
+            modal.id = parseInt(req.params["id"], 10);
+            const user = await new CustomProductRepo().updateOption(modal);
             res.status(200).json({
             status: user ? true : false,
             message: user ? "Successfully!" : "Data Not Found!",

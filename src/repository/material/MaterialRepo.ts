@@ -317,9 +317,8 @@ export class MaterialRepo implements IMaterialRepo {
   async get(): Promise<any[]> {
     try {
       const result = await RowMaterial.findAll();
-      if (!result || result.length === 0) {
-        throw new Error("Data not found!");
-      }
+
+      if (!result || result.length === 0) { throw new Error("Data not found!"); }
       const Wlist: {
         id: number;
         name: string;
@@ -393,4 +392,56 @@ export class MaterialRepo implements IMaterialRepo {
       throw new Error("Failed to get Fabric! | " + err.message);
     }
   }
+
+//   async get(): Promise<any[]> {
+//     try {
+//         // Fetch all row materials with eager loading of associated data
+//         const result = await RowMaterial.findAll({
+//             include: [
+//                 { model: MaterialStock },
+//                 { model: Image, as: 'qr' },
+//                 { model: RowMaterialImages, include: [{ model: Image }] },
+//                 { model: RelatedRowMaterial },
+//                 { model: Cost },
+//                 { model: Supplier },
+//                 { model: Category },
+//                 { model: SubCategory }
+//             ]
+//         });
+
+//         // If no data found, throw an error
+//         if (!result || result.length === 0) {
+//             throw new Error("Data not found!");
+//         }
+
+//         // Map and format the fetched data
+//         // const formattedData = result.map(rowMaterial => ({
+//         //     id: rowMaterial.id,
+//         //     name: rowMaterial.name,
+//         //     customId: rowMaterial.customId,
+//         //     description: rowMaterial.description,
+//         //     information: rowMaterial.information,
+//         //     stockData: rowMaterial.MaterialStocks,
+//         //     categoryId: rowMaterial.Category,
+//         //     subCategoryId: rowMaterial.SubCategory,
+//         //     unitTypeId: rowMaterial.unitTypeId,
+//         //     qr: rowMaterial.qr,
+//         //     imageList: rowMaterial.RowMaterialImages.map(image => image.imageId),
+//         //     relatedRowMaterial: rowMaterial.RelatedRowMaterials,
+//         //     levelOfSafty: rowMaterial.levelOfSafty,
+//         //     discount: rowMaterial.discount,
+//         //     stockAlert: rowMaterial.stockAlert,
+//         //     featured: rowMaterial.featured,
+//         //     live: rowMaterial.live,
+//         //     stockMinus: rowMaterial.stockMinus,
+//         //     supplierId: rowMaterial.Supplier,
+//         //     cost: rowMaterial.Cost
+//         // }));
+
+//         return formattedData;
+//     } catch (err: any) {
+//         throw new Error("Failed to get Fabric! | " + err.message);
+//     }
+// }
+
 }

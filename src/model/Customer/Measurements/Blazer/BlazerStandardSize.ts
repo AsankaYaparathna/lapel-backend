@@ -24,8 +24,8 @@ export class BlazerStandardSize extends Model {
     @Column({ type: DataType.JSON, field: "bodyFit" })
     bodyFit!: { regularFit : boolean, slimFit : boolean, tightFit : boolean};
 
-    @Column({ type: DataType.DOUBLE, field: "size" })
-    size!: number;
+    @Column({ type: DataType.STRING(100), field: "size" })
+    size!: string;
 
 }
 

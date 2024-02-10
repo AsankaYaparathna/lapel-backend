@@ -22,13 +22,13 @@ export class SubOption extends Model {
     @Column({ type: DataType.STRING(100), field: "title" })
     title!: string;
 
-    @Column({ type: DataType.DOUBLE, field: "price" })
+    @Column({ type: DataType.DECIMAL(10, 2), field: "price" })
     price!: number;
 
     @Column({ type: DataType.BOOLEAN, field: "viewStockItem" })
     viewStockItem!: boolean;
 
-    @Column({ type: DataType.STRING(100), field: "description" })
+    @Column({ type: DataType.TEXT, field: "description" })
     description!: string;
 
     @ForeignKey(() => Image)

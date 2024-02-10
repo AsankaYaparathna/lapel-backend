@@ -13,6 +13,7 @@ import { SubCategory } from "../../model/Common/Category/SubCategory";
 import { Material } from "../../model/Common/Material";
 import { Weight } from "../../model/Common/Weight";
 import { Supplier } from "../../model/Metirial/Supplier/Supplier";
+import { v2 as cloudinary } from "cloudinary";
 
 class CommonController {
     //Color
@@ -140,6 +141,19 @@ class CommonController {
             data: null,
             });
         }
+    }
+    async uploadImage(req: Request, res: Response) {
+        try {
+            if (!req.file) { return res.status(400).json({ status: false, message: "No file uploaded"}); }
+      
+            // Upload image to Cloudinary
+            const result = await cloudinary.uploader.upload(req.file.path);
+      
+            // You can handle the result, store the URL in your database, etc.
+            res.status(200).json({ status: true, message: "successfully!", data: result });
+          } catch (error) {
+            return res.status(400).json({ status: false, message: "Could not upload image"});
+          }
     }
 
     //Opacity

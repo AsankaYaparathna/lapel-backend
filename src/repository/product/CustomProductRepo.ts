@@ -1,5 +1,3 @@
-import { Showroom } from "../../model/Warehouse/Showroom/Showroom";
-import { ShowroomImages } from "../../model/Warehouse/Showroom/ShowroomImages";
 import { Image } from "../../model/Common/Images";
 import { CustomProduct } from "../../model/Product/Custom Product/CustomProduct";
 import { CustomProductOption } from "../../model/Product/Custom Product/CustomProductOption";
@@ -21,9 +19,7 @@ export class CustomProductRepo implements ICustomProductRepo {
     try {
       const result = await CustomProduct.findOne({ where: { categoryName: model.categoryName }, });
       if (result) {
-        throw new Error(
-          "Failed to create Custom Product! Custom Product with this name already exists!"
-        );
+        throw new Error("Failed to create Custom Product! Custom Product with this name already exists!" );
       }
       const customProduct = await CustomProduct.create({
         categoryId: model.categoryId,
@@ -189,19 +185,15 @@ export class CustomProductRepo implements ICustomProductRepo {
           "Failed to create Custom Product! Custom Product with this name already exists!"
         );
       }
-      throw new Error("Failed to create Fabric! | " + err.message);
+      throw new Error("Failed to create Custom Product! | " + err.message);
     }
   }
 
   async update(model: any): Promise<any> {
     try {
       const customProduct = await CustomProduct.findOne({ where: { id: model.id }, });
-      //custom product does not exixst
       if (!customProduct) { return false; } 
-      
-      //custom product exixst
       else { 
-        //custom product update
         customProduct.categoryId = model.categoryId;
         customProduct.categoryName = model.categoryName;
         customProduct.categoryTypeId = model.categoryTypeId;
@@ -657,7 +649,167 @@ export class CustomProductRepo implements ICustomProductRepo {
 
       return true;
     } catch (err: any) {
-      throw new Error("Failed to update Fabric! | " + err.message);
+      throw new Error("Failed to update Custom Product! | " + err.message);
+    }
+  }
+
+  async updateOption(model: any): Promise<any> {
+    try {
+      const customProduct = await CustomProduct.findOne({ where: { id: model.id } });
+      if (!customProduct) { return false; }
+      else {
+        const optionModel = model.option as CustomProductOption[];
+        var i = 0;
+        await optionModel.forEach(async (element) => {
+          const resultOption = await CustomProductOption.findOne({ where: { name: element.name } });
+          const opModel = model.option[i];
+          if (!resultOption) {
+            const newOptionImage = await Image.create({
+              imageName: opModel.image.imageName,
+              imageData: opModel.image.imageData,
+              imageURL: opModel.image.imageURL,
+              imagelocation: opModel.image.imagelocation,
+              imageDescription: opModel.image.imageDescription,
+            });
+  
+            const customProductOption = await CustomProductOption.create({
+              customProductId: customProduct.id,
+              name: element.name,
+              image: newOptionImage.id,
+              style: element.style,
+              contrast: element.contrast,
+              accent: element.accent,
+              optionGroup: element.optionGroup,
+              hidden: element.hidden,
+              front: element.front,
+              back: element.back,
+              description: element.description,
+              frontViewOrder: element.frontViewOrder,
+              backViewOrder: element.backViewOrder,
+            });
+  
+            const optionHiddenRule = element.hideRules as OptionHidenRule[];
+            await optionHiddenRule.forEach(async (element) => {
+              const newOptionImage = await OptionHidenRule.create({
+                optionId: customProductOption.id,
+                ruleId: element.id,
+              });
+            });
+
+            var j = 0;
+            const subOption = opModel.subOptions as SubOption[];
+            
+            await subOption.forEach(async (element) => {
+              const subOptionModel = opModel.subOptions[j];
+
+              const image = await Image.create({
+                imageName: subOptionModel.image.imageName,
+                imageData: subOptionModel.image.imageData,
+                imageURL: subOptionModel.image.imageURL,
+                imagelocation: subOptionModel.image.imagelocation,
+                imageDescription: subOptionModel.image.imageDescription,
+              });
+
+              const closeUpImage = await Image.create({
+                imageName: subOptionModel.closeUpImage.imageName,
+                imageData: subOptionModel.closeUpImage.imageData,
+                imageURL: subOptionModel.closeUpImage.imageURL,
+                imagelocation: subOptionModel.closeUpImage.imagelocation,
+                imageDescription: subOptionModel.closeUpImage.imageDescription,
+              });
+
+              const subOption = await SubOption.create({
+                optionId: customProductOption.id,
+                title: element.title,
+                price: element.price,
+                viewStockItem: element.viewStockItem,
+                description: element.description,
+                image: image.id,
+                closeUpImage: closeUpImage.id,
+                order : element.order,
+                isDefault : element.isDefault
+              });
+  
+              if(element.isDefault){
+                const opNew = await CustomProductOption.findOne({ where : { id : customProductOption.id }})
+                if(opNew){
+                  opNew.defaultLoadingOption = subOption.id;
+                  await opNew.save();
+                }
+              }
+
+              const subOptionHiddenRule = subOptionModel.hideRules as SubOptionHidenRule[];
+              await subOptionHiddenRule.forEach(async (element) => {
+                const newOptionImage = await SubOptionHidenRule.create({
+                  subOptionId: subOption.id,
+                  ruleId: element.id,
+                });
+              });
+
+              var k = 0;
+              const subOptionFabric = subOptionModel.fabric as SubOptionFabric[];
+              await subOptionFabric.forEach(async (element) => {
+                const subOptionFabricModel = subOptionModel.fabric[k];
+
+                const front = await Image.create({
+                  imageName: subOptionFabricModel.front.imageName,
+                  imageData: subOptionFabricModel.front.imageData,
+                  imageURL: subOptionFabricModel.front.imageURL,
+                  imagelocation: subOptionFabricModel.front.imagelocation,
+                  imageDescription: subOptionFabricModel.front.imageDescription,
+                });
+
+                const frontFull = await Image.create({
+                  imageName: subOptionFabricModel.frontFull.imageName,
+                  imageData: subOptionFabricModel.frontFull.imageData,
+                  imageURL: subOptionFabricModel.frontFull.imageURL,
+                  imagelocation: subOptionFabricModel.frontFull.imagelocation,
+                  imageDescription:
+                    subOptionFabricModel.frontFull.imageDescription,
+                });
+
+                const back = await Image.create({
+                  imageName: subOptionFabricModel.back.imageName,
+                  imageData: subOptionFabricModel.back.imageData,
+                  imageURL: subOptionFabricModel.back.imageURL,
+                  imagelocation: subOptionFabricModel.back.imagelocation,
+                  imageDescription: subOptionFabricModel.back.imageDescription,
+                });
+
+                const backFull = await Image.create({
+                  imageName: subOptionFabricModel.backFull.imageName,
+                  imageData: subOptionFabricModel.backFull.imageData,
+                  imageURL: subOptionFabricModel.backFull.imageURL,
+                  imagelocation: subOptionFabricModel.backFull.imagelocation,
+                  imageDescription:
+                    subOptionFabricModel.backFull.imageDescription,
+                });
+
+                const subOptionFabric = await SubOptionFabric.create({
+                  subOptionId: subOption.id,
+                  customId: element.customId,
+                  name: element.name,
+                  front: front.id,
+                  frontFull: frontFull.id,
+                  back: back.id,
+                  backFull: backFull.id,
+                });
+
+                k++;
+              });
+
+              j++;
+            });
+          }
+          else{
+            throw new Error("Failed to add Custom Product!");
+          }
+          i++;
+        });
+      }
+      return true;
+    } catch (err: any) {
+      throw new Error("Failed to update Custom Product! | " + err.message);
     }
   }
 
@@ -665,9 +817,7 @@ export class CustomProductRepo implements ICustomProductRepo {
     try {
       const customProduct = await CustomProduct.findAll({ where: { id: id } });
       
-      if (!customProduct || customProduct.length === 0) {
-        throw new Error("Data not found!");
-      }
+      if (!customProduct || customProduct.length === 0) { throw new Error("Data not found!"); }
 
       await CustomProduct.destroy({ where: { id: id } });
       await Promise.all(

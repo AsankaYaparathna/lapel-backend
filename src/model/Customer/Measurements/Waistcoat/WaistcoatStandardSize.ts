@@ -24,9 +24,8 @@ export class WaistcoatStandardSize extends Model {
     @Column({ type: DataType.JSON, field: "bodyFit" })
     bodyFit!: { regularFit : boolean, slimFit : boolean, tightFit : boolean};
 
-    @Column({ type: DataType.DOUBLE, field: "size" })
-    size!: number;
-
+    @Column({ type: DataType.STRING, field: "size" })
+    size!: string;
 }
 
 

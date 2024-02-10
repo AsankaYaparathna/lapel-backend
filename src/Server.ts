@@ -9,6 +9,8 @@ import MaterialRouts from "./router/Material/MaterialRouts";
 import cors from "cors";
 import AdminRouter from "./router/admin/AdminRouter";
 import ProductRouts from "./router/product/ProductRouts";
+import {v2 as cloudinary} from 'cloudinary';
+
 class App {
   public app: Application;
 
@@ -48,6 +50,12 @@ class App {
 
 const port: number = 8000;
 const app = new App().app;
+
+cloudinary.config({ 
+  cloud_name: process.env.IMG_CLDNRY_CLOUD_NAME, 
+  api_key: process.env.IMG_CLDNRY_API_KEY, 
+  api_secret: process.env.IMG_CLDNRY_API_SECRET 
+});
 
 app.listen(port, () => {
   console.log(`Server started at port : ${port}`);

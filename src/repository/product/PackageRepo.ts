@@ -348,9 +348,7 @@ export class PackageRepo implements IPackageRepo {
 
       const tempCuProduct: newCustomProductPackages[] = [];
       const customProductPkg = await CstomProductPackages.findAll();
-      if (!customProductPkg || customProductPkg.length === 0) {
-        throw new Error("Data not found!");
-      }
+      if (!customProductPkg || customProductPkg.length === 0) { throw new Error("Data not found!"); }
 
       await Promise.all(
         customProductPkg.map(async (element) => {
@@ -395,8 +393,6 @@ export class PackageRepo implements IPackageRepo {
           tempCuProduct.push(temp);
         })
       );
-
-      
       return await tempCuProduct;
     } catch (err: any) {
       throw new Error("Failed to get Custom Product! | " + err.message);

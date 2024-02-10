@@ -49,7 +49,7 @@ export class CustomProductOption extends Model {
     @Column({ type: DataType.BOOLEAN, field: "back" })
     back!: boolean;
 
-    @Column({ type: DataType.STRING, field: "description" })
+    @Column({ type: DataType.TEXT, field: "description" })
     description!: string;
 
     @HasMany(() => OptionHidenRule, { foreignKey:"hideRules" })

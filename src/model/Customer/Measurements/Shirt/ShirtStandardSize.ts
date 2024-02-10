@@ -24,10 +24,10 @@ export class ShirtStandardSize extends Model {
     @Column({ type: DataType.JSON, field: "bodyFit" })
     bodyFit!: { regularFit : boolean, slimFit : boolean, tightFit : boolean};
 
-    @Column({ type: DataType.DOUBLE, field: "collarSize" })
+    @Column({ type: DataType.DECIMAL(10, 2), field: "collarSize" })
     collarSize!: number;
 
-    @Column({ type: DataType.DOUBLE, field: "sleeveLength" })
+    @Column({ type: DataType.DECIMAL(10, 2), field: "sleeveLength" })
     sleeveLength!: number;
 
 }

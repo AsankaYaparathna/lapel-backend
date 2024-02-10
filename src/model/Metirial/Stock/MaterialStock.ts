@@ -30,4 +30,5 @@ export class MaterialStock extends Model {
 
     @Column({ type: DataType.INTEGER, field: MaterialStock.VALUE })
     value!: number;
+    
 }
