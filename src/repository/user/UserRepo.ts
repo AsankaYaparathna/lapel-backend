@@ -30,6 +30,7 @@ interface IUserRepo {
   updateBillingAddress(modal: any): Promise<any>;
   updateDeliveryAddress(modal: any): Promise<any>;
   measurementGetByMobile(id : string): Promise<any>;
+  getByMobileCheck(mobile: string): Promise<any>;
 }
 
 export class UserRepo implements IUserRepo {
@@ -215,11 +216,15 @@ export class UserRepo implements IUserRepo {
 
   async getByMobileCheck(mobile: string): Promise<any> {
     try {
-      const result = await User.findOne({ where: { mobileNumber : mobile } });
+      const result = await User.findOne({ where: { mobileNumber : mobile } }) as any;
       if (!result) {
         return null;
       }
-      return result;
+      var image = await Image.findOne({ where: {id : result.avatar}});
+      if(image){
+        result.avatar = image;
+        return result;
+      }
     } catch (err : any) {
       throw new Error("Failed to get! | "+err.message);
     }
