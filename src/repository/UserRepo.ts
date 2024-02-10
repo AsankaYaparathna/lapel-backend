@@ -196,10 +196,12 @@ export class UserRepo implements IUserRepo {
 
   async getByMobileCheck(mobile: string): Promise<any> {
     try {
-      const result = await User.findOne({ where: { mobileNumber : mobile } });
+      const result = await User.findOne({ where: { mobileNumber : mobile } }) as any;
       if (!result) {
         return null;
       }
+      var image = await Image.findOne({ where: {id : result.avatar}});
+      result.avatar = image;
       return result;
     } catch (err : any) {
       throw new Error("Failed to get! | "+err.message);
