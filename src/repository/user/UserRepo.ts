@@ -223,8 +223,8 @@ export class UserRepo implements IUserRepo {
       var image = await Image.findOne({ where: {id : result.avatar}});
       if(image){
         result.avatar = image;
-        return result;
       }
+      return result;
     } catch (err : any) {
       throw new Error("Failed to get! | "+err.message);
     }
