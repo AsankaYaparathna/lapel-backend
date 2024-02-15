@@ -15,10 +15,10 @@ class UserRouts extends BaseRoutes{
        
         // Protected routes
         this.router.use(AuthController.authenticateToken);
-        this.router.post("/create/", validate(createUserSchema), UserController.create);
-        this.router.post("/create/resendotp/", validate(verifyMobileSchema), UserController.resendOtp);
-        this.router.post("/verifyMobile/", validate(verifyOtpSchema), UserController.verifyMobile);
-        this.router.post("/login/",validate(loginSchema), UserController.login);
+        this.router.post("/create/", UserController.create);
+        this.router.post("/create/resendotp/",  UserController.resendOtp);
+        this.router.post("/verifyMobile/", UserController.verifyMobile);
+        this.router.post("/login/", UserController.login);
         
         this.router.patch("/update/:id", UserController.update);
         this.router.delete("/delete/:id", UserController.delete);
