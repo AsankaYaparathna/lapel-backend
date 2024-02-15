@@ -17,8 +17,8 @@ const validate = (schema : AnyZodObject) =>
             const error_message = JSON.parse(err.message);
             return res.status(400).json({
                 status: false,
-                message : "Bad Request!",
-                data : error_message[0].message,
+                message : error_message[0].message,
+                data : error_message,
             });
         }
     }

@@ -55,9 +55,8 @@ export class UserRepo implements IUserRepo {
 
       if (result) {
         throw new Error("Failed to create User!| User with this mobile number already exists!");
-          return;
       }
-      throw new Error("Failed to create User!| "+err.message);
+      throw new Error("Failed to create User!| "+ err.message);
     }
   }
 
@@ -223,6 +222,18 @@ export class UserRepo implements IUserRepo {
       var image = await Image.findOne({ where: {id : result.avatar}});
       if(image){
         result.avatar = image;
+      }
+      return result;
+    } catch (err : any) {
+      throw new Error("Failed to get! | "+err.message);
+    }
+  }
+
+  async getByEmail(email: string): Promise<any> {
+    try {
+      const result = await User.findOne({ where: { email : email } });
+      if (!result) {
+        return null;
       }
       return result;
     } catch (err : any) {

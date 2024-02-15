@@ -8,25 +8,27 @@ import { UserShirtMeasurementRepo } from "../../repository/user/Measurements/Use
 class UserController {
   async create(req: Request, res: Response) {
     try {
-      const {
-        SMS_API_BASE_URL = "",
-        SMS_API_TOKEN = "",
-        SMS_OTP_EXP_S = "120",
-      } = process.env;
+      const { SMS_API_BASE_URL = "", SMS_API_TOKEN = "", SMS_OTP_EXP_S = "120", } = process.env;
       const { mobileNumber, fullName, email, password } = req.body;
 
       const userRepo = new UserRepo();
       const existUser = await userRepo.getByMobileCheck(mobileNumber);
-
-      
+      //const existUserWith = await userRepo.getByEmail(mobileNumber);
       if (existUser) {
-        return res.status(200).json({
+        return res.status(400).json({
           status: false,
           message:
             "Failed to create User!| User with this mobile number already exists!",
           data: null,
         });
       }
+      // else if(existUserWith){
+      //   return res.status(200).json({
+      //     status: false, 
+      //     message: "Failed to create User!| User with thisemail address already exists!", 
+      //     data: null 
+      //   });
+      // }
 
       const otpCode = generateOTP();
       const lastUser = await User.findOne({ order: [['createdAt', 'DESC']] }) as User;
@@ -55,18 +57,10 @@ class UserController {
         model.userType = 0;
 
         await userRepo.create(model);
-
-        res.status(200).json({
-          status: true,
-          message: "User created successfully! | OTP Send",
-          data: null,
+        res.status(200).json({ status: true, message: "User created successfully! | OTP Send", data: null,
         });
       } else {
-        res.status(200).json({
-          status: false,
-          message: "Failed to send OTP!",
-          data: null,
-        });
+        res.status(200).json({ status: false, message: "Failed to send OTP!", data: null });
       }
     } catch (err) {
       res.status(400).json({ status: false, message: "" + err, data: null });

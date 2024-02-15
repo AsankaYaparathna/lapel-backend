@@ -54,6 +54,7 @@ import { TrouserCopyFavorite } from "../model/Customer/Measurements/Trouser/Trou
 import { TrouserStandardSize } from "../model/Customer/Measurements/Trouser/TrouserStandardSize";
 import { WaistcoatBodyMeasurement } from "../model/Customer/Measurements/Waistcoat/WaistcoatBodyMeasurement";
 import { WaistcoatStandardSize } from "../model/Customer/Measurements/Waistcoat/WaistcoatStandardSize";
+import { Cart } from "../model/Cart/Cart";
 
 dotenv.config()
 
@@ -98,6 +99,7 @@ export default class Database{
                 ShirtBodyMeasurement, ShirtStandardSize, ShirtCopyFavorite,
                 TrouserBodyMeasurement, TrouserStandardSize, TrouserCopyFavorite,
                 WaistcoatBodyMeasurement, WaistcoatStandardSize,
+                
             ]   
         });
 

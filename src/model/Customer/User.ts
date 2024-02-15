@@ -24,7 +24,7 @@ export class User extends Model {
     @Column({ type: DataType.STRING(20), field: "mobileNumber", unique: true })
     mobileNumber!: string;
 
-    @Column({ type: DataType.STRING(100), field: "email", unique: true })
+    @Column({ type: DataType.STRING(100), field: "email" })
     email!: string;
 
     @Column({ type: DataType.STRING(255), field: "password" })

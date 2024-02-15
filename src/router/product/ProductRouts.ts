@@ -5,7 +5,7 @@ import BaseRoutes from "../base/BaseRouter";
 class ProductRouts extends BaseRoutes{
     public routes(): void {
         // Protected routes
-        //this.router.use(AuthController.authenticateToken);
+        this.router.use(AuthController.authenticateToken);
 
         //custom product
         this.router.post("/custom/create/", ProductController.createCustomProduct);
