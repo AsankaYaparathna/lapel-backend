@@ -98,6 +98,45 @@ class OrderController {
             res.status(400).json({ status: false, message: "" + err, data: null });
         }
     }
+
+    async setOff(req: Request, res: Response) {
+        try {
+            const result = await new OrderRepo().shopCheckout(req.body);
+            res.status(200).json({ status: true, message: "successfully!", data: result });
+        } catch (err) {
+            res.status(400).json({ status: false, message: "" + err, data: null });
+        }
+    }
+
+    async getInvoiceByCartId(req: Request, res: Response) {
+        try {
+            const id = parseInt(req.params["id"], 10);
+            const modal = await new OrderRepo().getInvoiceByCartId(id);
+            res.status(200).json({ status: true, message: "Successfully!", data: modal });
+        } catch (err) {
+            res.status(400).json({ status: false, message: "" + err, data: null });
+        }
+    }
+
+    async getByInvId(req: Request, res: Response) {
+        try {
+            const id = parseInt(req.params["id"], 10);
+            const modal = await new OrderRepo().getByInvId(id);
+            res.status(200).json({ status: true, message: "Successfully!", data: modal });
+        } catch (err) {
+            res.status(400).json({ status: false, message: "" + err, data: null });
+        }
+    }
+
+    async getByInvNo(req: Request, res: Response) {
+        try {
+            const id = req.params["id"];
+            const modal = await new OrderRepo().getByInvNo(id);
+            res.status(200).json({ status: true, message: "Successfully!", data: modal });
+        } catch (err) {
+            res.status(400).json({ status: false, message: "" + err, data: null });
+        }
+    }
 }
 
 export default new OrderController();

@@ -13,6 +13,7 @@ import {v2 as cloudinary} from 'cloudinary';
 import CartRouts from "./router/cart/CartRouts";
 import OrderRouts from "./router/order/OrderRouts";
 import SessionRouter from "./router/session/SessionRouter";
+import ShopRouter from "./router/shop/ShopRouter";
 
 class App {
   public app: Application;
@@ -50,6 +51,7 @@ class App {
     this.app.use("/api/v1/cart", CartRouts);
     this.app.use("/api/v1/order", OrderRouts);
     this.app.use("/api/v1/session", SessionRouter);
+    this.app.use("/api/v1/shop", ShopRouter);
   }
 }
 

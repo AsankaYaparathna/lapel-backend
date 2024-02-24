@@ -6,7 +6,7 @@ import BaseRoutes from "../base/BaseRouter";
 class CartRouts extends BaseRoutes{
     public routes(): void {
         
-        this.router.use(AuthController.authenticateToken);
+        this.router.use(AuthController.authenticateToken);;
 
         //cart
         this.router.post("/finish/", CartController.finish);

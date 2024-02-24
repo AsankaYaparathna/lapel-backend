@@ -3,6 +3,7 @@ import { createHash } from "crypto";
 import  { AES, enc,  } from "crypto-js";
 import dotenv from "dotenv";
 import { User } from "../model/Customer/User";
+import { OrderInvoice } from "../model/Cart/OrderInvoice";
 const crypto = require("crypto");
 
 dotenv.config();
@@ -40,8 +41,19 @@ export const generateCustomerId = (latestUser : User) : string => {
     return `${prefix}${nextCustomerId.toString().padStart(6, "0")}`;
 }
 
+export const generateInvoiceNo = (latestUser : OrderInvoice) : string => {
+    const nextCustomerId = latestUser ? getNextInvoiceId(latestUser.invoiceNo) : 1;
+    const prefix = "INV";
+    return `${prefix}${nextCustomerId.toString().padStart(6, "0")}`;
+}
+
 function getNextCustomerId(prevCustomerId: string): number {
     const numericPart = parseInt(prevCustomerId.replace("LPLC", ""), 10);
+    return numericPart + 1;
+}
+
+function getNextInvoiceId(prevCustomerId: string): number {
+    const numericPart = parseInt(prevCustomerId.replace("INV", ""), 10);
     return numericPart + 1;
 }
 

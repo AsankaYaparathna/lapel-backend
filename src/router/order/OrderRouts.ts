@@ -5,7 +5,7 @@ import BaseRoutes from "../base/BaseRouter";
 class OrderRouts extends BaseRoutes{
     public routes(): void {
         
-        this.router.use(AuthController.authenticateToken);
+        this.router.use(AuthController.authenticateToken);;
 
         //order
         this.router.post("/checkout/", OrderController.checkout);
@@ -16,8 +16,6 @@ class OrderRouts extends BaseRoutes{
 
         this.router.patch("/update/payment/:id", OrderController.updatePayment);
         this.router.patch("/update/status/:id", OrderController.updateStatus);
-
-        this.router.post("/shop/checkout/", OrderController.shopCheckout);
 
     }
 }

@@ -1,4 +1,6 @@
 import { CartOrder } from "../../model/Cart/CartOrder";
+import { OrderInvoice } from "../../model/Cart/OrderInvoice";
+import { generateCustomerId, generateInvoiceNo } from "../../utils/Utils";
 
 interface IOrderRepo {
   checkout(model: any): Promise<any>;
@@ -65,11 +67,6 @@ export class OrderRepo implements IOrderRepo {
       if (!newModel) { return false; } 
       else {
         newModel.customerId = model.customerId;
-        newModel.noOfItems = model.noOfItems;
-        newModel.subTotal = model.subTotal;
-        newModel.shippingCost = model.shippingCost;
-        newModel.totalAmmount = model.totalAmmount;
-        newModel.balance = model.balance;
         newModel.firstName = model.firstName;
         newModel.lastName = model.lastName;
         newModel.mobile = model.mobile;
@@ -135,11 +132,9 @@ export class OrderRepo implements IOrderRepo {
     try {
       const newCreatedModel = await CartOrder.create({
         customerId: model.customerId,
-        noOfItems: model.noOfItems,
-        subTotal: model.subTotal,
-        shippingCost: model.shippingCost,
-        totalAmmount: model.totalAmmount,
-        balance: model.balance,
+        amount: model.amount,
+        cartIdList: model.cartIdList,
+        orderStatus: model.orderStatus,
         firstName: model.firstName,
         lastName: model.lastName,
         mobile: model.mobile,
@@ -148,13 +143,103 @@ export class OrderRepo implements IOrderRepo {
         billing: model.billing,
         deliveryMethod: model.deliveryMethod,
         notes: model.notes,
-        status: model.status,
-        orderStatus: model.orderStatus,
-        cartIdList: model.cartIdList,
+        status: true,
+        payment: model.payment,
       });
+
+      if(!newCreatedModel){
+        throw new Error("Failed to checkout order! | ");
+      }
+
+      
+      const lastModel = await OrderInvoice.findOne({ order: [['createdAt', 'DESC']] }) as OrderInvoice;
+      const invoiceNo = await generateInvoiceNo(lastModel);
+
+      const newInv = await OrderInvoice.create({
+        customerId: newCreatedModel.customerId,
+        invoiceNo: invoiceNo,
+        invoiceDate: new Date(),
+        orderId : newCreatedModel.id
+      });
+
       return newCreatedModel;
     } catch (err: any) {
       throw new Error("Failed to checkout order! | " + err.message);
+    }
+  }
+
+  async getInvoiceByCartId(id: number): Promise<any> {
+    try {
+      const orderModel = await CartOrder.findOne({ where: { id: id }});
+      if (!orderModel) {
+        throw new Error("Data not found!");
+      }
+
+      const invoiceModel = await OrderInvoice.findOne({ where: { orderId: id }});
+      if (!invoiceModel) {
+        throw new Error("Data not found!");
+      }
+
+      const result = {
+        invoiceNo : invoiceModel.invoiceNo,
+        invoiceDate : invoiceModel.invoiceDate,
+        orderDetails : orderModel
+      }
+
+      return await result;
+    
+    } catch (err: any) {
+      throw new Error("Failed to get invoice! | " + err.message);
+    }
+  }
+
+  async getByInvId(id: number): Promise<any> {
+    try {
+      
+      const invoiceModel = await OrderInvoice.findOne({ where: { orderId: id }});
+      if (!invoiceModel) {
+        throw new Error("Data not found!");
+      }
+      const orderModel = await CartOrder.findOne({ where: { id: invoiceModel.orderId }});
+      if (!orderModel) {
+        throw new Error("Data not found!");
+      }
+      
+      const result = {
+        invoiceNo : invoiceModel.invoiceNo,
+        invoiceDate : invoiceModel.invoiceDate,
+        orderDetails : orderModel
+      }
+
+      return await result;
+    
+    } catch (err: any) {
+      throw new Error("Failed to get invoice! | " + err.message);
+    }
+  }
+
+  async getByInvNo(id: string): Promise<any> {
+    try {
+      
+      const invoiceModel = await OrderInvoice.findOne({ where: { invoiceNo: id }});
+      if (!invoiceModel) {
+        throw new Error("Data not found!");
+      }
+      const orderModel = await CartOrder.findOne({ where: { id: invoiceModel.orderId }});
+      if (!orderModel) {
+        throw new Error("Data not found!");
+      }
+      
+      const result = {
+        invoiceNo : invoiceModel.invoiceNo,
+        invoiceDate : invoiceModel.invoiceDate,
+        orderDetails : orderModel
+      }
+
+      return await result;
+    
+    } catch (err: any) {
+      throw new Error("Failed to get invoice! | " + err.message);
     }
   }
 }
