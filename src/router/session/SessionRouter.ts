@@ -1,19 +1,20 @@
-import AdminController from "../../controller/admin/AdminController";
+
+import AuthController from "../../controller/auth/AuthController";
+import OrderController from "../../controller/cart/OrderController";
 import ShopController from "../../controller/session/SessionController";
 import UserController from "../../controller/user/UserController";
 import BaseRoutes from "../base/BaseRouter";
 
-class SessionRouter extends BaseRoutes{
+class ShopRouter extends BaseRoutes{
     public routes(): void {
         // Protected routes
         //Auth
         this.router.use(AuthController.authenticateToken);
 
-        //Admin
-        this.router.post("/start/", ShopController.startSession);
-        this.router.post("/session/create/", UserController.startSession);
+        
+        this.router.post("/shop/checkout/", OrderController.shopCheckout);
 
     }
 }
 
-export default new SessionRouter().router
+export default new ShopRouter().router
