@@ -11,6 +11,8 @@ import AdminRouter from "./router/admin/AdminRouter";
 import ProductRouts from "./router/product/ProductRouts";
 import {v2 as cloudinary} from 'cloudinary';
 import CartRouts from "./router/cart/CartRouts";
+import OrderRouts from "./router/order/OrderRouts";
+import SessionRouter from "./router/session/SessionRouter";
 
 class App {
   public app: Application;
@@ -44,9 +46,10 @@ class App {
     this.app.use("/api/v1/common", CommonRouts);
     this.app.use("/api/v1/material", MaterialRouts);
     this.app.use("/api/v1/admin", AdminRouter);
-    this.app.use("/api/v1/shop", AdminRouter);
     this.app.use("/api/v1/product", ProductRouts);
     this.app.use("/api/v1/cart", CartRouts);
+    this.app.use("/api/v1/order", OrderRouts);
+    this.app.use("/api/v1/session", SessionRouter);
   }
 }
 

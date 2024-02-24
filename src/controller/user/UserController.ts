@@ -22,14 +22,6 @@ class UserController {
           data: null,
         });
       }
-      // else if(existUserWith){
-      //   return res.status(200).json({
-      //     status: false, 
-      //     message: "Failed to create User!| User with thisemail address already exists!", 
-      //     data: null 
-      //   });
-      // }
-
       const otpCode = generateOTP();
       const lastUser = await User.findOne({ order: [['createdAt', 'DESC']] }) as User;
       const customerId = await  generateCustomerId(lastUser);
@@ -60,7 +52,7 @@ class UserController {
         res.status(200).json({ status: true, message: "User created successfully! | OTP Send", data: null,
         });
       } else {
-        res.status(200).json({ status: false, message: "Failed to send OTP!", data: null });
+        res.status(400).json({ status: false, message: "Failed to send OTP!", data: null });
       }
     } catch (err) {
       res.status(400).json({ status: false, message: "" + err, data: null });
@@ -71,7 +63,7 @@ class UserController {
     try {
       const { SMS_API_BASE_URL = "", SMS_API_TOKEN = "", MS_OTP_EXP_S = "120", } = process.env;
 
-      const mobile = req.params["id"];
+      const mobile = req.body["mobileNumber"];
       if(mobile){
         const userRepo = new UserRepo();
         const existUser = await userRepo.getByMobileCheck(mobile);
@@ -128,7 +120,7 @@ class UserController {
         else {
           res.status(200).json({
             status: false,
-            message: "Failed to send OTP!",
+            message: "Failed to send temp password!",
             data: null,
           });
         }
