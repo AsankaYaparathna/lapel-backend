@@ -656,160 +656,157 @@ export class CustomProductRepo implements ICustomProductRepo {
   async updateOption(model: any): Promise<any> {
     try {
       const customProduct = await CustomProduct.findOne({ where: { id: model.id } });
-      if (!customProduct) { return false; }
+      if (!customProduct) { throw new Error("Data Not Found!"); }
       else {
-        const optionModel = model.option as CustomProductOption[];
-        var i = 0;
-        await optionModel.forEach(async (element) => {
-          const resultOption = await CustomProductOption.findOne({ where: { name: element.name } });
-          const opModel = model.option[i];
-          if (!resultOption) {
-            const newOptionImage = await Image.create({
-              imageName: opModel.image.imageName,
-              imageData: opModel.image.imageData,
-              imageURL: opModel.image.imageURL,
-              imagelocation: opModel.image.imagelocation,
-              imageDescription: opModel.image.imageDescription,
-            });
-  
-            const customProductOption = await CustomProductOption.create({
-              customProductId: customProduct.id,
-              name: element.name,
-              image: newOptionImage.id,
-              style: element.style,
-              contrast: element.contrast,
-              accent: element.accent,
-              optionGroup: element.optionGroup,
-              hidden: element.hidden,
-              front: element.front,
-              back: element.back,
-              description: element.description,
-              frontViewOrder: element.frontViewOrder,
-              backViewOrder: element.backViewOrder,
-            });
-  
-            const optionHiddenRule = element.hideRules as OptionHidenRule[];
-            await optionHiddenRule.forEach(async (element) => {
-              const newOptionImage = await OptionHidenRule.create({
-                optionId: customProductOption.id,
-                ruleId: element.id,
-              });
-            });
-
-            var j = 0;
-            const subOption = opModel.subOptions as SubOption[];
-            
-            await subOption.forEach(async (element) => {
-              const subOptionModel = opModel.subOptions[j];
-
-              const image = await Image.create({
-                imageName: subOptionModel.image.imageName,
-                imageData: subOptionModel.image.imageData,
-                imageURL: subOptionModel.image.imageURL,
-                imagelocation: subOptionModel.image.imagelocation,
-                imageDescription: subOptionModel.image.imageDescription,
-              });
-
-              const closeUpImage = await Image.create({
-                imageName: subOptionModel.closeUpImage.imageName,
-                imageData: subOptionModel.closeUpImage.imageData,
-                imageURL: subOptionModel.closeUpImage.imageURL,
-                imagelocation: subOptionModel.closeUpImage.imagelocation,
-                imageDescription: subOptionModel.closeUpImage.imageDescription,
-              });
-
-              const subOption = await SubOption.create({
-                optionId: customProductOption.id,
-                title: element.title,
-                price: element.price,
-                viewStockItem: element.viewStockItem,
-                description: element.description,
-                image: image.id,
-                closeUpImage: closeUpImage.id,
-                order : element.order,
-                isDefault : element.isDefault
-              });
-  
-              if(element.isDefault){
-                const opNew = await CustomProductOption.findOne({ where : { id : customProductOption.id }})
-                if(opNew){
-                  opNew.defaultLoadingOption = subOption.id;
-                  await opNew.save();
-                }
-              }
-
-              const subOptionHiddenRule = subOptionModel.hideRules as SubOptionHidenRule[];
-              await subOptionHiddenRule.forEach(async (element) => {
-                const newOptionImage = await SubOptionHidenRule.create({
-                  subOptionId: subOption.id,
-                  ruleId: element.id,
-                });
-              });
-
-              var k = 0;
-              const subOptionFabric = subOptionModel.fabric as SubOptionFabric[];
-              await subOptionFabric.forEach(async (element) => {
-                const subOptionFabricModel = subOptionModel.fabric[k];
-
-                const front = await Image.create({
-                  imageName: subOptionFabricModel.front.imageName,
-                  imageData: subOptionFabricModel.front.imageData,
-                  imageURL: subOptionFabricModel.front.imageURL,
-                  imagelocation: subOptionFabricModel.front.imagelocation,
-                  imageDescription: subOptionFabricModel.front.imageDescription,
-                });
-
-                const frontFull = await Image.create({
-                  imageName: subOptionFabricModel.frontFull.imageName,
-                  imageData: subOptionFabricModel.frontFull.imageData,
-                  imageURL: subOptionFabricModel.frontFull.imageURL,
-                  imagelocation: subOptionFabricModel.frontFull.imagelocation,
-                  imageDescription:
-                    subOptionFabricModel.frontFull.imageDescription,
-                });
-
-                const back = await Image.create({
-                  imageName: subOptionFabricModel.back.imageName,
-                  imageData: subOptionFabricModel.back.imageData,
-                  imageURL: subOptionFabricModel.back.imageURL,
-                  imagelocation: subOptionFabricModel.back.imagelocation,
-                  imageDescription: subOptionFabricModel.back.imageDescription,
-                });
-
-                const backFull = await Image.create({
-                  imageName: subOptionFabricModel.backFull.imageName,
-                  imageData: subOptionFabricModel.backFull.imageData,
-                  imageURL: subOptionFabricModel.backFull.imageURL,
-                  imagelocation: subOptionFabricModel.backFull.imagelocation,
-                  imageDescription:
-                    subOptionFabricModel.backFull.imageDescription,
-                });
-
-                const subOptionFabric = await SubOptionFabric.create({
-                  subOptionId: subOption.id,
-                  customId: element.customId,
-                  name: element.name,
-                  front: front.id,
-                  frontFull: frontFull.id,
-                  back: back.id,
-                  backFull: backFull.id,
-                });
-
-                k++;
-              });
-
-              j++;
-            });
-          }
-          else{
-            throw new Error("Failed to add Custom Product!");
-          }
-          i++;
+        const optionModel = model.option;
+        
+        const resultOption = await CustomProductOption.findOne({ where: { name: optionModel.name } });
+        const opModel = model.option;
+        if (resultOption) {
+          throw new Error("This option is already exists!");
+        }
+        
+        const newOptionImage = await Image.create({
+          imageName: opModel.image.imageName,
+          imageData: opModel.image.imageData,
+          imageURL: opModel.image.imageURL,
+          imagelocation: opModel.image.imagelocation,
+          imageDescription: opModel.image.imageDescription,
         });
+
+        const customProductOption = await CustomProductOption.create({
+          customProductId: customProduct.id,
+          name: optionModel.name,
+          image: newOptionImage.id,
+          style: optionModel.style,
+          contrast: optionModel.contrast,
+          accent: optionModel.accent,
+          optionGroup: optionModel.optionGroup,
+          hidden: optionModel.hidden,
+          front: optionModel.front,
+          back: optionModel.back,
+          description: optionModel.description,
+          frontViewOrder: optionModel.frontViewOrder,
+          backViewOrder: optionModel.backViewOrder,
+        });
+
+        const optionHiddenRule = optionModel.hideRules as OptionHidenRule[];
+        await optionHiddenRule.forEach(async (element) => {
+          const newOptionImage = await OptionHidenRule.create({
+            optionId: customProductOption.id,
+            ruleId: element.id,
+          });
+        });
+
+        var j = 0;
+        const subOption = opModel.subOptions as SubOption[];
+        
+        await subOption.forEach(async (element) => {
+          const subOptionModel = opModel.subOptions[j];
+
+          const image = await Image.create({
+            imageName: subOptionModel.image.imageName,
+            imageData: subOptionModel.image.imageData,
+            imageURL: subOptionModel.image.imageURL,
+            imagelocation: subOptionModel.image.imagelocation,
+            imageDescription: subOptionModel.image.imageDescription,
+          });
+
+          const closeUpImage = await Image.create({
+            imageName: subOptionModel.closeUpImage.imageName,
+            imageData: subOptionModel.closeUpImage.imageData,
+            imageURL: subOptionModel.closeUpImage.imageURL,
+            imagelocation: subOptionModel.closeUpImage.imagelocation,
+            imageDescription: subOptionModel.closeUpImage.imageDescription,
+          });
+
+          const subOption = await SubOption.create({
+            optionId: customProductOption.id,
+            title: element.title,
+            price: element.price,
+            viewStockItem: element.viewStockItem,
+            description: element.description,
+            image: image.id,
+            closeUpImage: closeUpImage.id,
+            order : element.order,
+            isDefault : element.isDefault
+          });
+
+          if(element.isDefault){
+            const opNew = await CustomProductOption.findOne({ where : { id : customProductOption.id }})
+            if(opNew){
+              opNew.defaultLoadingOption = subOption.id;
+              await opNew.save();
+            }
+          }
+
+          const subOptionHiddenRule = subOptionModel.hideRules as SubOptionHidenRule[];
+          await subOptionHiddenRule.forEach(async (element) => {
+            const newOptionImage = await SubOptionHidenRule.create({
+              subOptionId: subOption.id,
+              ruleId: element.id,
+            });
+          });
+
+          var k = 0;
+          const subOptionFabric = subOptionModel.fabric as SubOptionFabric[];
+          await subOptionFabric.forEach(async (element) => {
+            const subOptionFabricModel = subOptionModel.fabric[k];
+
+            const front = await Image.create({
+              imageName: subOptionFabricModel.front.imageName,
+              imageData: subOptionFabricModel.front.imageData,
+              imageURL: subOptionFabricModel.front.imageURL,
+              imagelocation: subOptionFabricModel.front.imagelocation,
+              imageDescription: subOptionFabricModel.front.imageDescription,
+            });
+
+            const frontFull = await Image.create({
+              imageName: subOptionFabricModel.frontFull.imageName,
+              imageData: subOptionFabricModel.frontFull.imageData,
+              imageURL: subOptionFabricModel.frontFull.imageURL,
+              imagelocation: subOptionFabricModel.frontFull.imagelocation,
+              imageDescription:
+                subOptionFabricModel.frontFull.imageDescription,
+            });
+
+            const back = await Image.create({
+              imageName: subOptionFabricModel.back.imageName,
+              imageData: subOptionFabricModel.back.imageData,
+              imageURL: subOptionFabricModel.back.imageURL,
+              imagelocation: subOptionFabricModel.back.imagelocation,
+              imageDescription: subOptionFabricModel.back.imageDescription,
+            });
+
+            const backFull = await Image.create({
+              imageName: subOptionFabricModel.backFull.imageName,
+              imageData: subOptionFabricModel.backFull.imageData,
+              imageURL: subOptionFabricModel.backFull.imageURL,
+              imagelocation: subOptionFabricModel.backFull.imagelocation,
+              imageDescription:
+                subOptionFabricModel.backFull.imageDescription,
+            });
+
+            const subOptionFabric = await SubOptionFabric.create({
+              subOptionId: subOption.id,
+              customId: element.customId,
+              name: element.name,
+              front: front.id,
+              frontFull: frontFull.id,
+              back: back.id,
+              backFull: backFull.id,
+            });
+
+            k++;
+          });
+
+          j++;
+        });
+
       }
       return true;
     } catch (err: any) {
-      throw new Error("Failed to update Custom Product! | " + err.message);
+      throw new Error("Failed to add Option! | " + err.message);
     }
   }
 
