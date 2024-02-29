@@ -83,9 +83,9 @@ class ProductController {
             modal.id = parseInt(req.params["id"], 10);
             const user = await new CustomProductRepo().addOption(modal);
             res.status(200).json({
-            status: user ? true : false,
-            message: user ? "Successfully!" : "Data Not Found!",
-            data: user ? modal : null,
+            status: true,
+            message: "Successfully!",
+            data: user,
             });
         } catch (err) {
             res.status(400).json({

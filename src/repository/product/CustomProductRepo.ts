@@ -1344,9 +1344,8 @@ export class CustomProductRepo implements ICustomProductRepo {
 
           j++;
         });
-
+        return customProductOption;
       }
-      return true;
     } catch (err: any) {
       throw new Error("Failed to add Option! | " + err.message);
     }
