@@ -21,6 +21,9 @@ export class CartRepo implements ICartRepo {
         status: false,
         styleList: model.styleList,
       });
+
+      
+
       return newCreatedModel;
     } catch (err: any) {
       throw new Error("Failed to add cart! | " + err.message);

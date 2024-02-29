@@ -7,7 +7,7 @@ class ShopRouter extends BaseRoutes{
     public routes(): void {
         // Protected routes
         //Auth
-        //this.router.use(AuthController.authenticateToken);;;
+        //this.router.use(AuthController.authenticateToken);
 
         this.router.post("/order/checkout/", OrderController.shopCheckout);
         this.router.post("/order/setOff/", OrderController.setOff);

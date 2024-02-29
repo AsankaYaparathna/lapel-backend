@@ -7,7 +7,7 @@ class ShowroomRouts extends BaseRoutes{
         // Public routes
        
         // Protected routes
-        //this.router.use(AuthController.authenticateToken);;;
+        //this.router.use(AuthController.authenticateToken);
         this.router.post("/create/", ShowrooomController.create);
         this.router.patch("/update/:id", ShowrooomController.update);
         this.router.delete("/delete/:id", ShowrooomController.delete);

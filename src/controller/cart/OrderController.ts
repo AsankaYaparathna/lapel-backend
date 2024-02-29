@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { CustomProductRepo } from "../../repository/product/CustomProductRepo";
 import { OrderRepo } from "../../repository/order/OrderRepo";
+import { OrderLogsRepo } from "../../repository/order/OrderLogsRepo";
 
 class OrderController {
 
@@ -132,6 +133,37 @@ class OrderController {
         try {
             const id = req.params["id"];
             const modal = await new OrderRepo().getByInvNo(id);
+            res.status(200).json({ status: true, message: "Successfully!", data: modal });
+        } catch (err) {
+            res.status(400).json({ status: false, message: "" + err, data: null });
+        }
+    }
+
+    //logs
+    
+    async logsGet(req: Request, res: Response) {
+        try {
+            const modal = await new OrderLogsRepo().get();
+            res.status(200).json({ status: true, message: "Successfully!", data: modal });
+        } catch (err) {
+            res.status(400).json({ status: false, message: "" + err, data: null });
+        }
+    }
+
+    async orderLogsGet(req: Request, res: Response) {
+        try {
+            const id = parseInt(req.params["id"], 10);
+            const modal = await new OrderLogsRepo().getById(id);
+            res.status(200).json({ status: true, message: "Successfully!", data: modal });
+        } catch (err) {
+            res.status(400).json({ status: false, message: "" + err, data: null });
+        }
+    }
+
+    async orderLogsGetByOrderId(req: Request, res: Response) {
+        try {
+            const id = parseInt(req.params["id"], 10);
+            const modal = await new OrderLogsRepo().getByOrderId(id);
             res.status(200).json({ status: true, message: "Successfully!", data: modal });
         } catch (err) {
             res.status(400).json({ status: false, message: "" + err, data: null });

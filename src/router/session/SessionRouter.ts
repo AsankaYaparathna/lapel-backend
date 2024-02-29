@@ -7,7 +7,7 @@ class SessionRouter extends BaseRoutes{
     public routes(): void {
         // Protected routes
         //Auth
-        //this.router.use(AuthController.authenticateToken);;;
+        //this.router.use(AuthController.authenticateToken);
 
         //Admin
         this.router.post("/start/", ShopController.startSession);

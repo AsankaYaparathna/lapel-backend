@@ -1,6 +1,7 @@
 import { CartOrder } from "../../model/Cart/CartOrder";
 import { OrderInvoice } from "../../model/Cart/OrderInvoice";
 import { generateCustomerId, generateInvoiceNo } from "../../utils/Utils";
+import { OrderLogsRepo } from "./OrderLogsRepo";
 
 interface IOrderRepo {
   checkout(model: any): Promise<any>;
@@ -33,6 +34,15 @@ export class OrderRepo implements IOrderRepo {
         orderStatus: model.orderStatus,
         cartIdList: model.cartIdList,
       });
+
+      const logModel = {
+        orderId : newCreatedModel.id,
+        user : model.log.user,
+        action: model.log.action,
+        type: model.log.type
+      };
+      await new OrderLogsRepo().create(logModel);
+
       return newCreatedModel;
     } catch (err: any) {
       throw new Error("Failed to checkout order! | " + err.message);
@@ -146,6 +156,14 @@ export class OrderRepo implements IOrderRepo {
         status: true,
         payment: model.payment,
       });
+      
+      const logModel = {
+        orderId : newCreatedModel.id,
+        user : model.log.user,
+        action: model.log.action,
+        type: model.log.type
+      };
+      await new OrderLogsRepo().create(logModel);
 
       if(!newCreatedModel){
         throw new Error("Failed to checkout order! | ");

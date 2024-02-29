@@ -10,7 +10,7 @@ class CommonRouts extends BaseRoutes{
        
         // Protected routes
         //Auth
-        //this.router.use(AuthController.authenticateToken);;;
+        //this.router.use(AuthController.authenticateToken);
 
         //Color
         this.router.post("/color/create/", CommonController.createColor);

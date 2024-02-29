@@ -48,24 +48,6 @@ class ProductController {
             });
         }
     }
-    async updateCustomProductOption(req: Request, res: Response) {
-        try {
-            const modal = req.body;
-            modal.id = parseInt(req.params["id"], 10);
-            const user = await new CustomProductRepo().updateOption(modal);
-            res.status(200).json({
-            status: user ? true : false,
-            message: user ? "Successfully!" : "Data Not Found!",
-            data: user ? modal : null,
-            });
-        } catch (err) {
-            res.status(400).json({
-            status: false,
-            message: "" + err,
-            data: null,
-            });
-        }
-    }
     async deleteCustomProduct(req: Request, res: Response) {
         try {
             let id = parseInt(req.params["id"]);
@@ -91,6 +73,81 @@ class ProductController {
             res.status(200).json({ status: true, message: "Successfully!", data: modal });
         } catch (err) {
             res.status(400).json({ status: false, message: "" + err, data: null });
+        }
+    }
+
+    //option
+    async addCustomProductOption(req: Request, res: Response) {
+        try {
+            const modal = req.body;
+            modal.id = parseInt(req.params["id"], 10);
+            const user = await new CustomProductRepo().addOption(modal);
+            res.status(200).json({
+            status: user ? true : false,
+            message: user ? "Successfully!" : "Data Not Found!",
+            data: user ? modal : null,
+            });
+        } catch (err) {
+            res.status(400).json({
+            status: false,
+            message: "" + err,
+            data: null,
+            });
+        }
+    }
+
+    async updateCustomProductOption(req: Request, res: Response) {
+        try {
+            const modal = req.body;
+            modal.id = parseInt(req.params["id"], 10);
+            const user = await new CustomProductRepo().updateOption(modal);
+            res.status(200).json({
+            status: user ? true : false,
+            message: user ? "Successfully!" : "Data Not Found!",
+            data: user ? modal : null,
+            });
+        } catch (err) {
+            res.status(400).json({
+            status: false,
+            message: "" + err,
+            data: null,
+            });
+        }
+    }
+
+    async deleteCustomProductOption(req: Request, res: Response) {
+        try {
+            const id = parseInt(req.params["id"], 10);
+            const model = await new CustomProductRepo().deleteOption(id);
+            res.status(200).json({
+                status: true,
+                message: "Successfully!",
+                data: null,
+            });
+        } catch (err) {
+            res.status(400).json({
+            status: false,
+            message: "" + err,
+            data: null,
+            });
+        }
+    }
+
+    async getCustomProductOption(req: Request, res: Response) {
+        try {
+            const id = parseInt(req.params["id"], 10);
+            const model = await new CustomProductRepo().getOption(id);
+            res.status(200).json({
+                status: true,
+                message: "Successfully!",
+                data: model,
+            });
+        } catch (err) {
+            res.status(400).json({
+            status: false,
+            message: "" + err,
+            data: null,
+            });
         }
     }
 
