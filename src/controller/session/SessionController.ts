@@ -13,7 +13,7 @@ class SessionController {
           data: result,
         });
       } else {
-        res .status(200)
+        res .status(400)
           .json({ status: false, message: "Cart data is not found", data: null });
       }
     } catch (err) {

@@ -23,14 +23,14 @@ export class SessionRepo implements ISessionRepo {
         throw new Error("User not found!");
       }
 
+
       const cartModel = await Cart.findAll({ where  : { customerId: result.id }});
-      return !cartModel[0] ? cartModel : false;
+      return cartModel;
 
     } catch (err : any) {
       throw new Error(""+err.message);
     }
   }
-
 
 
 }
