@@ -6,7 +6,7 @@ class SessionController {
   async startSession(req: Request, res: Response) {
     try {
       const result = await new SessionRepo().startSession( req.body );
-      if (result) {
+      if (result[0]) {
         res.status(200).json({
           status: true,
           message: "Successfully!",
