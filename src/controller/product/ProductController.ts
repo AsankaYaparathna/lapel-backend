@@ -84,7 +84,7 @@ class ProductController {
             const user = await new CustomProductRepo().addOption(modal);
             res.status(200).json({
             status: true,
-            message: "Successfully!",
+            message: "Successfully added Option!",
             data: user,
             });
         } catch (err) {
