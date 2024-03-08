@@ -364,29 +364,87 @@ export class UserRepo implements IUserRepo {
 
       const fullBodyMeasurement = await FullBodyMeasurement.findOne({ where: { customerId : result.id } });
     
-      var measurementData = {
-        shirt : {
-          bodyMeasurement : shirtBodyMeasurement,
-          standerdSize : shirtStandardSize,
-          copyFavorite : shirtCopyFavorite,
+      // var measurementData = {
+      //   shirt : {
+      //     bodyMeasurement : shirtBodyMeasurement,
+      //     standerdSize : shirtStandardSize,
+      //     copyFavorite : shirtCopyFavorite,
+      //   },
+      //   trouser : {
+      //     bodyMeasurement : trouserBodyMeasurement,
+      //     standerdSize : trouserStandardSize,
+      //     copyFavorite : trouserCopyFavorite,
+      //   },
+      //   blazer : {
+      //     bodyMeasurement : blazerBodyMeasurement,
+      //     standerdSize : blazerStandardSize,
+      //   },
+      //   waistcoat : {
+      //     bodyMeasurement : waistcoatBodyMeasurement,
+      //     standerdSize : waistcoatStandardSize,
+      //   },
+      //   fullBody : {
+      //     bodyMeasurement : fullBodyMeasurement
+      //   }
+      // }
+
+      var measurementData = [
+        {
+          customProduct : 'Shirt',
+          measurementType : 'Body Measurement',
+          data : shirtBodyMeasurement
         },
-        trouser : {
-          bodyMeasurement : trouserBodyMeasurement,
-          standerdSize : trouserStandardSize,
-          copyFavorite : trouserCopyFavorite,
+        {
+          customProduct : 'Shirt',
+          measurementType : 'Standard Size',
+          data : shirtStandardSize
         },
-        blazer : {
-          bodyMeasurement : blazerBodyMeasurement,
-          standerdSize : blazerStandardSize,
+        {
+          customProduct : 'Shirt',
+          measurementType : 'Copy Favorite',
+          data : shirtCopyFavorite
         },
-        waistcoat : {
-          bodyMeasurement : waistcoatBodyMeasurement,
-          standerdSize : waistcoatStandardSize,
+        {
+          customProduct : 'Trouser',
+          measurementType : 'Body Measurement',
+          data : trouserBodyMeasurement
         },
-        fullBody : {
-          bodyMeasurement : fullBodyMeasurement
-        }
-      }
+        {
+          customProduct : 'Trouser',
+          measurementType : 'Standard Size',
+          data : trouserStandardSize
+        },
+        {
+          customProduct : 'Trouser',
+          measurementType : 'Copy Favorite',
+          data : trouserCopyFavorite
+        },
+        {
+          customProduct : 'Blazer',
+          measurementType : 'Body Measurement',
+          data : blazerBodyMeasurement
+        },
+        {
+          customProduct : 'Blazer',
+          measurementType : 'Standard Size',
+          data : blazerStandardSize
+        },
+        {
+          customProduct : 'Waistcoat',
+          measurementType : 'Body Measurement',
+          data : waistcoatBodyMeasurement
+        },
+        {
+          customProduct : 'Waistcoat',
+          measurementType : 'Standard Size',
+          data : waistcoatStandardSize
+        },
+        {
+          customProduct : 'FullBody',
+          measurementType : 'Body Measurement',
+          data : fullBodyMeasurement
+        },
+    ]
 
       return measurementData;
     } catch (err : any) {

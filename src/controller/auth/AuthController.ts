@@ -26,8 +26,6 @@ class AuthController {
             model.clientsecret = cs
             model.clienturl =req.url
       
-      console.log(model)
-
       await new AuthRepo().create(model);
       res.status(200).json({ status: true, message: "Auth User created successfully!", data: model });
         

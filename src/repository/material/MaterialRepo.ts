@@ -98,7 +98,6 @@ export class MaterialRepo implements IMaterialRepo {
         
             totalStock = totalStock + element.value;
           }
-          console.log(totalStock);
           const mainStock = await MainStock.create({
             customId: newCustomId.customId,
             mainStock: totalStock,
