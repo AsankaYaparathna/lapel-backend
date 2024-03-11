@@ -33,6 +33,8 @@ export class OrderRepo implements IOrderRepo {
         status: model.status,
         orderStatus: model.orderStatus,
         cartIdList: model.cartIdList,
+        orderDiscount: model.orderDiscount,
+        orderExtraCharges: model.orderExtraCharges,
       });
 
       const logModel = {

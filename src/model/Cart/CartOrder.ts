@@ -49,6 +49,12 @@ export class CartOrder extends Model {
 
     @Column({ type: DataType.JSON, field: "amount" })
     amount!: amount;
+
+    @Column({ type: DataType.JSON, field: "orderDiscount" })
+    orderDiscount!: discount[];
+
+    @Column({ type: DataType.JSON, field: "orderExtraCharges" })
+    orderExtraCharges!: extraCharges[];
 }
 
 interface cartId { cartId: number; discount : discount, extraCharges : extraCharges[]}
