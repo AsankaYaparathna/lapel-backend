@@ -129,7 +129,7 @@ export class UserRepo implements IUserRepo {
     try {
       const result = await User.findOne({
         where: { mobileNumber: mobileNumber },
-        attributes: ['id', 'mobileNumber', 'password', 'isMobileVerified'],
+        attributes: ['id', 'mobileNumber', 'password', 'isMobileVerified','isActive'],
       });
 
       if (!result) {
@@ -137,14 +137,19 @@ export class UserRepo implements IUserRepo {
       }
 
       if (result) {
+        
         if(verifyPassword(result.password, password)){
-          if(result.isMobileVerified){
+          if(!result.isActive){
+            throw new Error("User account already blocked!");
+          }
+          else if(result.isMobileVerified){
             return true;
           }
           else{
             throw new Error("User not verifyied!");
           }
         }
+        
         else{
           return false;
         }
@@ -169,6 +174,19 @@ export class UserRepo implements IUserRepo {
       return true;
     } catch (err : any) {
       throw new Error("Failed to update! | "+err.message);
+    }
+  }
+
+  async block(model: any): Promise<any> {
+    try {
+      const result = await User.findOne({ where: { mobileNumber: model.id } });
+      if (!result) {
+        return false;
+      }
+      result.isActive = model.isActive;
+      await result.save();
+    } catch (err : any) {
+      throw new Error(model.isActive ? "Failed to Block! | "+err.message : "Failed to Unblock! | "+err.message);
     }
   }
 
@@ -364,87 +382,29 @@ export class UserRepo implements IUserRepo {
 
       const fullBodyMeasurement = await FullBodyMeasurement.findOne({ where: { customerId : result.id } });
     
-      // var measurementData = {
-      //   shirt : {
-      //     bodyMeasurement : shirtBodyMeasurement,
-      //     standerdSize : shirtStandardSize,
-      //     copyFavorite : shirtCopyFavorite,
-      //   },
-      //   trouser : {
-      //     bodyMeasurement : trouserBodyMeasurement,
-      //     standerdSize : trouserStandardSize,
-      //     copyFavorite : trouserCopyFavorite,
-      //   },
-      //   blazer : {
-      //     bodyMeasurement : blazerBodyMeasurement,
-      //     standerdSize : blazerStandardSize,
-      //   },
-      //   waistcoat : {
-      //     bodyMeasurement : waistcoatBodyMeasurement,
-      //     standerdSize : waistcoatStandardSize,
-      //   },
-      //   fullBody : {
-      //     bodyMeasurement : fullBodyMeasurement
-      //   }
-      // }
-
-      var measurementData = [
-        {
-          customProduct : 'Shirt',
-          measurementType : 'Body Measurement',
-          data : shirtBodyMeasurement
+      var measurementData = {
+        shirt : {
+          bodyMeasurement : shirtBodyMeasurement,
+          standerdSize : shirtStandardSize,
+          copyFavorite : shirtCopyFavorite,
         },
-        {
-          customProduct : 'Shirt',
-          measurementType : 'Standard Size',
-          data : shirtStandardSize
+        trouser : {
+          bodyMeasurement : trouserBodyMeasurement,
+          standerdSize : trouserStandardSize,
+          copyFavorite : trouserCopyFavorite,
         },
-        {
-          customProduct : 'Shirt',
-          measurementType : 'Copy Favorite',
-          data : shirtCopyFavorite
+        blazer : {
+          bodyMeasurement : blazerBodyMeasurement,
+          standerdSize : blazerStandardSize,
         },
-        {
-          customProduct : 'Trouser',
-          measurementType : 'Body Measurement',
-          data : trouserBodyMeasurement
+        waistcoat : {
+          bodyMeasurement : waistcoatBodyMeasurement,
+          standerdSize : waistcoatStandardSize,
         },
-        {
-          customProduct : 'Trouser',
-          measurementType : 'Standard Size',
-          data : trouserStandardSize
-        },
-        {
-          customProduct : 'Trouser',
-          measurementType : 'Copy Favorite',
-          data : trouserCopyFavorite
-        },
-        {
-          customProduct : 'Blazer',
-          measurementType : 'Body Measurement',
-          data : blazerBodyMeasurement
-        },
-        {
-          customProduct : 'Blazer',
-          measurementType : 'Standard Size',
-          data : blazerStandardSize
-        },
-        {
-          customProduct : 'Waistcoat',
-          measurementType : 'Body Measurement',
-          data : waistcoatBodyMeasurement
-        },
-        {
-          customProduct : 'Waistcoat',
-          measurementType : 'Standard Size',
-          data : waistcoatStandardSize
-        },
-        {
-          customProduct : 'FullBody',
-          measurementType : 'Body Measurement',
-          data : fullBodyMeasurement
-        },
-    ]
+        fullBody : {
+          bodyMeasurement : fullBodyMeasurement
+        }
+      }
 
       return measurementData;
     } catch (err : any) {

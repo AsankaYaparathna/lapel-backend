@@ -21,6 +21,7 @@ class UserRouts extends BaseRoutes{
         this.router.post("/login/",validate(loginSchema), UserController.login);
         
         this.router.patch("/update/:id", UserController.update);
+        this.router.patch("/block/:id", UserController.block);
         this.router.delete("/delete/:id", UserController.delete);
         this.router.delete("/deleteByMobile/:id", UserController.deleteByMobile);
         this.router.get("/getById/:id", UserController.getById);

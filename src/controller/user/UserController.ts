@@ -357,6 +357,30 @@ class UserController {
     }
   }
 
+  async block(req: Request, res: Response) {
+    try {
+      const mobile = req.params["id"];
+      var model = {
+        id : req.params["id"],
+        isActive : req.body.isActive
+      }
+      const user = await new UserRepo().block(model);
+
+      res.status(200).json({
+        status: true,
+        message: "Successfully!",
+        data: null,
+      });
+
+    } catch (err) {
+      res.status(400).json({
+        status: false,
+        message: "" + err,
+        data: null,
+      });
+    }
+  }
+
   async delete(req: Request, res: Response) {
     try {
       let mid = parseInt(req.params["id"]);
