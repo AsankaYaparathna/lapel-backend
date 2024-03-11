@@ -1,6 +1,5 @@
 import { CartOrder } from "../../model/Cart/CartOrder";
 import { OrderInvoice } from "../../model/Cart/OrderInvoice";
-import { User } from "../../model/Customer/User";
 import { generateCustomerId, generateInvoiceNo } from "../../utils/Utils";
 import { OrderLogsRepo } from "./OrderLogsRepo";
 
@@ -38,6 +37,8 @@ export class OrderRepo implements IOrderRepo {
         orderExtraCharges: model.orderExtraCharges,
       });
 
+      
+
       const logModel = {
         orderId : newCreatedModel.id,
         user : model.log.user,
@@ -65,25 +66,6 @@ export class OrderRepo implements IOrderRepo {
     try {
       const dbModel = await CartOrder.findAll({ where: { id: id }});
       if (!dbModel) {
-        throw new Error("Data not found!");
-      }
-      return await dbModel;
-    
-    } catch (err: any) {
-      throw new Error("Failed to get order data! | " + err.message);
-    }
-  }
-
-  async getByUserId(id: number): Promise<any> {
-    try {
-
-      const dbUser = await User.findOne({ where: { id: id }});
-      if (!dbUser) {
-        throw new Error("User not found!");
-      }
-
-      const dbModel = await CartOrder.findAll({ where: { customerId: id }});
-      if (!dbModel[0]) {
         throw new Error("Data not found!");
       }
       return await dbModel;
@@ -177,6 +159,8 @@ export class OrderRepo implements IOrderRepo {
         notes: model.notes,
         status: true,
         payment: model.payment,
+        orderDiscount: model.orderDiscount,
+        orderExtraCharges: model.orderExtraCharges,
       });
       
       const logModel = {
