@@ -11,6 +11,7 @@ class OrderRouts extends BaseRoutes{
         this.router.post("/checkout/", OrderController.checkout);
         this.router.get("/get/", OrderController.get);
         this.router.get("/getById/:id", OrderController.getById);
+        this.router.get("/getByUserId/:id", OrderController.getByUserId);
         this.router.patch("/update/:id", OrderController.update);
         this.router.delete("/delete/:id", OrderController.delete);
 

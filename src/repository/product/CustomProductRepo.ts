@@ -1507,9 +1507,7 @@ export class CustomProductRepo implements ICustomProductRepo {
             });
 
           } else {
-            console.log(resultSubOption.image);
             const image = await Image.findOne({ where: { id: resultSubOption.image }, });
-            console.log(image);
         
             if (image) {
               image.imageName = subOptionModel.image.imageName;
@@ -1560,9 +1558,6 @@ export class CustomProductRepo implements ICustomProductRepo {
                 }
               );
             });
-
-            console.log(123);
-            
 
             var k = 0;
             //const subOptionFabric = subOptionModel.fabric as SubOptionFabric[];

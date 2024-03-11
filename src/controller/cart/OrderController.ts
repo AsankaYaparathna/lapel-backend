@@ -35,6 +35,16 @@ class OrderController {
         }
     }
 
+    async getByUserId(req: Request, res: Response) {
+        try {
+            const id = parseInt(req.params["id"], 10);
+            const modal = await new OrderRepo().getByUserId(id);
+            res.status(200).json({ status: true, message: "Successfully!", data: modal });
+        } catch (err) {
+            res.status(400).json({ status: false, message: "" + err, data: null });
+        }
+    }
+
     async update(req: Request, res: Response) {
         try {
             const modal = req.body;
