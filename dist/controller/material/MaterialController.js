@@ -17,7 +17,9 @@ class MaterialController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield new FabricRepo_1.FabricRepo().create(req.body);
-                res.status(200).json({ status: true, message: "successfully!", data: null });
+                res
+                    .status(200)
+                    .json({ status: true, message: "successfully!", data: null });
             }
             catch (err) {
                 res.status(400).json({ status: false, message: "" + err, data: null });
@@ -28,7 +30,9 @@ class MaterialController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const modal = yield new FabricRepo_1.FabricRepo().get();
-                res.status(200).json({ status: true, message: "Successfully!", data: modal });
+                res
+                    .status(200)
+                    .json({ status: true, message: "Successfully!", data: modal });
             }
             catch (err) {
                 res.status(400).json({ status: false, message: "" + err, data: null });
@@ -40,7 +44,9 @@ class MaterialController {
             try {
                 const id = parseInt(req.params["id"], 10);
                 const modal = yield new FabricRepo_1.FabricRepo().getById(id);
-                res.status(200).json({ status: true, message: "Successfully!", data: modal });
+                res
+                    .status(200)
+                    .json({ status: true, message: "Successfully!", data: modal });
             }
             catch (err) {
                 res.status(400).json({ status: false, message: "" + err, data: null });
@@ -52,7 +58,9 @@ class MaterialController {
             try {
                 const id = req.params["id"];
                 const modal = yield new FabricRepo_1.FabricRepo().getRelatedFabric(id);
-                res.status(200).json({ status: true, message: "Successfully!", data: modal });
+                res
+                    .status(200)
+                    .json({ status: true, message: "Successfully!", data: modal });
             }
             catch (err) {
                 res.status(400).json({ status: false, message: "" + err, data: null });
@@ -105,7 +113,9 @@ class MaterialController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield new MaterialRepo_1.MaterialRepo().create(req.body);
-                res.status(200).json({ status: true, message: "successfully!", data: null });
+                res
+                    .status(200)
+                    .json({ status: true, message: "successfully!", data: null });
             }
             catch (err) {
                 res.status(400).json({ status: false, message: "" + err, data: null });
@@ -116,7 +126,9 @@ class MaterialController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const modal = yield new MaterialRepo_1.MaterialRepo().get();
-                res.status(200).json({ status: true, message: "Successfully!", data: modal });
+                res
+                    .status(200)
+                    .json({ status: true, message: "Successfully!", data: modal });
             }
             catch (err) {
                 res.status(400).json({ status: false, message: "" + err, data: null });
@@ -128,7 +140,9 @@ class MaterialController {
             try {
                 const id = parseInt(req.params["id"], 10);
                 const modal = yield new MaterialRepo_1.MaterialRepo().getById(id);
-                res.status(200).json({ status: true, message: "Successfully!", data: modal });
+                res
+                    .status(200)
+                    .json({ status: true, message: "Successfully!", data: modal });
             }
             catch (err) {
                 res.status(400).json({ status: false, message: "" + err, data: null });

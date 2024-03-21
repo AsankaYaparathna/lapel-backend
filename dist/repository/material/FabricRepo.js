@@ -266,19 +266,37 @@ class FabricRepo {
                 }
                 const Wlist = [];
                 yield Promise.all(result.map((element) => __awaiter(this, void 0, void 0, function* () {
-                    const stocData = (yield MaterialStock_1.MaterialStock.findAll({ where: { customId: element.customId } }));
-                    const iconData = (yield Images_1.Image.findOne({ where: { id: element.icon } }));
-                    const qrData = (yield Images_1.Image.findOne({ where: { id: element.qr } }));
-                    const wimgList = (yield FabricImages_1.FabricImages.findAll({ where: { fabricId: element.id } }));
+                    const stocData = (yield MaterialStock_1.MaterialStock.findAll({
+                        where: { customId: element.customId },
+                    }));
+                    const iconData = (yield Images_1.Image.findOne({
+                        where: { id: element.icon },
+                    }));
+                    const qrData = (yield Images_1.Image.findOne({
+                        where: { id: element.qr },
+                    }));
+                    const wimgList = (yield FabricImages_1.FabricImages.findAll({
+                        where: { fabricId: element.id },
+                    }));
                     let imgList = [];
                     yield Promise.all(wimgList.map((imgElement) => __awaiter(this, void 0, void 0, function* () {
-                        const img = (yield Images_1.Image.findOne({ where: { id: imgElement.imageId } }));
+                        const img = (yield Images_1.Image.findOne({
+                            where: { id: imgElement.imageId },
+                        }));
                         imgList.push(img);
                     })));
-                    const relatedFab = (yield RelatedFabric_1.RelatedFabric.findAll({ where: { fabricId: element.id } }));
-                    const categoryData = (yield FabricItem_1.FabricItem.findAll({ where: { customId: element.customId } }));
-                    const costData = (yield Cost_1.Cost.findOne({ where: { customId: element.customId } }));
-                    const supplierData = (yield Supplier_1.Supplier.findOne({ where: { id: element.supplierId } }));
+                    const relatedFab = (yield RelatedFabric_1.RelatedFabric.findAll({
+                        where: { fabricId: element.id },
+                    }));
+                    const categoryData = (yield FabricItem_1.FabricItem.findAll({
+                        where: { customId: element.customId },
+                    }));
+                    const costData = (yield Cost_1.Cost.findOne({
+                        where: { customId: element.customId },
+                    }));
+                    const supplierData = (yield Supplier_1.Supplier.findOne({
+                        where: { id: element.supplierId },
+                    }));
                     const tempModel = {
                         id: element.id,
                         name: element.name,
@@ -321,29 +339,49 @@ class FabricRepo {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const result = yield Fabric_1.Fabric.findAll({
-                    where: { [sequelize_1.Op.or]: [
+                    where: {
+                        [sequelize_1.Op.or]: [
                             { name: { [sequelize_1.Op.like]: `%${id}%` } },
-                            { customId: { [sequelize_1.Op.like]: `%${id}%` } }
-                        ] }
+                            { customId: { [sequelize_1.Op.like]: `%${id}%` } },
+                        ],
+                    },
                 });
                 if (!result || result.length === 0) {
                     throw new Error("Data not found!");
                 }
                 const Wlist = [];
                 yield Promise.all(result.map((element) => __awaiter(this, void 0, void 0, function* () {
-                    const stocData = (yield MaterialStock_1.MaterialStock.findAll({ where: { customId: element.customId } }));
-                    const iconData = (yield Images_1.Image.findOne({ where: { id: element.icon } }));
-                    const qrData = (yield Images_1.Image.findOne({ where: { id: element.qr } }));
-                    const wimgList = (yield FabricImages_1.FabricImages.findAll({ where: { fabricId: element.id } }));
+                    const stocData = (yield MaterialStock_1.MaterialStock.findAll({
+                        where: { customId: element.customId },
+                    }));
+                    const iconData = (yield Images_1.Image.findOne({
+                        where: { id: element.icon },
+                    }));
+                    const qrData = (yield Images_1.Image.findOne({
+                        where: { id: element.qr },
+                    }));
+                    const wimgList = (yield FabricImages_1.FabricImages.findAll({
+                        where: { fabricId: element.id },
+                    }));
                     let imgList = [];
                     yield Promise.all(wimgList.map((imgElement) => __awaiter(this, void 0, void 0, function* () {
-                        const img = (yield Images_1.Image.findOne({ where: { id: imgElement.imageId } }));
+                        const img = (yield Images_1.Image.findOne({
+                            where: { id: imgElement.imageId },
+                        }));
                         imgList.push(img);
                     })));
-                    const relatedFab = (yield RelatedFabric_1.RelatedFabric.findAll({ where: { fabricId: element.id } }));
-                    const categoryData = (yield FabricItem_1.FabricItem.findAll({ where: { customId: element.customId } }));
-                    const costData = (yield Cost_1.Cost.findOne({ where: { customId: element.customId } }));
-                    const supplierData = (yield Supplier_1.Supplier.findOne({ where: { id: element.supplierId } }));
+                    const relatedFab = (yield RelatedFabric_1.RelatedFabric.findAll({
+                        where: { fabricId: element.id },
+                    }));
+                    const categoryData = (yield FabricItem_1.FabricItem.findAll({
+                        where: { customId: element.customId },
+                    }));
+                    const costData = (yield Cost_1.Cost.findOne({
+                        where: { customId: element.customId },
+                    }));
+                    const supplierData = (yield Supplier_1.Supplier.findOne({
+                        where: { id: element.supplierId },
+                    }));
                     const tempModel = {
                         id: element.id,
                         name: element.name,
@@ -391,19 +429,37 @@ class FabricRepo {
                 }
                 const Wlist = [];
                 yield Promise.all(result.map((element) => __awaiter(this, void 0, void 0, function* () {
-                    const stocData = (yield MaterialStock_1.MaterialStock.findAll({ where: { customId: element.customId } }));
-                    const iconData = (yield Images_1.Image.findOne({ where: { id: element.icon } }));
-                    const qrData = (yield Images_1.Image.findOne({ where: { id: element.qr } }));
-                    const wimgList = (yield FabricImages_1.FabricImages.findAll({ where: { fabricId: element.id } }));
+                    const stocData = (yield MaterialStock_1.MaterialStock.findAll({
+                        where: { customId: element.customId },
+                    }));
+                    const iconData = (yield Images_1.Image.findOne({
+                        where: { id: element.icon },
+                    }));
+                    const qrData = (yield Images_1.Image.findOne({
+                        where: { id: element.qr },
+                    }));
+                    const wimgList = (yield FabricImages_1.FabricImages.findAll({
+                        where: { fabricId: element.id },
+                    }));
                     let imgList = [];
                     yield Promise.all(wimgList.map((imgElement) => __awaiter(this, void 0, void 0, function* () {
-                        const img = (yield Images_1.Image.findOne({ where: { id: imgElement.imageId } }));
+                        const img = (yield Images_1.Image.findOne({
+                            where: { id: imgElement.imageId },
+                        }));
                         imgList.push(img);
                     })));
-                    const relatedFab = (yield RelatedFabric_1.RelatedFabric.findAll({ where: { fabricId: element.id } }));
-                    const categoryData = (yield FabricItem_1.FabricItem.findAll({ where: { customId: element.customId } }));
-                    const costData = (yield Cost_1.Cost.findOne({ where: { customId: element.customId } }));
-                    const supplierData = (yield Supplier_1.Supplier.findOne({ where: { id: element.supplierId } }));
+                    const relatedFab = (yield RelatedFabric_1.RelatedFabric.findAll({
+                        where: { fabricId: element.id },
+                    }));
+                    const categoryData = (yield FabricItem_1.FabricItem.findAll({
+                        where: { customId: element.customId },
+                    }));
+                    const costData = (yield Cost_1.Cost.findOne({
+                        where: { customId: element.customId },
+                    }));
+                    const supplierData = (yield Supplier_1.Supplier.findOne({
+                        where: { id: element.supplierId },
+                    }));
                     const tempModel = {
                         id: element.id,
                         name: element.name,
