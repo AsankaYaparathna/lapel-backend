@@ -321,7 +321,10 @@ class FabricRepo {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const result = yield Fabric_1.Fabric.findAll({
-                    where: { [sequelize_1.Op.or]: [{ name: id }, { customId: id }] }
+                    where: { [sequelize_1.Op.or]: [
+                            { name: { [sequelize_1.Op.like]: `%${id}%` } },
+                            { customId: { [sequelize_1.Op.like]: `%${id}%` } }
+                        ] }
                 });
                 if (!result || result.length === 0) {
                     throw new Error("Data not found!");
