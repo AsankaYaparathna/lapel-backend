@@ -192,6 +192,38 @@ class MaterialRepo {
                         relatedRowMaterialId: element.relatedRowMaterialId,
                     });
                 }));
+                const customId = result.customId;
+                let totalStock = 0;
+                const stocckList = model.stockData;
+                if (stocckList) {
+                    for (const element of stocckList) {
+                        const resultMtSt = yield MaterialStock_1.MaterialStock.findOne({
+                            where: { [sequelize_1.Op.and]: [{ customId: customId }, { wearhouseId: element.wearhouseId }] }
+                        });
+                        if (!resultMtSt) {
+                            throw new Error("Row Material stock not found in selected wherehouse!");
+                        }
+                        resultMtSt.value = element.value;
+                        yield resultMtSt.save();
+                        totalStock = totalStock + element.value;
+                        const newStockLog = yield MaterialStockLog_1.MaterialStockLog.create({
+                            customId: customId,
+                            wearhouseId: model.wherehouseId,
+                            showroomId: null,
+                            value: model.value,
+                            reason: "Row Material Stock Updated"
+                        });
+                    }
+                    const resultMain = yield MainStock_1.MainStock.findOne({ where: { customId: customId } });
+                    if (!resultMain) {
+                        throw new Error("Row Material Main Stock data not found!");
+                    }
+                    const gap = Math.abs(resultMain.totalStock - totalStock);
+                    const newMainStock = resultMain.mainStock + gap;
+                    const newLiveStock = resultMain.liveStock + gap;
+                    const newtotalStock = resultMain.totalStock + gap;
+                    yield MainStock_1.MainStock.update({ mainStock: newMainStock, liveStock: newLiveStock, totalStock: newtotalStock }, { where: { customId: customId } });
+                }
                 return true;
             }
             catch (err) {
