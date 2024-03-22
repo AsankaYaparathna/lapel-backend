@@ -1144,6 +1144,7 @@ class CustomProductRepo {
                         id: elementCP.id,
                         categoryId: elementCP.categoryId,
                         categoryName: elementCP.categoryName,
+                        name: elementCP.name,
                         categoryTypeId: elementCP.categoryTypeId,
                         options: tempCuProOp,
                         isActive: elementCP.isActive,

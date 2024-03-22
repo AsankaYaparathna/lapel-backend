@@ -19,6 +19,7 @@ const CartRouts_1 = __importDefault(require("./router/cart/CartRouts"));
 const OrderRouts_1 = __importDefault(require("./router/order/OrderRouts"));
 const SessionRouter_1 = __importDefault(require("./router/session/SessionRouter"));
 const ShopRouter_1 = __importDefault(require("./router/shop/ShopRouter"));
+const StockRouts_1 = __importDefault(require("./router/stock/StockRouts"));
 class App {
     constructor() {
         this.app = (0, express_1.default)();
@@ -44,6 +45,7 @@ class App {
         this.app.use("/api/v1/showroom", ShowroomRouts_1.default);
         this.app.use("/api/v1/common", CommonRouts_1.default);
         this.app.use("/api/v1/material", MaterialRouts_1.default);
+        this.app.use("/api/v1/stock", StockRouts_1.default);
         this.app.use("/api/v1/admin", AdminRouter_1.default);
         this.app.use("/api/v1/product", ProductRouts_1.default);
         this.app.use("/api/v1/cart", CartRouts_1.default);

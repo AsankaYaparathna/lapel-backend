@@ -78,7 +78,7 @@ __decorate([
     __metadata("design:type", String)
 ], Cart.prototype, "customId", void 0);
 __decorate([
-    sequelize_typescript_1.BeforeCreate,
+    sequelize_typescript_1.AfterCreate,
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Cart]),
     __metadata("design:returntype", void 0)

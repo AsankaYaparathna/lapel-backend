@@ -50,7 +50,7 @@ __decorate([
     __metadata("design:type", String)
 ], OrderInvoice.prototype, "customId", void 0);
 __decorate([
-    sequelize_typescript_1.BeforeCreate,
+    sequelize_typescript_1.AfterCreate,
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [CartOrder_1.CartOrder]),
     __metadata("design:returntype", void 0)

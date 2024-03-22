@@ -23,6 +23,8 @@ const Cost_1 = require("../../model/Metirial/Cost/Cost");
 const Supplier_1 = require("../../model/Metirial/Supplier/Supplier");
 const Category_1 = require("../../model/Common/Category/Category");
 const SubCategory_1 = require("../../model/Common/Category/SubCategory");
+const sequelize_1 = require("sequelize");
+const MaterialStockLog_1 = require("../../model/Metirial/Stock/MaterialStockLog");
 class MaterialRepo {
     create(model) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -95,6 +97,13 @@ class MaterialRepo {
                                 value: element.value,
                             });
                             totalStock = totalStock + element.value;
+                            const newStockLog = yield MaterialStockLog_1.MaterialStockLog.create({
+                                customId: newCustomId.customId,
+                                wearhouseId: element.wearhouseId,
+                                showroomId: element.showroomId,
+                                value: element.value,
+                                reason: "New Row Material Created - Stock Added"
+                            });
                         }
                         const mainStock = yield MainStock_1.MainStock.create({
                             customId: newCustomId.customId,
@@ -156,11 +165,11 @@ class MaterialRepo {
                     qr.imageDescription = model.qr.imageDescription;
                     yield qr.save();
                 }
-                const wimgList = (yield RowMaterialImages_1.RowMaterialImages.findAll({ where: { fabricId: model.id }, }));
+                const wimgList = (yield RowMaterialImages_1.RowMaterialImages.findAll({ where: { rowMaterialId: model.id }, }));
                 yield Promise.all(wimgList.map((imgElement) => __awaiter(this, void 0, void 0, function* () {
                     yield Images_1.Image.destroy({ where: { id: imgElement.imageId } });
                 })));
-                yield RowMaterialImages_1.RowMaterialImages.destroy({ where: { fabricId: model.id } });
+                yield RowMaterialImages_1.RowMaterialImages.destroy({ where: { rowMaterialId: model.id } });
                 const imgList = model.imageList;
                 imgList.forEach((element) => __awaiter(this, void 0, void 0, function* () {
                     const img = yield Images_1.Image.create({
@@ -171,16 +180,16 @@ class MaterialRepo {
                         imageDescription: element.imageDescription,
                     });
                     const modelImages = yield RowMaterialImages_1.RowMaterialImages.create({
-                        row: model.id,
+                        rowMaterialId: model.id,
                         imageId: img.id,
                     });
                 }));
-                yield RelatedRowMaterial_1.RelatedRowMaterial.destroy({ where: { fabricId: model.id } });
-                const relatedFabList = model.relatedFabric;
+                yield RelatedRowMaterial_1.RelatedRowMaterial.destroy({ where: { rowMaterialId: model.id } });
+                const relatedFabList = model.relatedRowMaterial;
                 relatedFabList.forEach((element) => __awaiter(this, void 0, void 0, function* () {
                     const newRelatedFabric = yield RelatedRowMaterial_1.RelatedRowMaterial.create({
-                        fabricId: model.id,
-                        rowMaterialId: element.rowMaterialId,
+                        rowMaterialId: model.id,
+                        relatedRowMaterialId: element.relatedRowMaterialId,
                     });
                 }));
                 return true;
@@ -218,6 +227,67 @@ class MaterialRepo {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const result = yield RowMaterial_1.RowMaterial.findAll({ where: { id: id } });
+                if (!result || result.length === 0) {
+                    throw new Error("Data not found!");
+                }
+                const Wlist = [];
+                yield Promise.all(result.map((element) => __awaiter(this, void 0, void 0, function* () {
+                    const stocData = (yield MaterialStock_1.MaterialStock.findAll({ where: { customId: element.customId } }));
+                    const qrData = (yield Images_1.Image.findOne({ where: { id: element.qr } }));
+                    const wimgList = (yield RowMaterialImages_1.RowMaterialImages.findAll({ where: { rowMaterialId: element.id } }));
+                    let imgList = [];
+                    yield Promise.all(wimgList.map((imgElement) => __awaiter(this, void 0, void 0, function* () {
+                        const img = (yield Images_1.Image.findOne({ where: { id: imgElement.imageId } }));
+                        imgList.push(img);
+                    })));
+                    const relatedRowMat = (yield RelatedRowMaterial_1.RelatedRowMaterial.findAll({ where: { rowMaterialId: element.id } }));
+                    const costData = (yield Cost_1.Cost.findOne({ where: { customId: element.customId } }));
+                    const supplierData = (yield Supplier_1.Supplier.findOne({ where: { id: element.supplierId } }));
+                    const categoryData = (yield Category_1.Category.findOne({ where: { id: element.supplierId } }));
+                    const subCategoryData = (yield SubCategory_1.SubCategory.findOne({ where: { id: element.supplierId } }));
+                    const tempModel = {
+                        id: element.id,
+                        name: element.name,
+                        customId: element.customId,
+                        description: element.description,
+                        information: element.information,
+                        stockData: stocData,
+                        categoryId: categoryData,
+                        subCategoryId: subCategoryData,
+                        unitTypeId: element.unitTypeId,
+                        qr: qrData,
+                        imageList: imgList,
+                        relatedRowMaterial: relatedRowMat,
+                        levelOfSafty: element.levelOfSafty,
+                        discount: element.discount,
+                        stockAlert: element.stockAlert,
+                        featured: element.featured,
+                        live: element.live,
+                        stockMinus: element.stockMinus,
+                        supplierId: supplierData,
+                        cost: costData,
+                    };
+                    Wlist.push(tempModel);
+                })));
+                return Wlist;
+            }
+            catch (err) {
+                throw new Error("Failed to get Row Material! | " + err.message);
+            }
+        });
+    }
+    getRelatedRowmaterial(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                //const result = await RowMaterial.findAll({ where: { id: id } });
+                const result = yield RowMaterial_1.RowMaterial.findAll({
+                    where: {
+                        [sequelize_1.Op.or]: [
+                            { name: { [sequelize_1.Op.like]: `%${id}%` } },
+                            { customId: { [sequelize_1.Op.like]: `%${id}%` } },
+                        ],
+                    },
+                });
                 if (!result || result.length === 0) {
                     throw new Error("Data not found!");
                 }
