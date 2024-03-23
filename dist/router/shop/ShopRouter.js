@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const AuthController_1 = __importDefault(require("../../controller/auth/AuthController"));
 const OrderController_1 = __importDefault(require("../../controller/cart/OrderController"));
+const ShopController_1 = __importDefault(require("../../controller/shop/ShopController"));
 const BaseRouter_1 = __importDefault(require("../base/BaseRouter"));
 class ShopRouter extends BaseRouter_1.default {
     routes() {
@@ -25,6 +26,8 @@ class ShopRouter extends BaseRouter_1.default {
         this.router.get("/invoice/getByOrderId/:id", OrderController_1.default.getInvoiceByCartId);
         this.router.get("/invoice/getById/:id", OrderController_1.default.getByInvId);
         this.router.get("/invoice/getByInvoiceNo/:id", OrderController_1.default.getByInvNo);
+        this.router.post("/login/", ShopController_1.default.login);
+        this.router.post("/create/", ShopController_1.default.create);
     }
 }
 exports.default = new ShopRouter().router;

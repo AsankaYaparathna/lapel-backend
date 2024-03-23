@@ -93,6 +93,7 @@ const CartOrder_1 = require("../model/Cart/CartOrder");
 const OrderInvoice_1 = require("../model/Cart/OrderInvoice");
 const CartOrderLog_1 = require("../model/Cart/CartOrderLog");
 const MaterialStockLog_1 = require("../model/Metirial/Stock/MaterialStockLog");
+const ShopUser_1 = require("../model/shop/ShopUser");
 dotenv.config();
 class Database {
     constructor() {
@@ -124,7 +125,7 @@ class Database {
                     CustomId_1.CustomId, Supplier_1.Supplier,
                     Fabric_1.Fabric, FabricImages_1.FabricImages, RelatedFabric_1.RelatedFabric, MaterialStock_1.MaterialStock, MainStock_1.MainStock, MaterialStockLog_1.MaterialStockLog, Cost_1.Cost, FabricItem_1.FabricItem,
                     RowMaterial_1.RowMaterial, RowMaterialImages_1.RowMaterialImages, RelatedRowMaterial_1.RelatedRowMaterial,
-                    Admin_1.Admin,
+                    Admin_1.Admin, ShopUser_1.ShopUser,
                     CustomProduct_1.CustomProduct, CustomProductOption_1.CustomProductOption, OptionHidenRule_1.OptionHidenRule, SubOption_1.SubOption, SubOptionHidenRule_1.SubOptionHidenRule, SubOptionFabric_1.SubOptionFabric,
                     CstomProductPackages_1.CstomProductPackages, MeasurementPackage_1.MeasurementPackage, PackageElement_1.PackageElement, PackageImages_1.PackageImages, PackageProfImages_1.PackageProfImages,
                     BlazerBodyMeasurement_1.BlazerBodyMeasurement, BlazerStandardSize_1.BlazerStandardSize,
