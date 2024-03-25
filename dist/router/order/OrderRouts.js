@@ -23,6 +23,7 @@ class OrderRouts extends BaseRouter_1.default {
         this.router.delete("/delete/:id", OrderController_1.default.delete);
         this.router.patch("/update/payment/:id", OrderController_1.default.updatePayment);
         this.router.patch("/update/status/:id", OrderController_1.default.updateStatus);
+        this.router.get("/get/ids/:id", OrderController_1.default.getIDs);
         //logs
         this.router.get("/log/get/", OrderController_1.default.logsGet);
         this.router.get("/log/getByLogId/:id", OrderController_1.default.orderLogsGet);

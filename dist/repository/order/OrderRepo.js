@@ -10,9 +10,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrderRepo = void 0;
+const Cart_1 = require("../../model/Cart/Cart");
 const CartOrder_1 = require("../../model/Cart/CartOrder");
 const OrderInvoice_1 = require("../../model/Cart/OrderInvoice");
 const User_1 = require("../../model/Customer/User");
+const CustomProduct_1 = require("../../model/Product/Custom Product/CustomProduct");
+const PackageElement_1 = require("../../model/Product/Packages/PackageElement");
 const Utils_1 = require("../../utils/Utils");
 const OrderLogsRepo_1 = require("./OrderLogsRepo");
 class OrderRepo {
@@ -73,6 +76,44 @@ class OrderRepo {
                     throw new Error("Data not found!");
                 }
                 return yield dbModel;
+            }
+            catch (err) {
+                throw new Error("Failed to get order data! | " + err.message);
+            }
+        });
+    }
+    getIDs(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            ;
+            ;
+            ;
+            try {
+                const dbModel = yield CartOrder_1.CartOrder.findOne({ where: { id: id } });
+                if (!dbModel) {
+                    throw new Error("Data not found!");
+                }
+                const cartList = dbModel.cartIdList;
+                const crdIDsList = [];
+                yield Promise.all(cartList.map((model) => __awaiter(this, void 0, void 0, function* () {
+                    const data = model;
+                    const cardData = yield Cart_1.Cart.findOne({ where: { id: data.cartId } });
+                    if (!cardData) {
+                        throw new Error("Cart Data not found!");
+                    }
+                    const pkgData = yield PackageElement_1.PackageElement.findAll({ where: { packageId: cardData.packageId } });
+                    if (!pkgData) {
+                        throw new Error("Package Element Data not found!");
+                    }
+                    yield Promise.all(pkgData.map((model2) => __awaiter(this, void 0, void 0, function* () {
+                        const customProduct = yield CustomProduct_1.CustomProduct.findOne({ where: { id: model2.customProdId } });
+                        if (!customProduct) {
+                            throw new Error("Custom Product Data not found!");
+                        }
+                        const rData = { id: customProduct.customId, name: customProduct.name };
+                        crdIDsList.push(rData);
+                    })));
+                })));
+                return crdIDsList;
             }
             catch (err) {
                 throw new Error("Failed to get order data! | " + err.message);
