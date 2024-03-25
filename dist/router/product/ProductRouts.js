@@ -16,6 +16,7 @@ class ProductRouts extends BaseRouter_1.default {
         //custom product
         this.router.post("/custom/create/", ProductController_1.default.createCustomProduct);
         this.router.get("/custom/get/", ProductController_1.default.getCustomProduct);
+        this.router.get("/get/custom/product", ProductController_1.default.getCustomProducts);
         this.router.get("/custom/getById/:id", ProductController_1.default.getCustomProductById);
         this.router.patch("/custom/update/:id", ProductController_1.default.updateCustomProduct);
         this.router.post("/custom/option/add/:id", ProductController_1.default.addCustomProductOption);

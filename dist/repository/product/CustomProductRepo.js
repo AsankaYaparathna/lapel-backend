@@ -1175,6 +1175,20 @@ class CustomProductRepo {
             }
         });
     }
+    getCustomProducts() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const customProduct = yield CustomProduct_1.CustomProduct.findAll();
+                if (!customProduct || customProduct.length === 0) {
+                    throw new Error("Data not found!");
+                }
+                return customProduct;
+            }
+            catch (err) {
+                throw new Error("Failed to get Custom Product! | " + err.message);
+            }
+        });
+    }
     getSubOptionById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
