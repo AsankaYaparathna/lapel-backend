@@ -50,6 +50,10 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "mobileNumber", void 0);
 __decorate([
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.JSON, field: "mobileNumbers" }),
+    __metadata("design:type", Array)
+], User.prototype, "mobileNumbers", void 0);
+__decorate([
     (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.STRING(100), field: "email" }),
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
@@ -105,3 +109,4 @@ exports.User = User = __decorate([
         createdAt: 'createdAt'
     })
 ], User);
+;

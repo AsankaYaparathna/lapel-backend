@@ -33,6 +33,7 @@ class UserRepo {
                 yield User_1.User.create({
                     fullName: model.fullName,
                     mobileNumber: model.mobileNumber,
+                    mobileNumbers: { mobileNumber: model.mobileNumber },
                     email: model.email,
                     password: encpw,
                     otp: model.otp,
@@ -372,7 +373,71 @@ class UserRepo {
             }
         });
     }
+    // async addmobileNumber(modal: any): Promise<any> {
+    //   interface userMobile { mobileNumber: number };
+    //   try {
+    //     let result = await User.findOne({ where: { mobileNumber: modal.mobileNumber } });
+    //     if (!result) { return false; }
+    //     let mobileList = result.mobileNumbers as userMobile[];
+    //     if (mobileList === null) {
+    //       const newNumber = { mobileNumber: modal.mobileNumber } as userMobile;
+    //       result.mobileNumbers = [newNumber];
+    //       await result.save();
+    //     }
+    //     result = await User.findOne({ where: { mobileNumber: modal.mobileNumber } });
+    //     if (!result) { return false; }
+    //     mobileList = result.mobileNumbers;
+    //     const newNumber = { mobileNumber: modal.newNumber.mobileNumber } as userMobile;
+    //     mobileList.push(newNumber);
+    //     let mobileListJson = JSON.stringify(mobileList);
+    //     console.log(mobileListJson);
+    //     let mobileList1 = JSON.parse(mobileListJson) as userMobile[];
+    //     result.mobileNumbers = mobileList1;
+    //     console.log(2,result.mobileNumbers);
+    //     console.log(3,mobileList1);
+    //     await result.save();
+    //     return true;
+    //   } catch (err : any) {
+    //     throw new Error("Failed to add mobile Number! | "+err.message);
+    //   }
+    // }
     //Measurements
+    addmobileNumber(modal) {
+        return __awaiter(this, void 0, void 0, function* () {
+            ;
+            try {
+                const result = yield User_1.User.findOne({ where: { mobileNumber: modal.mobileNumber } });
+                if (!result) {
+                    return false;
+                }
+                let mobileList = result.mobileNumbers;
+                if (mobileList === null) {
+                    const newNumber = [{ mobileNumber: modal.mobileNumber }, { mobileNumber: modal.newNumber.mobileNumber }];
+                    result.mobileNumbers = newNumber;
+                    yield result.save();
+                }
+                else {
+                    const dbUser = yield User_1.User.findOne({ where: { mobileNumber: modal.mobileNumber } });
+                    if (!dbUser) {
+                        return false;
+                    }
+                    let oldMobileList = dbUser.mobileNumbers;
+                    const newNumber = { mobileNumber: modal.newNumber.mobileNumber };
+                    oldMobileList.push(newNumber);
+                    //let mobileListJson = JSON.stringify(mobileList);
+                    console.log(1, oldMobileList);
+                    // let mobileList1 = JSON.parse(mobileListJson) as userMobile[];
+                    dbUser.mobileNumbers = oldMobileList;
+                    console.log(2, dbUser.mobileNumbers);
+                    var z = yield dbUser.save();
+                }
+                return true;
+            }
+            catch (err) {
+                throw new Error("Failed to add mobile Number! | " + err.message);
+            }
+        });
+    }
     measurementGetByMobile(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

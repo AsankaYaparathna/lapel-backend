@@ -576,6 +576,30 @@ class UserController {
             }
         });
     }
+    addmobileNumber(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const mobile = req.params["id"];
+                const modal = {
+                    mobileNumber: mobile,
+                    newNumber: req.body
+                };
+                const user = yield new UserRepo_1.UserRepo().addmobileNumber(modal);
+                res.status(200).json({
+                    status: user ? true : false,
+                    message: user ? "Successfully!" : "Data Not Found!",
+                    data: user ? modal : null,
+                });
+            }
+            catch (err) {
+                res.status(400).json({
+                    status: false,
+                    message: "" + err,
+                    data: null,
+                });
+            }
+        });
+    }
     //Measurements
     measurementGetByMobile(req, res) {
         return __awaiter(this, void 0, void 0, function* () {

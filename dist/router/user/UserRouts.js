@@ -41,6 +41,7 @@ class UserRouts extends BaseRouter_1.default {
         this.router.patch("/update/avatar/:id", UserController_1.default.updateAvatar);
         this.router.patch("/update/billing/:id", UserController_1.default.updateBillingAddress);
         this.router.patch("/update/delivery/:id", UserController_1.default.updateDeliveryAddress);
+        this.router.patch("/add/numbers/:id", UserController_1.default.addmobileNumber);
         //Measurements
         //shirt
         this.router.post("/measurements/shirt/bodyMeasurement/create/", UserShirtMeasurementController_1.default.bodyMeasurementCreate);
