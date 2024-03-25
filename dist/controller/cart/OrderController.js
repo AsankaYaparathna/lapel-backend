@@ -90,7 +90,9 @@ class OrderController {
     updateDeleveryDate(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                const id = parseInt(req.params["id"], 10);
                 const modal = req.body;
+                modal.id = id;
                 const user = yield new OrderRepo_1.OrderRepo().updateDeliveryDate(modal);
                 res.status(200).json({
                     status: user ? true : false,
@@ -106,7 +108,9 @@ class OrderController {
     addSpecialNote(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                const id = parseInt(req.params["id"], 10);
                 const modal = req.body;
+                modal.id = id;
                 const user = yield new OrderRepo_1.OrderRepo().addSpecialNote(modal);
                 res.status(200).json({
                     status: user ? true : false,
