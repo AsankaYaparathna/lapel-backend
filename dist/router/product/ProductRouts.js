@@ -23,8 +23,11 @@ class ProductRouts extends BaseRouter_1.default {
         this.router.patch("/custom/option/update/:id", ProductController_1.default.updateCustomProductOption);
         this.router.delete("/custom/option/delete/:id", ProductController_1.default.deleteCustomProductOption);
         this.router.get("/custom/option/getById/:id", ProductController_1.default.getCustomProductOption);
+        this.router.get("/custom/option/getByProdIdId/:id", ProductController_1.default.getCustomProductOptionByProdId);
         this.router.delete("/custom/delete/:id", ProductController_1.default.deleteCustomProduct);
         this.router.get("/custom/getSubOptionById/:id", ProductController_1.default.getSubOptionById);
+        this.router.patch("/custom/product/update/backview/:id", ProductController_1.default.updateCustomProductOptionBackView);
+        this.router.patch("/custom/product/update/frontview/:id", ProductController_1.default.updateCustomProductOptionFrontView);
         //package
         this.router.post("/custom/package/create/", ProductController_1.default.createPackage);
         this.router.get("/custom/package/get/", ProductController_1.default.getPackage);
