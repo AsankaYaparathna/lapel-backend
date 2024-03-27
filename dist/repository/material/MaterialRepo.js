@@ -29,6 +29,13 @@ class MaterialRepo {
     create(model) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                const oldCustomId = yield CustomId_1.CustomId.findOne({
+                    where: { customId: model.customId },
+                });
+                console.log(oldCustomId);
+                if (oldCustomId) {
+                    throw new Error("This Custom Id is already exists! Try again");
+                }
                 const newCustomId = yield CustomId_1.CustomId.create({
                     customId: model.customId,
                     referanceTable: "Row Material",
@@ -102,7 +109,7 @@ class MaterialRepo {
                                 wearhouseId: element.wearhouseId,
                                 showroomId: element.showroomId,
                                 value: element.value,
-                                reason: "New Row Material Created - Stock Added"
+                                reason: "New Row Material Created - Stock Added",
                             });
                         }
                         const mainStock = yield MainStock_1.MainStock.create({
@@ -128,7 +135,7 @@ class MaterialRepo {
             catch (err) {
                 const result = yield RowMaterial_1.RowMaterial.findOne({ where: { name: model.name } });
                 if (result) {
-                    throw new Error("Failed to create Row Material! Row Material with this name already exists!");
+                    throw new Error("Row Material with this name already exists!");
                 }
                 throw new Error("Failed to create Row Material! | " + err.message);
             }
@@ -165,7 +172,9 @@ class MaterialRepo {
                     qr.imageDescription = model.qr.imageDescription;
                     yield qr.save();
                 }
-                const wimgList = (yield RowMaterialImages_1.RowMaterialImages.findAll({ where: { rowMaterialId: model.id }, }));
+                const wimgList = (yield RowMaterialImages_1.RowMaterialImages.findAll({
+                    where: { rowMaterialId: model.id },
+                }));
                 yield Promise.all(wimgList.map((imgElement) => __awaiter(this, void 0, void 0, function* () {
                     yield Images_1.Image.destroy({ where: { id: imgElement.imageId } });
                 })));
@@ -198,7 +207,12 @@ class MaterialRepo {
                 if (stocckList) {
                     for (const element of stocckList) {
                         const resultMtSt = yield MaterialStock_1.MaterialStock.findOne({
-                            where: { [sequelize_1.Op.and]: [{ customId: customId }, { wearhouseId: element.wearhouseId }] }
+                            where: {
+                                [sequelize_1.Op.and]: [
+                                    { customId: customId },
+                                    { wearhouseId: element.wearhouseId },
+                                ],
+                            },
                         });
                         if (!resultMtSt) {
                             throw new Error("Row Material stock not found in selected wherehouse!");
@@ -211,10 +225,12 @@ class MaterialRepo {
                             wearhouseId: model.wherehouseId,
                             showroomId: null,
                             value: model.value,
-                            reason: "Row Material Stock Updated"
+                            reason: "Row Material Stock Updated",
                         });
                     }
-                    const resultMain = yield MainStock_1.MainStock.findOne({ where: { customId: customId } });
+                    const resultMain = yield MainStock_1.MainStock.findOne({
+                        where: { customId: customId },
+                    });
                     if (!resultMain) {
                         throw new Error("Row Material Main Stock data not found!");
                     }
@@ -222,7 +238,11 @@ class MaterialRepo {
                     const newMainStock = resultMain.mainStock + gap;
                     const newLiveStock = resultMain.liveStock + gap;
                     const newtotalStock = resultMain.totalStock + gap;
-                    yield MainStock_1.MainStock.update({ mainStock: newMainStock, liveStock: newLiveStock, totalStock: newtotalStock }, { where: { customId: customId } });
+                    yield MainStock_1.MainStock.update({
+                        mainStock: newMainStock,
+                        liveStock: newLiveStock,
+                        totalStock: newtotalStock,
+                    }, { where: { customId: customId } });
                 }
                 return true;
             }
@@ -264,19 +284,37 @@ class MaterialRepo {
                 }
                 const Wlist = [];
                 yield Promise.all(result.map((element) => __awaiter(this, void 0, void 0, function* () {
-                    const stocData = (yield MaterialStock_1.MaterialStock.findAll({ where: { customId: element.customId } }));
-                    const qrData = (yield Images_1.Image.findOne({ where: { id: element.qr } }));
-                    const wimgList = (yield RowMaterialImages_1.RowMaterialImages.findAll({ where: { rowMaterialId: element.id } }));
+                    const stocData = (yield MaterialStock_1.MaterialStock.findAll({
+                        where: { customId: element.customId },
+                    }));
+                    const qrData = (yield Images_1.Image.findOne({
+                        where: { id: element.qr },
+                    }));
+                    const wimgList = (yield RowMaterialImages_1.RowMaterialImages.findAll({
+                        where: { rowMaterialId: element.id },
+                    }));
                     let imgList = [];
                     yield Promise.all(wimgList.map((imgElement) => __awaiter(this, void 0, void 0, function* () {
-                        const img = (yield Images_1.Image.findOne({ where: { id: imgElement.imageId } }));
+                        const img = (yield Images_1.Image.findOne({
+                            where: { id: imgElement.imageId },
+                        }));
                         imgList.push(img);
                     })));
-                    const relatedRowMat = (yield RelatedRowMaterial_1.RelatedRowMaterial.findAll({ where: { rowMaterialId: element.id } }));
-                    const costData = (yield Cost_1.Cost.findOne({ where: { customId: element.customId } }));
-                    const supplierData = (yield Supplier_1.Supplier.findOne({ where: { id: element.supplierId } }));
-                    const categoryData = (yield Category_1.Category.findOne({ where: { id: element.supplierId } }));
-                    const subCategoryData = (yield SubCategory_1.SubCategory.findOne({ where: { id: element.supplierId } }));
+                    const relatedRowMat = (yield RelatedRowMaterial_1.RelatedRowMaterial.findAll({
+                        where: { rowMaterialId: element.id },
+                    }));
+                    const costData = (yield Cost_1.Cost.findOne({
+                        where: { customId: element.customId },
+                    }));
+                    const supplierData = (yield Supplier_1.Supplier.findOne({
+                        where: { id: element.supplierId },
+                    }));
+                    const categoryData = (yield Category_1.Category.findOne({
+                        where: { id: element.supplierId },
+                    }));
+                    const subCategoryData = (yield SubCategory_1.SubCategory.findOne({
+                        where: { id: element.supplierId },
+                    }));
                     const tempModel = {
                         id: element.id,
                         name: element.name,
@@ -325,19 +363,37 @@ class MaterialRepo {
                 }
                 const Wlist = [];
                 yield Promise.all(result.map((element) => __awaiter(this, void 0, void 0, function* () {
-                    const stocData = (yield MaterialStock_1.MaterialStock.findAll({ where: { customId: element.customId } }));
-                    const qrData = (yield Images_1.Image.findOne({ where: { id: element.qr } }));
-                    const wimgList = (yield RowMaterialImages_1.RowMaterialImages.findAll({ where: { rowMaterialId: element.id } }));
+                    const stocData = (yield MaterialStock_1.MaterialStock.findAll({
+                        where: { customId: element.customId },
+                    }));
+                    const qrData = (yield Images_1.Image.findOne({
+                        where: { id: element.qr },
+                    }));
+                    const wimgList = (yield RowMaterialImages_1.RowMaterialImages.findAll({
+                        where: { rowMaterialId: element.id },
+                    }));
                     let imgList = [];
                     yield Promise.all(wimgList.map((imgElement) => __awaiter(this, void 0, void 0, function* () {
-                        const img = (yield Images_1.Image.findOne({ where: { id: imgElement.imageId } }));
+                        const img = (yield Images_1.Image.findOne({
+                            where: { id: imgElement.imageId },
+                        }));
                         imgList.push(img);
                     })));
-                    const relatedRowMat = (yield RelatedRowMaterial_1.RelatedRowMaterial.findAll({ where: { rowMaterialId: element.id } }));
-                    const costData = (yield Cost_1.Cost.findOne({ where: { customId: element.customId } }));
-                    const supplierData = (yield Supplier_1.Supplier.findOne({ where: { id: element.supplierId } }));
-                    const categoryData = (yield Category_1.Category.findOne({ where: { id: element.supplierId } }));
-                    const subCategoryData = (yield SubCategory_1.SubCategory.findOne({ where: { id: element.supplierId } }));
+                    const relatedRowMat = (yield RelatedRowMaterial_1.RelatedRowMaterial.findAll({
+                        where: { rowMaterialId: element.id },
+                    }));
+                    const costData = (yield Cost_1.Cost.findOne({
+                        where: { customId: element.customId },
+                    }));
+                    const supplierData = (yield Supplier_1.Supplier.findOne({
+                        where: { id: element.supplierId },
+                    }));
+                    const categoryData = (yield Category_1.Category.findOne({
+                        where: { id: element.supplierId },
+                    }));
+                    const subCategoryData = (yield SubCategory_1.SubCategory.findOne({
+                        where: { id: element.supplierId },
+                    }));
                     const tempModel = {
                         id: element.id,
                         name: element.name,
@@ -378,19 +434,37 @@ class MaterialRepo {
                 }
                 const Wlist = [];
                 yield Promise.all(result.map((element) => __awaiter(this, void 0, void 0, function* () {
-                    const stocData = (yield MaterialStock_1.MaterialStock.findAll({ where: { customId: element.customId } }));
-                    const qrData = (yield Images_1.Image.findOne({ where: { id: element.qr } }));
-                    const wimgList = (yield RowMaterialImages_1.RowMaterialImages.findAll({ where: { rowMaterialId: element.id } }));
+                    const stocData = (yield MaterialStock_1.MaterialStock.findAll({
+                        where: { customId: element.customId },
+                    }));
+                    const qrData = (yield Images_1.Image.findOne({
+                        where: { id: element.qr },
+                    }));
+                    const wimgList = (yield RowMaterialImages_1.RowMaterialImages.findAll({
+                        where: { rowMaterialId: element.id },
+                    }));
                     let imgList = [];
                     yield Promise.all(wimgList.map((imgElement) => __awaiter(this, void 0, void 0, function* () {
-                        const img = (yield Images_1.Image.findOne({ where: { id: imgElement.imageId } }));
+                        const img = (yield Images_1.Image.findOne({
+                            where: { id: imgElement.imageId },
+                        }));
                         imgList.push(img);
                     })));
-                    const relatedRowMat = (yield RelatedRowMaterial_1.RelatedRowMaterial.findAll({ where: { rowMaterialId: element.id } }));
-                    const costData = (yield Cost_1.Cost.findOne({ where: { customId: element.customId } }));
-                    const supplierData = (yield Supplier_1.Supplier.findOne({ where: { id: element.supplierId } }));
-                    const categoryData = (yield Category_1.Category.findOne({ where: { id: element.supplierId } }));
-                    const subCategoryData = (yield SubCategory_1.SubCategory.findOne({ where: { id: element.supplierId } }));
+                    const relatedRowMat = (yield RelatedRowMaterial_1.RelatedRowMaterial.findAll({
+                        where: { rowMaterialId: element.id },
+                    }));
+                    const costData = (yield Cost_1.Cost.findOne({
+                        where: { customId: element.customId },
+                    }));
+                    const supplierData = (yield Supplier_1.Supplier.findOne({
+                        where: { id: element.supplierId },
+                    }));
+                    const categoryData = (yield Category_1.Category.findOne({
+                        where: { id: element.supplierId },
+                    }));
+                    const subCategoryData = (yield SubCategory_1.SubCategory.findOne({
+                        where: { id: element.supplierId },
+                    }));
                     const tempModel = {
                         id: element.id,
                         name: element.name,
