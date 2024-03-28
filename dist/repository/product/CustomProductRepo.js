@@ -1935,5 +1935,61 @@ class CustomProductRepo {
             }
         });
     }
+    getCustomProductHideRules(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const optionData = yield CustomProductOption_1.CustomProductOption.findAll({
+                    where: { customProductId: id },
+                    attributes: ['id', 'name'],
+                });
+                if (!optionData) {
+                    throw new Error("Option data not found!");
+                }
+                let tempOpData = [];
+                yield Promise.all(optionData.map((optionData) => __awaiter(this, void 0, void 0, function* () {
+                    const subOptionData = yield SubOption_1.SubOption.findAll({ where: { optionId: optionData.id }, attributes: ['id', 'title'] });
+                    if (!subOptionData) {
+                        throw new Error("Sub Option data not found!");
+                    }
+                    let tempSubOp = [];
+                    yield Promise.all(subOptionData.map((suboptionData) => __awaiter(this, void 0, void 0, function* () {
+                        const temp = {
+                            suboptionId: suboptionData.id,
+                            optionId: optionData.id,
+                            name: suboptionData.title,
+                        };
+                        tempSubOp.push(temp);
+                    })));
+                    const tempOp = {
+                        id: optionData.id,
+                        name: optionData.name,
+                        subOption: tempSubOp,
+                    };
+                    tempOpData.push(tempOp);
+                })));
+                return yield tempOpData;
+            }
+            catch (err) {
+                throw new Error("Failed to get Option! | " + err.message);
+            }
+        });
+    }
+    getCustomProductSubOptionHideRules(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const subOptionData = yield SubOption_1.SubOption.findAll({
+                    where: { optionId: id },
+                    attributes: ['id', 'title'],
+                });
+                if (!subOptionData) {
+                    throw new Error("Sub Option data not found!");
+                }
+                return yield subOptionData;
+            }
+            catch (err) {
+                throw new Error("Failed to get Option! | " + err.message);
+            }
+        });
+    }
 }
 exports.CustomProductRepo = CustomProductRepo;

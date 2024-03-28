@@ -37,6 +37,11 @@ class ProductRouts extends BaseRouter_1.default {
         //cstom config
         this.router.get("/custom/config/styles/getByProdId/:id/", ProductController_1.default.getPackageStyleById);
         this.router.get("/custom/config/accent/getByProdId/:id/", ProductController_1.default.getPackageAccentById);
+        //hide rule
+        this.router.get("/custom/option/hiderule/:id", ProductController_1.default.getCustomProductHideRules);
+        this.router.get("/custom/option/defaultLoading/:id", ProductController_1.default.getCustomProductHideRules);
+        this.router.get("/custom/suboption/hiderule/:id", ProductController_1.default.getCustomProductSubOptionHideRules);
+        this.router.get("/custom/suboption/defaultLoading/:id", ProductController_1.default.getCustomProductSubOptionHideRules);
         //Rady made
     }
 }

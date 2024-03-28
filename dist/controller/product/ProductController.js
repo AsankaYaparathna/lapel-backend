@@ -236,6 +236,46 @@ class ProductController {
             }
         });
     }
+    getCustomProductHideRules(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const id = parseInt(req.params["id"], 10);
+                const model = yield new CustomProductRepo_1.CustomProductRepo().getCustomProductHideRules(id);
+                res.status(200).json({
+                    status: true,
+                    message: "Successfully!",
+                    data: model,
+                });
+            }
+            catch (err) {
+                res.status(400).json({
+                    status: false,
+                    message: "" + err,
+                    data: null,
+                });
+            }
+        });
+    }
+    getCustomProductSubOptionHideRules(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const id = parseInt(req.params["id"], 10);
+                const model = yield new CustomProductRepo_1.CustomProductRepo().getCustomProductSubOptionHideRules(id);
+                res.status(200).json({
+                    status: true,
+                    message: "Successfully!",
+                    data: model,
+                });
+            }
+            catch (err) {
+                res.status(400).json({
+                    status: false,
+                    message: "" + err,
+                    data: null,
+                });
+            }
+        });
+    }
     getCustomProductOptionByProdId(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
