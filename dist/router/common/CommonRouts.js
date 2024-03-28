@@ -67,6 +67,7 @@ class CommonRouts extends BaseRouter_1.default {
         this.router.post("/subcategory/create/", CommonController_1.default.createSubCategory);
         this.router.get("/subcategory/get/", CommonController_1.default.getSubCategory);
         this.router.get("/subcategory/getById/:id", CommonController_1.default.getSubCategoryById);
+        this.router.get("/subcategory/getByCategoryId/:id", CommonController_1.default.getSubCategoryByCategoryId);
         this.router.patch("/subcategory/update/:id", CommonController_1.default.updateSubCategory);
         this.router.delete("/subcategory/delete/:id", CommonController_1.default.deleteSubCategory);
     }

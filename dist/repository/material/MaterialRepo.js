@@ -10,8 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MaterialRepo = void 0;
-const Showroom_1 = require("../../model/Warehouse/Showroom/Showroom");
-const ShowroomImages_1 = require("../../model/Warehouse/Showroom/ShowroomImages");
 const Images_1 = require("../../model/Common/Images");
 const CustomId_1 = require("../../model/Common/CustomId");
 const RowMaterial_1 = require("../../model/Metirial/RowMaterial/RowMaterial");
@@ -254,20 +252,25 @@ class MaterialRepo {
     delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield Showroom_1.Showroom.findAll({ where: { id: id } });
-                if (!result || result.length === 0) {
+                const result = yield RowMaterial_1.RowMaterial.findOne({ where: { id: id } });
+                if (!result) {
                     throw new Error("Data not found!");
                 }
-                yield Promise.all(result.map((element) => __awaiter(this, void 0, void 0, function* () {
-                    const wimgList = (yield ShowroomImages_1.ShowroomImages.findAll({
-                        where: { showroomId: element.id },
-                    }));
-                    yield Promise.all(wimgList.map((imgElement) => __awaiter(this, void 0, void 0, function* () {
-                        yield Images_1.Image.destroy({ where: { id: imgElement.imageId } });
-                    })));
-                    yield ShowroomImages_1.ShowroomImages.destroy({ where: { showroomId: element.id } });
-                })));
-                yield Showroom_1.Showroom.destroy({ where: { id: id } });
+                yield RowMaterial_1.RowMaterial.destroy({ where: { id: id } });
+                yield CustomId_1.CustomId.destroy({ where: { customId: result.customId } });
+                yield Images_1.Image.destroy({ where: { id: result.qr } });
+                yield RowMaterialImages_1.RowMaterialImages.destroy({ where: { rowMaterialId: result.id } });
+                yield RelatedRowMaterial_1.RelatedRowMaterial.destroy({ where: { rowMaterialId: result.id } });
+                yield MaterialStock_1.MaterialStock.destroy({ where: { customId: result.customId } });
+                yield MainStock_1.MainStock.destroy({ where: { customId: result.customId } });
+                yield Cost_1.Cost.destroy({ where: { customId: result.customId } });
+                const newStockLog = yield MaterialStockLog_1.MaterialStockLog.create({
+                    customId: result.customId,
+                    wearhouseId: null,
+                    showroomId: null,
+                    value: 0,
+                    reason: "Row Material deleted - Stock removed",
+                });
                 return true;
             }
             catch (err) {

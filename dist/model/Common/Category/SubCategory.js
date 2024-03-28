@@ -15,16 +15,12 @@ const Category_1 = require("./Category");
 let SubCategory = class SubCategory extends sequelize_typescript_1.Model {
 };
 exports.SubCategory = SubCategory;
-SubCategory.SUBCATEGORY_TABLE_NAME = "LAPEL_SUB_CATEGORY";
-SubCategory.SUBCATEGORY_ID = "id";
-SubCategory.SUBCATEGORY_NAME = "subcategoryName";
-SubCategory.SUBCATEGORY_DESCRIPTION = "subcategoryDescription";
 __decorate([
-    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.INTEGER, primaryKey: true, autoIncrement: true, field: SubCategory.SUBCATEGORY_ID }),
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.INTEGER, primaryKey: true, autoIncrement: true, field: "id" }),
     __metadata("design:type", Number)
 ], SubCategory.prototype, "id", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.STRING(100), field: SubCategory.SUBCATEGORY_NAME }),
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.STRING(100), field: "subcategoryName" }),
     __metadata("design:type", String)
 ], SubCategory.prototype, "subcategoryName", void 0);
 __decorate([
@@ -33,7 +29,7 @@ __decorate([
     __metadata("design:type", Number)
 ], SubCategory.prototype, "categoryId", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.STRING(100), field: SubCategory.SUBCATEGORY_DESCRIPTION }),
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.STRING(100), field: "subcategoryDescription" }),
     __metadata("design:type", String)
 ], SubCategory.prototype, "subcategoryDescription", void 0);
 exports.SubCategory = SubCategory = __decorate([

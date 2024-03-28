@@ -499,6 +499,18 @@ class CommonController {
             }
         });
     }
+    getSubCategoryByCategoryId(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const id = parseInt(req.params["id"], 10);
+                const modal = yield new CommonRepo_1.CommonRepo().getSubCategoryByCategoryId(id);
+                res.status(200).json({ status: true, message: "Successfully!", data: modal });
+            }
+            catch (err) {
+                res.status(400).json({ status: false, message: "" + err, data: null });
+            }
+        });
+    }
     updateSubCategory(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

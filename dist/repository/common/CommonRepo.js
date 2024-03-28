@@ -572,6 +572,20 @@ class CommonRepo {
             }
         });
     }
+    getSubCategoryByCategoryId(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = yield SubCategory_1.SubCategory.findAll({ where: { categoryId: id } });
+                if (!result) {
+                    throw new Error("Data not found!");
+                }
+                return result;
+            }
+            catch (err) {
+                throw new Error("Failed to get Sub Category! | " + err.message);
+            }
+        });
+    }
     updateSubCategory(model) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

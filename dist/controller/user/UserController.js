@@ -582,7 +582,7 @@ class UserController {
                 const mobile = req.params["id"];
                 const modal = {
                     mobileNumber: mobile,
-                    newNumber: req.body
+                    mobileNumber2: req.body.mobileNumber
                 };
                 const user = yield new UserRepo_1.UserRepo().addmobileNumber(modal);
                 res.status(200).json({
