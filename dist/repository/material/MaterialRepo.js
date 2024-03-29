@@ -312,10 +312,10 @@ class MaterialRepo {
                         where: { id: element.supplierId },
                     }));
                     const categoryData = (yield Category_1.Category.findOne({
-                        where: { id: element.supplierId },
+                        where: { id: element.categoryId },
                     }));
                     const subCategoryData = (yield SubCategory_1.SubCategory.findOne({
-                        where: { id: element.supplierId },
+                        where: { id: element.subCategoryId },
                     }));
                     const tempModel = {
                         id: element.id,
@@ -324,8 +324,8 @@ class MaterialRepo {
                         description: element.description,
                         information: element.information,
                         stockData: stocData,
-                        categoryId: categoryData,
-                        subCategoryId: subCategoryData,
+                        category: categoryData,
+                        subCategory: subCategoryData,
                         unitTypeId: element.unitTypeId,
                         qr: qrData,
                         imageList: imgList,
@@ -391,10 +391,10 @@ class MaterialRepo {
                         where: { id: element.supplierId },
                     }));
                     const categoryData = (yield Category_1.Category.findOne({
-                        where: { id: element.supplierId },
+                        where: { id: element.categoryId },
                     }));
                     const subCategoryData = (yield SubCategory_1.SubCategory.findOne({
-                        where: { id: element.supplierId },
+                        where: { id: element.subCategoryId },
                     }));
                     const tempModel = {
                         id: element.id,
@@ -403,8 +403,8 @@ class MaterialRepo {
                         description: element.description,
                         information: element.information,
                         stockData: stocData,
-                        categoryId: categoryData,
-                        subCategoryId: subCategoryData,
+                        category: categoryData,
+                        subCategory: subCategoryData,
                         unitTypeId: element.unitTypeId,
                         qr: qrData,
                         imageList: imgList,
@@ -462,10 +462,10 @@ class MaterialRepo {
                         where: { id: element.supplierId },
                     }));
                     const categoryData = (yield Category_1.Category.findOne({
-                        where: { id: element.supplierId },
+                        where: { id: element.categoryId },
                     }));
                     const subCategoryData = (yield SubCategory_1.SubCategory.findOne({
-                        where: { id: element.supplierId },
+                        where: { id: element.subCategoryId },
                     }));
                     const tempModel = {
                         id: element.id,
@@ -474,8 +474,8 @@ class MaterialRepo {
                         description: element.description,
                         information: element.information,
                         stockData: stocData,
-                        categoryId: categoryData,
-                        subCategoryId: subCategoryData,
+                        category: categoryData,
+                        subCategory: subCategoryData,
                         unitTypeId: element.unitTypeId,
                         qr: qrData,
                         imageList: imgList,
