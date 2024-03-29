@@ -443,11 +443,12 @@ class CommonRepo {
     createCategory(model) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield Category_1.Category.create({
+                const data = yield Category_1.Category.create({
                     categoryType: model.categoryType,
                     categoryName: model.categoryName,
                     categoryDescription: model.categoryDescription,
                 });
+                return data;
             }
             catch (err) {
                 throw new Error("Failed to create! | " + err.message);
@@ -533,11 +534,12 @@ class CommonRepo {
     createSubCategory(model) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield SubCategory_1.SubCategory.create({
+                const data = yield SubCategory_1.SubCategory.create({
                     subcategoryName: model.subcategoryName,
                     subcategoryDescription: model.subcategoryDescription,
                     categoryId: model.categoryId,
                 });
+                return data;
             }
             catch (err) {
                 throw new Error("Failed to create Sub Category! | " + err.message);

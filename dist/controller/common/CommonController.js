@@ -380,8 +380,8 @@ class CommonController {
     createCategory(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield new CommonRepo_1.CommonRepo().createCategory(req.body);
-                res.status(200).json({ status: true, message: "successfully!", data: null });
+                const data = yield new CommonRepo_1.CommonRepo().createCategory(req.body);
+                res.status(200).json({ status: true, message: "successfully!", data: data });
             }
             catch (err) {
                 res.status(400).json({ status: false, message: "" + err, data: null });
@@ -468,8 +468,8 @@ class CommonController {
     createSubCategory(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield new CommonRepo_1.CommonRepo().createSubCategory(req.body);
-                res.status(200).json({ status: true, message: "successfully!", data: null });
+                const data = yield new CommonRepo_1.CommonRepo().createSubCategory(req.body);
+                res.status(200).json({ status: true, message: "successfully!", data: data });
             }
             catch (err) {
                 res.status(400).json({ status: false, message: "" + err, data: null });
