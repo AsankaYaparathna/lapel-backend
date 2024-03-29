@@ -18,12 +18,13 @@ class ProductRouts extends BaseRouter_1.default {
         this.router.get("/custom/get/", ProductController_1.default.getCustomProduct);
         this.router.get("/get/custom/product", ProductController_1.default.getCustomProducts);
         this.router.get("/custom/getById/:id", ProductController_1.default.getCustomProductById);
+        this.router.get("/custom/getByProdId/:prodId/:opId", ProductController_1.default.getCustomProductOptionByProdIds);
         this.router.patch("/custom/update/:id", ProductController_1.default.updateCustomProduct);
         this.router.post("/custom/option/add/:id", ProductController_1.default.addCustomProductOption);
         this.router.patch("/custom/option/update/:id", ProductController_1.default.updateCustomProductOption);
         this.router.delete("/custom/option/delete/:id", ProductController_1.default.deleteCustomProductOption);
         this.router.get("/custom/option/getById/:id", ProductController_1.default.getCustomProductOption);
-        this.router.get("/custom/option/getByProdIdId/:id", ProductController_1.default.getCustomProductOptionByProdId);
+        this.router.get("/custom/option/getByProdIdId/:id/:", ProductController_1.default.getCustomProductOptionByProdId);
         this.router.delete("/custom/delete/:id", ProductController_1.default.deleteCustomProduct);
         this.router.get("/custom/getSubOptionById/:id", ProductController_1.default.getSubOptionById);
         this.router.patch("/custom/product/update/backview/:id", ProductController_1.default.updateCustomProductOptionBackView);

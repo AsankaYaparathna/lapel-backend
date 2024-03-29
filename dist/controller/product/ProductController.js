@@ -296,6 +296,27 @@ class ProductController {
             }
         });
     }
+    getCustomProductOptionByProdIds(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const prodId = parseInt(req.params["prodId"], 10);
+                const opId = parseInt(req.params["opId"], 10);
+                const model = yield new CustomProductRepo_1.CustomProductRepo().getCustomProductOptionByProdIds(prodId, opId);
+                res.status(200).json({
+                    status: true,
+                    message: "Successfully!",
+                    data: model,
+                });
+            }
+            catch (err) {
+                res.status(400).json({
+                    status: false,
+                    message: "" + err,
+                    data: null,
+                });
+            }
+        });
+    }
     //packages
     createPackage(req, res) {
         return __awaiter(this, void 0, void 0, function* () {

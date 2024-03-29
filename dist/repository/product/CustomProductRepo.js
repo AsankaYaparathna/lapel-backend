@@ -1935,6 +1935,159 @@ class CustomProductRepo {
             }
         });
     }
+    getCustomProductOptionByProdIds(prodId, optionId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const tempCuProduct = [];
+                const customProduct = yield CustomProduct_1.CustomProduct.findAll({ where: { id: prodId } });
+                if (!customProduct || customProduct.length === 0) {
+                    throw new Error("Data not found!");
+                }
+                yield Promise.all(customProduct.map((elementCP) => __awaiter(this, void 0, void 0, function* () {
+                    const tempCuProOp = [];
+                    const optionData = yield CustomProductOption_1.CustomProductOption.findAll({
+                        where: { id: optionId },
+                    });
+                    yield Promise.all(optionData.map((elementCPO) => __awaiter(this, void 0, void 0, function* () {
+                        const optionImage = (yield Images_1.Image.findOne({
+                            where: { id: elementCPO.image },
+                        }));
+                        const tempCuProSubOp = [];
+                        const subOptionData = yield SubOption_1.SubOption.findAll({
+                            where: { optionId: elementCPO.id },
+                        });
+                        yield Promise.all(subOptionData.map((elementCPSO) => __awaiter(this, void 0, void 0, function* () {
+                            const subimage = (yield Images_1.Image.findOne({
+                                where: { id: elementCPSO.image },
+                            }));
+                            const subcloseUpImage = (yield Images_1.Image.findOne({
+                                where: { id: elementCPSO.closeUpImage },
+                            }));
+                            const tempCuProSubOpFab = [];
+                            const subOptionFabData = yield SubOptionFabric_1.SubOptionFabric.findAll({
+                                where: { subOptionId: elementCPSO.id },
+                            });
+                            yield Promise.all(subOptionFabData.map((elementCPSOF) => __awaiter(this, void 0, void 0, function* () {
+                                const front = (yield Images_1.Image.findOne({
+                                    where: { id: elementCPSOF.front },
+                                }));
+                                const frontFull = (yield Images_1.Image.findOne({
+                                    where: { id: elementCPSOF.frontFull },
+                                }));
+                                const back = (yield Images_1.Image.findOne({
+                                    where: { id: elementCPSOF.back },
+                                }));
+                                const backFull = (yield Images_1.Image.findOne({
+                                    where: { id: elementCPSOF.backFull },
+                                }));
+                                const tempFab = {
+                                    id: elementCPSOF.id,
+                                    customId: elementCPSOF.customId,
+                                    name: elementCPSOF.name,
+                                    front: front,
+                                    frontFull: frontFull,
+                                    back: back,
+                                    backFull: backFull,
+                                };
+                                tempCuProSubOpFab.push(tempFab);
+                            })));
+                            const tempCuProSubOpHR = [];
+                            const subOptionHideRuleData = yield SubOptionHidenRule_1.SubOptionHidenRule.findAll({
+                                where: { subOptionId: elementCPSO.id },
+                            });
+                            yield Promise.all(subOptionHideRuleData.map((elementCPSOFHR) => __awaiter(this, void 0, void 0, function* () {
+                                const temp = {
+                                    id: elementCPSOFHR.id,
+                                    subOptionId: elementCPSOFHR.subOptionId,
+                                    ruleId: elementCPSOFHR.ruleId,
+                                };
+                                tempCuProSubOpHR.push(temp);
+                            })));
+                            const temp = {
+                                id: elementCPSO.id,
+                                title: elementCPSO.title,
+                                price: elementCPSO.price,
+                                viewStockItem: elementCPSO.viewStockItem,
+                                description: elementCPSO.description,
+                                image: subimage,
+                                closeUpImage: subcloseUpImage,
+                                hideRules: tempCuProSubOpHR,
+                                fabric: tempCuProSubOpFab,
+                            };
+                            tempCuProSubOp.push(temp);
+                        })));
+                        const tempCuProOpHR = [];
+                        const subOptionHideRuleData = yield OptionHidenRule_1.OptionHidenRule.findAll({
+                            where: { optionId: elementCPO.id },
+                        });
+                        yield Promise.all(subOptionHideRuleData.map((elementCPSOFHR) => __awaiter(this, void 0, void 0, function* () {
+                            const temp = {
+                                id: elementCPSOFHR.id,
+                                optionId: elementCPSOFHR.optionId,
+                                ruleId: elementCPSOFHR.ruleId,
+                            };
+                            tempCuProOpHR.push(temp);
+                        })));
+                        const temp = {
+                            id: elementCPO.id,
+                            name: elementCPO.name,
+                            image: optionImage,
+                            style: elementCPO.style,
+                            accent: elementCPO.accent,
+                            optionGroup: elementCPO.optionGroup,
+                            hidden: elementCPO.hidden,
+                            front: elementCPO.front,
+                            back: elementCPO.back,
+                            description: elementCPO.description,
+                            frontViewOrder: elementCPO.frontViewOrder,
+                            backViewOrder: elementCPO.backViewOrder,
+                            hideRules: tempCuProOpHR,
+                            subOptions: tempCuProSubOp,
+                        };
+                        tempCuProOp.push(temp);
+                    })));
+                    // const temp: newCustomProd = {
+                    //   id: elementCP.id,
+                    //   categoryId: elementCP.categoryId,
+                    //   categoryName: elementCP.categoryName,
+                    //   categoryTypeId: elementCP.categoryTypeId,
+                    //   options: tempCuProOp,
+                    //   isActive: elementCP.isActive,
+                    // };
+                    const temp = {
+                        id: elementCP.id,
+                        categoryId: elementCP.categoryId,
+                        categoryName: elementCP.categoryName,
+                        categoryTypeId: elementCP.categoryTypeId,
+                        options: tempCuProOp,
+                        isActive: elementCP.isActive,
+                        customId: elementCP.customId,
+                        description: elementCP.description,
+                        information: elementCP.information,
+                        relatedProdId: elementCP.relatedProdId,
+                        live: elementCP.live,
+                        featured: elementCP.featured,
+                        subCategoryId: elementCP.subCategoryId,
+                        patterrnId: elementCP.patterrnId,
+                        colorId: elementCP.colorId,
+                        characteristicsId: elementCP.characteristicsId,
+                        materialId: elementCP.materialId,
+                        packageId: elementCP.packageId,
+                        opacity: elementCP.opacity,
+                        weightId: elementCP.weightId,
+                        icon: elementCP.icon,
+                        qr: elementCP.qr,
+                        images: elementCP.images,
+                    };
+                    tempCuProduct.push(temp);
+                })));
+                return yield tempCuProduct;
+            }
+            catch (err) {
+                throw new Error("Failed to get Custom Product! | " + err.message);
+            }
+        });
+    }
     getCustomProductHideRules(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
