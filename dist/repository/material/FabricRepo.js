@@ -10,8 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FabricRepo = void 0;
-const Showroom_1 = require("../../model/Warehouse/Showroom/Showroom");
-const ShowroomImages_1 = require("../../model/Warehouse/Showroom/ShowroomImages");
 const Images_1 = require("../../model/Common/Images");
 const Fabric_1 = require("../../model/Metirial/Fabric/Fabric");
 const CustomId_1 = require("../../model/Common/CustomId");
@@ -23,6 +21,7 @@ const Cost_1 = require("../../model/Metirial/Cost/Cost");
 const FabricItem_1 = require("../../model/Metirial/Fabric/FabricItem");
 const Supplier_1 = require("../../model/Metirial/Supplier/Supplier");
 const sequelize_1 = require("sequelize");
+const MaterialStockLog_1 = require("../../model/Metirial/Stock/MaterialStockLog");
 class FabricRepo {
     create(model) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -242,24 +241,31 @@ class FabricRepo {
     delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const result = yield Showroom_1.Showroom.findAll({ where: { id: id } });
-                if (!result || result.length === 0) {
+                const result = yield Fabric_1.Fabric.findOne({ where: { id: id } });
+                if (!result) {
                     throw new Error("Data not found!");
                 }
-                yield Promise.all(result.map((element) => __awaiter(this, void 0, void 0, function* () {
-                    const wimgList = (yield ShowroomImages_1.ShowroomImages.findAll({
-                        where: { showroomId: element.id },
-                    }));
-                    yield Promise.all(wimgList.map((imgElement) => __awaiter(this, void 0, void 0, function* () {
-                        yield Images_1.Image.destroy({ where: { id: imgElement.imageId } });
-                    })));
-                    yield ShowroomImages_1.ShowroomImages.destroy({ where: { showroomId: element.id } });
-                })));
-                yield Showroom_1.Showroom.destroy({ where: { id: id } });
+                yield Fabric_1.Fabric.destroy({ where: { id: id } });
+                yield CustomId_1.CustomId.destroy({ where: { customId: result.customId } });
+                yield Images_1.Image.destroy({ where: { id: result.qr } });
+                yield Images_1.Image.destroy({ where: { id: result.icon } });
+                yield FabricImages_1.FabricImages.destroy({ where: { fabricId: result.id } });
+                yield RelatedFabric_1.RelatedFabric.destroy({ where: { fabricId: result.id } });
+                yield MaterialStock_1.MaterialStock.destroy({ where: { customId: result.customId } });
+                yield MainStock_1.MainStock.destroy({ where: { customId: result.customId } });
+                yield Cost_1.Cost.destroy({ where: { customId: result.customId } });
+                yield FabricItem_1.FabricItem.destroy({ where: { customId: result.customId } });
+                const newStockLog = yield MaterialStockLog_1.MaterialStockLog.create({
+                    customId: result.customId,
+                    wearhouseId: null,
+                    showroomId: null,
+                    value: 0,
+                    reason: "Fabric deleted - Stock removed",
+                });
                 return true;
             }
             catch (err) {
-                throw new Error("Failed to delete Showroom! | " + err.message);
+                throw new Error("Failed to delete Fabric! | " + err.message);
             }
         });
     }
