@@ -44,12 +44,13 @@ class FabricRepo {
                     throw new Error("This Custom Id is already exists!");
                 }
                 else {
+                    const imgList = model.imageList;
                     const newIcon = yield Images_1.Image.create({
-                        imageName: model.icon.imageName,
-                        imageData: model.icon.imageData,
-                        imageURL: model.icon.imageURL,
-                        imagelocation: model.icon.imagelocation,
-                        imageDescription: model.icon.imageDescription,
+                        imageName: imgList[0].imageName,
+                        imageData: imgList[0].imageData,
+                        imageURL: imgList[0].imageURL,
+                        imagelocation: imgList[0].imagelocation,
+                        imageDescription: imgList[0].imageDescription,
                     });
                     const newQR = yield Images_1.Image.create({
                         imageName: model.qr.imageName,
@@ -81,7 +82,6 @@ class FabricRepo {
                         stockMinus: model.stockMinus,
                         supplierId: model.supplierId,
                     });
-                    const imgList = model.imageList;
                     imgList.forEach((element) => __awaiter(this, void 0, void 0, function* () {
                         const img = yield Images_1.Image.create({
                             imageName: element.imageName,
@@ -441,23 +441,13 @@ class FabricRepo {
                 }
                 const Wlist = [];
                 yield Promise.all(result.map((element) => __awaiter(this, void 0, void 0, function* () {
-                    const stocData = (yield MaterialStock_1.MaterialStock.findAll({
-                        where: { customId: element.customId },
-                    }));
-                    const iconData = (yield Images_1.Image.findOne({
-                        where: { id: element.icon },
-                    }));
-                    const qrData = (yield Images_1.Image.findOne({
-                        where: { id: element.qr },
-                    }));
-                    const wimgList = (yield FabricImages_1.FabricImages.findAll({
-                        where: { fabricId: element.id },
-                    }));
+                    const stocData = (yield MaterialStock_1.MaterialStock.findAll({ where: { customId: element.customId } }));
+                    const iconData = (yield Images_1.Image.findOne({ where: { id: element.icon } }));
+                    const qrData = (yield Images_1.Image.findOne({ where: { id: element.qr } }));
+                    const wimgList = (yield FabricImages_1.FabricImages.findAll({ where: { fabricId: element.id } }));
                     let imgList = [];
                     yield Promise.all(wimgList.map((imgElement) => __awaiter(this, void 0, void 0, function* () {
-                        const img = (yield Images_1.Image.findOne({
-                            where: { id: imgElement.imageId },
-                        }));
+                        const img = (yield Images_1.Image.findOne({ where: { id: imgElement.imageId }, }));
                         imgList.push(img);
                     })));
                     const relatedFab = (yield RelatedFabric_1.RelatedFabric.findAll({
