@@ -27,12 +27,22 @@ class FabricRepo {
     create(model) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                const result = yield Fabric_1.Fabric.findOne({ where: { name: model.name } });
+                if (result) {
+                    throw new Error("Fabric with this name already exists!");
+                }
+                const oldCustomId = yield CustomId_1.CustomId.findOne({
+                    where: { customId: model.customId },
+                });
+                if (oldCustomId) {
+                    throw new Error("This Custom Id is already exists!");
+                }
                 const newCustomId = yield CustomId_1.CustomId.create({
                     customId: model.customId,
                     referanceTable: "Fabric",
                 });
                 if (!newCustomId) {
-                    throw new Error("This Custom Id is already exists! Try again");
+                    throw new Error("This Custom Id is already exists!");
                 }
                 else {
                     const newIcon = yield Images_1.Image.create({
@@ -143,11 +153,7 @@ class FabricRepo {
                 }
             }
             catch (err) {
-                const result = yield Fabric_1.Fabric.findOne({ where: { name: model.name } });
-                if (result) {
-                    throw new Error("Failed to create Fabric! Fabric with this name already exists!");
-                }
-                throw new Error("Failed to create Fabric! | " + err.message);
+                throw new Error("" + err.message);
             }
         });
     }

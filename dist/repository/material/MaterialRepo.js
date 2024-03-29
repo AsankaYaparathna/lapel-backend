@@ -30,7 +30,6 @@ class MaterialRepo {
                 const oldCustomId = yield CustomId_1.CustomId.findOne({
                     where: { customId: model.customId },
                 });
-                console.log(oldCustomId);
                 if (oldCustomId) {
                     throw new Error("This Custom Id is already exists! Try again");
                 }
