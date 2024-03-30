@@ -789,7 +789,6 @@ class CustomProductRepo {
                         yield Promise.all(subOptionHideRuleData.map((elementCPSOFHR) => __awaiter(this, void 0, void 0, function* () {
                             const hideData = yield SubOption_1.SubOption.findOne({ where: { id: elementCPSOFHR.ruleId } });
                             const temp = {
-                                id: elementCPSOFHR.id,
                                 value: elementCPSOFHR.ruleId,
                                 label: hideData ? hideData.title : ""
                             };
@@ -946,7 +945,6 @@ class CustomProductRepo {
                         yield Promise.all(subOptionHideRuleData.map((elementCPSOFHR) => __awaiter(this, void 0, void 0, function* () {
                             const hideData = yield SubOption_1.SubOption.findOne({ where: { id: elementCPSOFHR.ruleId } });
                             const temp = {
-                                id: elementCPSOFHR.id,
                                 value: elementCPSOFHR.ruleId,
                                 label: hideData ? hideData.title : ""
                             };
@@ -1102,7 +1100,6 @@ class CustomProductRepo {
                         yield Promise.all(subOptionHideRuleData.map((elementCPSOFHR) => __awaiter(this, void 0, void 0, function* () {
                             const hideData = yield SubOption_1.SubOption.findOne({ where: { id: elementCPSOFHR.ruleId } });
                             const temp = {
-                                id: elementCPSOFHR.id,
                                 value: elementCPSOFHR.ruleId,
                                 label: hideData ? hideData.title : ""
                             };
@@ -1881,7 +1878,6 @@ class CustomProductRepo {
                     yield Promise.all(subOptionHideRuleData.map((elementCPSOFHR) => __awaiter(this, void 0, void 0, function* () {
                         const hideData = yield SubOption_1.SubOption.findOne({ where: { id: elementCPSOFHR.ruleId } });
                         const temp = {
-                            id: elementCPSOFHR.id,
                             value: elementCPSOFHR.ruleId,
                             label: hideData ? hideData.title : ""
                         };
@@ -2015,7 +2011,6 @@ class CustomProductRepo {
                         yield Promise.all(subOptionHideRuleData.map((elementCPSOFHR) => __awaiter(this, void 0, void 0, function* () {
                             const hideData = yield SubOption_1.SubOption.findOne({ where: { id: elementCPSOFHR.ruleId } });
                             const temp = {
-                                id: elementCPSOFHR.id,
                                 value: elementCPSOFHR.ruleId,
                                 label: hideData ? hideData.title : ""
                             };
