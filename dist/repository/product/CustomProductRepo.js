@@ -727,28 +727,16 @@ class CustomProductRepo {
                 }
                 yield Promise.all(customProduct.map((elementCP) => __awaiter(this, void 0, void 0, function* () {
                     const tempCuProOp = [];
-                    const optionData = yield CustomProductOption_1.CustomProductOption.findAll({
-                        where: { customProductId: elementCP.id },
-                    });
+                    const optionData = yield CustomProductOption_1.CustomProductOption.findAll({ where: { customProductId: elementCP.id } });
                     yield Promise.all(optionData.map((elementCPO) => __awaiter(this, void 0, void 0, function* () {
-                        const optionImage = (yield Images_1.Image.findOne({
-                            where: { id: elementCPO.image },
-                        }));
+                        const optionImage = (yield Images_1.Image.findOne({ where: { id: elementCPO.image } }));
                         const tempCuProSubOp = [];
-                        const subOptionData = yield SubOption_1.SubOption.findAll({
-                            where: { optionId: elementCPO.id },
-                        });
+                        const subOptionData = yield SubOption_1.SubOption.findAll({ where: { optionId: elementCPO.id } });
                         yield Promise.all(subOptionData.map((elementCPSO) => __awaiter(this, void 0, void 0, function* () {
-                            const subimage = (yield Images_1.Image.findOne({
-                                where: { id: elementCPSO.image },
-                            }));
-                            const subcloseUpImage = (yield Images_1.Image.findOne({
-                                where: { id: elementCPSO.closeUpImage },
-                            }));
+                            const subimage = (yield Images_1.Image.findOne({ where: { id: elementCPSO.image }, }));
+                            const subcloseUpImage = (yield Images_1.Image.findOne({ where: { id: elementCPSO.closeUpImage }, }));
                             const tempCuProSubOpFab = [];
-                            const subOptionFabData = yield SubOptionFabric_1.SubOptionFabric.findAll({
-                                where: { subOptionId: elementCPSO.id },
-                            });
+                            const subOptionFabData = yield SubOptionFabric_1.SubOptionFabric.findAll({ where: { subOptionId: elementCPSO.id }, });
                             yield Promise.all(subOptionFabData.map((elementCPSOF) => __awaiter(this, void 0, void 0, function* () {
                                 const front = (yield Images_1.Image.findOne({
                                     where: { id: elementCPSOF.front },
@@ -774,9 +762,7 @@ class CustomProductRepo {
                                 tempCuProSubOpFab.push(tempFab);
                             })));
                             const tempCuProSubOpHR = [];
-                            const subOptionHideRuleData = yield SubOptionHidenRule_1.SubOptionHidenRule.findAll({
-                                where: { subOptionId: elementCPSO.id },
-                            });
+                            const subOptionHideRuleData = yield SubOptionHidenRule_1.SubOptionHidenRule.findAll({ where: { subOptionId: elementCPSO.id }, });
                             yield Promise.all(subOptionHideRuleData.map((elementCPSOFHR) => __awaiter(this, void 0, void 0, function* () {
                                 const temp = {
                                     id: elementCPSOFHR.id,
@@ -799,14 +785,13 @@ class CustomProductRepo {
                             tempCuProSubOp.push(temp);
                         })));
                         const tempCuProOpHR = [];
-                        const subOptionHideRuleData = yield OptionHidenRule_1.OptionHidenRule.findAll({
-                            where: { optionId: elementCPO.id },
-                        });
+                        const subOptionHideRuleData = yield OptionHidenRule_1.OptionHidenRule.findAll({ where: { optionId: elementCPO.id } });
                         yield Promise.all(subOptionHideRuleData.map((elementCPSOFHR) => __awaiter(this, void 0, void 0, function* () {
+                            const hideData = yield SubOption_1.SubOption.findOne({ where: { id: elementCPSOFHR.ruleId } });
                             const temp = {
                                 id: elementCPSOFHR.id,
-                                optionId: elementCPSOFHR.optionId,
-                                ruleId: elementCPSOFHR.ruleId,
+                                value: elementCPSOFHR.ruleId,
+                                label: hideData ? hideData.title : ""
                             };
                             tempCuProOpHR.push(temp);
                         })));
@@ -959,10 +944,11 @@ class CustomProductRepo {
                             where: { optionId: elementCPO.id },
                         });
                         yield Promise.all(subOptionHideRuleData.map((elementCPSOFHR) => __awaiter(this, void 0, void 0, function* () {
+                            const hideData = yield SubOption_1.SubOption.findOne({ where: { id: elementCPSOFHR.ruleId } });
                             const temp = {
                                 id: elementCPSOFHR.id,
-                                optionId: elementCPSOFHR.optionId,
-                                ruleId: elementCPSOFHR.ruleId,
+                                value: elementCPSOFHR.ruleId,
+                                label: hideData ? hideData.title : ""
                             };
                             tempCuProOpHR.push(temp);
                         })));
@@ -1114,10 +1100,11 @@ class CustomProductRepo {
                             where: { optionId: elementCPO.id },
                         });
                         yield Promise.all(subOptionHideRuleData.map((elementCPSOFHR) => __awaiter(this, void 0, void 0, function* () {
+                            const hideData = yield SubOption_1.SubOption.findOne({ where: { id: elementCPSOFHR.ruleId } });
                             const temp = {
                                 id: elementCPSOFHR.id,
-                                optionId: elementCPSOFHR.optionId,
-                                ruleId: elementCPSOFHR.ruleId,
+                                value: elementCPSOFHR.ruleId,
+                                label: hideData ? hideData.title : ""
                             };
                             tempCuProOpHR.push(temp);
                         })));
@@ -1892,10 +1879,11 @@ class CustomProductRepo {
                         where: { optionId: elementCPO.id },
                     });
                     yield Promise.all(subOptionHideRuleData.map((elementCPSOFHR) => __awaiter(this, void 0, void 0, function* () {
+                        const hideData = yield SubOption_1.SubOption.findOne({ where: { id: elementCPSOFHR.ruleId } });
                         const temp = {
                             id: elementCPSOFHR.id,
-                            optionId: elementCPSOFHR.optionId,
-                            ruleId: elementCPSOFHR.ruleId,
+                            value: elementCPSOFHR.ruleId,
+                            label: hideData ? hideData.title : ""
                         };
                         tempCuProOpHR.push(temp);
                     })));
@@ -2025,10 +2013,11 @@ class CustomProductRepo {
                             where: { optionId: elementCPO.id },
                         });
                         yield Promise.all(subOptionHideRuleData.map((elementCPSOFHR) => __awaiter(this, void 0, void 0, function* () {
+                            const hideData = yield SubOption_1.SubOption.findOne({ where: { id: elementCPSOFHR.ruleId } });
                             const temp = {
                                 id: elementCPSOFHR.id,
-                                optionId: elementCPSOFHR.optionId,
-                                ruleId: elementCPSOFHR.ruleId,
+                                value: elementCPSOFHR.ruleId,
+                                label: hideData ? hideData.title : ""
                             };
                             tempCuProOpHR.push(temp);
                         })));
