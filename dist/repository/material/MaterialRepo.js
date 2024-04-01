@@ -498,5 +498,35 @@ class MaterialRepo {
             }
         });
     }
+    getRowMaterialList() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = yield RowMaterial_1.RowMaterial.findAll();
+                const Wlist = [];
+                const tempModel = {
+                    id: 0,
+                    name: "Fabric",
+                    customId: "",
+                };
+                if (!result || result.length === 0) {
+                    //throw new Error("Data not found!");
+                    return Wlist;
+                }
+                yield Promise.all(result.map((element) => __awaiter(this, void 0, void 0, function* () {
+                    const tempModel = {
+                        id: element.id,
+                        name: element.name,
+                        customId: element.customId,
+                    };
+                    Wlist.push(tempModel);
+                })));
+                Wlist.push(tempModel);
+                return Wlist;
+            }
+            catch (err) {
+                throw new Error("Failed to get Row Material! | " + err.message);
+            }
+        });
+    }
 }
 exports.MaterialRepo = MaterialRepo;

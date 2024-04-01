@@ -29,6 +29,7 @@ class MaterialRouts extends BaseRouter_1.default {
         this.router.patch("/rowmaterial/update/:id", MaterialController_1.default.updateRowMaterial);
         this.router.delete("/rowmaterial/delete/:id", MaterialController_1.default.deleteRowMaterial);
         this.router.get("/rowmaterial/getRelatedRowmaterial/:id", MaterialController_1.default.getRelatedRowmaterial);
+        this.router.get("/stockitem/list/", MaterialController_1.default.getRowMaterialList);
     }
 }
 exports.default = new MaterialRouts().router;

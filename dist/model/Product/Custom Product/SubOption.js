@@ -36,8 +36,8 @@ __decorate([
     __metadata("design:type", Number)
 ], SubOption.prototype, "price", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.BOOLEAN, field: "viewStockItem" }),
-    __metadata("design:type", Boolean)
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.JSON, field: "viewStockItem" }),
+    __metadata("design:type", Array)
 ], SubOption.prototype, "viewStockItem", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.TEXT, field: "description" }),
