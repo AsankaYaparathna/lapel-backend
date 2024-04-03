@@ -22,6 +22,7 @@ class MaterialRouts extends BaseRouter_1.default {
         this.router.get("/fabric/getRelatedFabric/:id", MaterialController_1.default.getRelatedFabric);
         this.router.patch("/fabric/update/:id", MaterialController_1.default.updateFabric);
         this.router.delete("/fabric/delete/:id", MaterialController_1.default.deleteFabric);
+        this.router.get("/fabric/search/:id", MaterialController_1.default.fabricSearch);
         //Row Material
         this.router.post("/rowmaterial/create/", MaterialController_1.default.createRowMaterial);
         this.router.get("/rowmaterial/get/", MaterialController_1.default.getRowMaterial);
@@ -30,6 +31,7 @@ class MaterialRouts extends BaseRouter_1.default {
         this.router.delete("/rowmaterial/delete/:id", MaterialController_1.default.deleteRowMaterial);
         this.router.get("/rowmaterial/getRelatedRowmaterial/:id", MaterialController_1.default.getRelatedRowmaterial);
         this.router.get("/stockitem/list/", MaterialController_1.default.getRowMaterialList);
+        this.router.get("/rowmaterial/search/:id", MaterialController_1.default.rowMaterialSearch);
     }
 }
 exports.default = new MaterialRouts().router;

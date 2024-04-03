@@ -53,6 +53,20 @@ class MaterialController {
             }
         });
     }
+    fabricSearch(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const id = req.params["id"];
+                const modal = yield new FabricRepo_1.FabricRepo().fabricSearch(id);
+                res
+                    .status(200)
+                    .json({ status: true, message: "Successfully!", data: modal });
+            }
+            catch (err) {
+                res.status(400).json({ status: false, message: "" + err, data: null });
+            }
+        });
+    }
     getRelatedFabric(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -126,6 +140,20 @@ class MaterialController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const modal = yield new MaterialRepo_1.MaterialRepo().get();
+                res
+                    .status(200)
+                    .json({ status: true, message: "Successfully!", data: modal });
+            }
+            catch (err) {
+                res.status(400).json({ status: false, message: "" + err, data: null });
+            }
+        });
+    }
+    rowMaterialSearch(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const id = req.params["id"];
+                const modal = yield new MaterialRepo_1.MaterialRepo().rowMaterialSearch(id);
                 res
                     .status(200)
                     .json({ status: true, message: "Successfully!", data: modal });

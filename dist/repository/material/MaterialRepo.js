@@ -348,6 +348,81 @@ class MaterialRepo {
             }
         });
     }
+    rowMaterialSearch(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                //const result = await RowMaterial.findAll({ where: { id: id } });
+                const result = yield RowMaterial_1.RowMaterial.findAll({ where: { [sequelize_1.Op.or]: [
+                            { name: { [sequelize_1.Op.like]: `%${id}%` } },
+                            { customId: { [sequelize_1.Op.like]: `%${id}%` } }
+                        ] } });
+                if (!result || result.length === 0) {
+                    throw new Error("Data not found!");
+                }
+                const Wlist = [];
+                yield Promise.all(result.map((element) => __awaiter(this, void 0, void 0, function* () {
+                    const stocData = (yield MaterialStock_1.MaterialStock.findAll({
+                        where: { customId: element.customId },
+                    }));
+                    const qrData = (yield Images_1.Image.findOne({
+                        where: { id: element.qr },
+                    }));
+                    const wimgList = (yield RowMaterialImages_1.RowMaterialImages.findAll({
+                        where: { rowMaterialId: element.id },
+                    }));
+                    let imgList = [];
+                    yield Promise.all(wimgList.map((imgElement) => __awaiter(this, void 0, void 0, function* () {
+                        const img = (yield Images_1.Image.findOne({
+                            where: { id: imgElement.imageId },
+                        }));
+                        imgList.push(img);
+                    })));
+                    const relatedRowMat = (yield RelatedRowMaterial_1.RelatedRowMaterial.findAll({
+                        where: { rowMaterialId: element.id },
+                    }));
+                    const costData = (yield Cost_1.Cost.findOne({
+                        where: { customId: element.customId },
+                    }));
+                    const supplierData = (yield Supplier_1.Supplier.findOne({
+                        where: { id: element.supplierId },
+                    }));
+                    const categoryData = (yield Category_1.Category.findOne({
+                        where: { id: element.categoryId },
+                    }));
+                    const subCategoryData = (yield SubCategory_1.SubCategory.findOne({
+                        where: { id: element.subCategoryId },
+                    }));
+                    const tempModel = {
+                        id: element.id,
+                        name: element.name,
+                        customId: element.customId,
+                        description: element.description,
+                        information: element.information,
+                        stockData: stocData,
+                        category: categoryData,
+                        subCategory: subCategoryData,
+                        unitTypeId: element.unitTypeId,
+                        qr: qrData,
+                        imageList: imgList,
+                        relatedRowMaterial: relatedRowMat,
+                        levelOfSafty: element.levelOfSafty,
+                        discount: element.discount,
+                        stockAlert: element.stockAlert,
+                        featured: element.featured,
+                        live: element.live,
+                        stockMinus: element.stockMinus,
+                        supplierId: supplierData,
+                        cost: costData,
+                    };
+                    Wlist.push(tempModel);
+                })));
+                return Wlist;
+            }
+            catch (err) {
+                throw new Error("Failed to get Row Material! | " + err.message);
+            }
+        });
+    }
     getRelatedRowmaterial(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
