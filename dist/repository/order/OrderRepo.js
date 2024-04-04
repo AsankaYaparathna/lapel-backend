@@ -105,7 +105,7 @@ class OrderRepo {
                         throw new Error("Package Element Data not found!");
                     }
                     yield Promise.all(pkgData.map((model2) => __awaiter(this, void 0, void 0, function* () {
-                        const customProduct = yield CustomProduct_1.CustomProduct.findOne({ where: { id: model2.customProdId } });
+                        const customProduct = yield CustomProduct_1.CustomProduct.findOne({ where: { id: model2.optionId } });
                         if (!customProduct) {
                             throw new Error("Custom Product Data not found!");
                         }
