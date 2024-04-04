@@ -176,6 +176,7 @@ class OrderRepo {
                 }
                 else {
                     newModel.deliveryMethod.deliveryDate = model.deliveryDate;
+                    newModel.deliveryDate = model.deliveryDate;
                     yield newModel.save();
                 }
                 return true;
