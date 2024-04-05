@@ -58,6 +58,18 @@ class ProductController {
             }
         });
     }
+    getCustomProductByName(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const id = req.params["id"];
+                const modal = yield new CustomProductRepo_1.CustomProductRepo().getCustomProductByName(id);
+                res.status(200).json({ status: true, message: "Successfully!", data: modal });
+            }
+            catch (err) {
+                res.status(400).json({ status: false, message: "" + err, data: null });
+            }
+        });
+    }
     updateCustomProduct(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -302,6 +314,27 @@ class ProductController {
                 const prodId = parseInt(req.params["prodId"], 10);
                 const opId = parseInt(req.params["opId"], 10);
                 const model = yield new CustomProductRepo_1.CustomProductRepo().getCustomProductOptionByProdIds(prodId, opId);
+                res.status(200).json({
+                    status: true,
+                    message: "Successfully!",
+                    data: model,
+                });
+            }
+            catch (err) {
+                res.status(400).json({
+                    status: false,
+                    message: "" + err,
+                    data: null,
+                });
+            }
+        });
+    }
+    getCustomProductOptionByProdName(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const prodId = req.params["prodId"];
+                const opId = parseInt(req.params["opId"], 10);
+                const model = yield new CustomProductRepo_1.CustomProductRepo().getCustomProductOptionByProdName(prodId, opId);
                 res.status(200).json({
                     status: true,
                     message: "Successfully!",
