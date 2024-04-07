@@ -39,19 +39,19 @@ class App {
     }
     routes() {
         this.app.route("/").get((req, res) => { res.send("Welcome to Lapel Home"); });
-        this.app.use("/api/v1/auth", AuthRouter_1.default);
-        this.app.use("/api/v1/user", UserRouts_1.default);
-        this.app.use("/api/v1/wearhouse", WearhouseRouts_1.default);
-        this.app.use("/api/v1/showroom", ShowroomRouts_1.default);
-        this.app.use("/api/v1/common", CommonRouts_1.default);
-        this.app.use("/api/v1/material", MaterialRouts_1.default);
-        this.app.use("/api/v1/stock", StockRouts_1.default);
-        this.app.use("/api/v1/admin", AdminRouter_1.default);
-        this.app.use("/api/v1/product", ProductRouts_1.default);
-        this.app.use("/api/v1/cart", CartRouts_1.default);
-        this.app.use("/api/v1/order", OrderRouts_1.default);
-        this.app.use("/api/v1/session", SessionRouter_1.default);
-        this.app.use("/api/v1/shop", ShopRouter_1.default);
+        this.app.use("/api/v1/auth", AuthRouter_1.default); //02
+        this.app.use("/api/v1/user", UserRouts_1.default); //65
+        this.app.use("/api/v1/wearhouse", WearhouseRouts_1.default); //05
+        this.app.use("/api/v1/showroom", ShowroomRouts_1.default); //05
+        this.app.use("/api/v1/common", CommonRouts_1.default); //41
+        this.app.use("/api/v1/material", MaterialRouts_1.default); //16
+        this.app.use("/api/v1/stock", StockRouts_1.default); //02
+        this.app.use("/api/v1/admin", AdminRouter_1.default); //02
+        this.app.use("/api/v1/product", ProductRouts_1.default); //30
+        this.app.use("/api/v1/cart", CartRouts_1.default); //08
+        this.app.use("/api/v1/order", OrderRouts_1.default); //14
+        this.app.use("/api/v1/session", SessionRouter_1.default); //02
+        this.app.use("/api/v1/shop", ShopRouter_1.default); //11
     }
 }
 const port = 8000;

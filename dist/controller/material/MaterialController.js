@@ -180,9 +180,7 @@ class MaterialController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const modal = yield new MaterialRepo_1.MaterialRepo().getRowMaterialList();
-                res
-                    .status(200)
-                    .json({ status: true, message: "Successfully!", data: modal });
+                res.status(200).json({ status: true, message: "Successfully!", data: modal });
             }
             catch (err) {
                 res.status(400).json({ status: false, message: "" + err, data: null });

@@ -74,6 +74,11 @@ class AuthController {
     }
     authenticateToken(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
+            const reqUrl = req.protocol + '://' + req.get('host');
+            const result = yield Auth_1.Auth.findOne({ where: { clienturl: reqUrl } });
+            if (!result) {
+                throw new Error("Authentication failed, Contact System Admin!");
+            }
             const token = req.headers["authorization"];
             const skey = process.env.JWT_SC_KEY || "";
             if (!token) {

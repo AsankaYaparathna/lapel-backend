@@ -578,20 +578,14 @@ class MaterialRepo {
             try {
                 const result = yield RowMaterial_1.RowMaterial.findAll();
                 const Wlist = [];
-                const tempModel = {
-                    id: 0,
-                    name: "Fabric",
-                    customId: "",
-                };
+                const tempModel = { value: 0, label: "Fabric" };
                 if (!result || result.length === 0) {
-                    //throw new Error("Data not found!");
                     return Wlist;
                 }
                 yield Promise.all(result.map((element) => __awaiter(this, void 0, void 0, function* () {
                     const tempModel = {
-                        id: element.id,
-                        name: element.name,
-                        customId: element.customId,
+                        value: element.id,
+                        label: element.name,
                     };
                     Wlist.push(tempModel);
                 })));
