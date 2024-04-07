@@ -17,6 +17,7 @@ const OptionHidenRule_1 = require("../../model/Product/Custom Product/OptionHide
 const SubOption_1 = require("../../model/Product/Custom Product/SubOption");
 const SubOptionHidenRule_1 = require("../../model/Product/Custom Product/SubOptionHidenRule");
 const SubOptionFabric_1 = require("../../model/Product/Custom Product/SubOptionFabric");
+const UnitType_1 = require("../../model/Common/UnitType");
 class CustomProductRepo {
     create(model) {
         var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w;
@@ -775,12 +776,13 @@ class CustomProductRepo {
                             const tempStockData = [];
                             yield Promise.all(dbStockItem.map((elementDBStock) => __awaiter(this, void 0, void 0, function* () {
                                 const subOptionDataName = yield SubOption_1.SubOption.findOne({ where: { id: elementDBStock.id } });
+                                const unitTypeName = yield UnitType_1.UnitType.findOne({ where: { id: elementDBStock.unitType } });
                                 if (subOptionDataName) {
                                     const tempSTData = {
                                         id: elementDBStock.id,
                                         name: subOptionDataName.title,
                                         qentity: elementDBStock.qentity,
-                                        unitType: elementDBStock.unitType,
+                                        unitType: unitTypeName ? unitTypeName.name : "",
                                     };
                                     tempStockData.push(tempSTData);
                                 }
@@ -789,7 +791,7 @@ class CustomProductRepo {
                                         id: elementDBStock.id,
                                         name: "Fabric",
                                         qentity: elementDBStock.qentity,
-                                        unitType: elementDBStock.unitType,
+                                        unitType: unitTypeName ? unitTypeName.name : "",
                                     };
                                     tempStockData.push(tempSTData);
                                 }
@@ -936,12 +938,13 @@ class CustomProductRepo {
                             const tempStockData = [];
                             yield Promise.all(dbStockItem.map((elementDBStock) => __awaiter(this, void 0, void 0, function* () {
                                 const subOptionDataName = yield SubOption_1.SubOption.findOne({ where: { id: elementDBStock.id } });
+                                const unitTypeName = yield UnitType_1.UnitType.findOne({ where: { id: elementDBStock.unitType } });
                                 if (subOptionDataName) {
                                     const tempSTData = {
                                         id: elementDBStock.id,
                                         name: subOptionDataName.title,
                                         qentity: elementDBStock.qentity,
-                                        unitType: elementDBStock.unitType,
+                                        unitType: unitTypeName ? unitTypeName.name : "",
                                     };
                                     tempStockData.push(tempSTData);
                                 }
@@ -950,7 +953,7 @@ class CustomProductRepo {
                                         id: elementDBStock.id,
                                         name: "Fabric",
                                         qentity: elementDBStock.qentity,
-                                        unitType: elementDBStock.unitType,
+                                        unitType: unitTypeName ? unitTypeName.name : "",
                                     };
                                     tempStockData.push(tempSTData);
                                 }
@@ -1113,12 +1116,13 @@ class CustomProductRepo {
                             const tempStockData = [];
                             yield Promise.all(dbStockItem.map((elementDBStock) => __awaiter(this, void 0, void 0, function* () {
                                 const subOptionDataName = yield SubOption_1.SubOption.findOne({ where: { id: elementDBStock.id } });
+                                const unitTypeName = yield UnitType_1.UnitType.findOne({ where: { id: elementDBStock.unitType } });
                                 if (subOptionDataName) {
                                     const tempSTData = {
                                         id: elementDBStock.id,
                                         name: subOptionDataName.title,
                                         qentity: elementDBStock.qentity,
-                                        unitType: elementDBStock.unitType,
+                                        unitType: unitTypeName ? unitTypeName.name : "",
                                     };
                                     tempStockData.push(tempSTData);
                                 }
@@ -1127,7 +1131,7 @@ class CustomProductRepo {
                                         id: elementDBStock.id,
                                         name: "Fabric",
                                         qentity: elementDBStock.qentity,
-                                        unitType: elementDBStock.unitType,
+                                        unitType: unitTypeName ? unitTypeName.name : "",
                                     };
                                     tempStockData.push(tempSTData);
                                 }
@@ -1290,12 +1294,13 @@ class CustomProductRepo {
                             const tempStockData = [];
                             yield Promise.all(dbStockItem.map((elementDBStock) => __awaiter(this, void 0, void 0, function* () {
                                 const subOptionDataName = yield SubOption_1.SubOption.findOne({ where: { id: elementDBStock.id } });
+                                const unitTypeName = yield UnitType_1.UnitType.findOne({ where: { id: elementDBStock.unitType } });
                                 if (subOptionDataName) {
                                     const tempSTData = {
                                         id: elementDBStock.id,
                                         name: subOptionDataName.title,
                                         qentity: elementDBStock.qentity,
-                                        unitType: elementDBStock.unitType,
+                                        unitType: unitTypeName ? unitTypeName.name : "",
                                     };
                                     tempStockData.push(tempSTData);
                                 }
@@ -1304,7 +1309,7 @@ class CustomProductRepo {
                                         id: elementDBStock.id,
                                         name: "Fabric",
                                         qentity: elementDBStock.qentity,
-                                        unitType: elementDBStock.unitType,
+                                        unitType: unitTypeName ? unitTypeName.name : "",
                                     };
                                     tempStockData.push(tempSTData);
                                 }
@@ -1470,12 +1475,13 @@ class CustomProductRepo {
                 const tempStockData = [];
                 yield Promise.all(dbStockItem.map((elementDBStock) => __awaiter(this, void 0, void 0, function* () {
                     const subOptionDataName = yield SubOption_1.SubOption.findOne({ where: { id: elementDBStock.id } });
+                    const unitTypeName = yield UnitType_1.UnitType.findOne({ where: { id: elementDBStock.unitType } });
                     if (subOptionDataName) {
                         const tempSTData = {
                             id: elementDBStock.id,
                             name: subOptionDataName.title,
                             qentity: elementDBStock.qentity,
-                            unitType: elementDBStock.unitType,
+                            unitType: unitTypeName ? unitTypeName.name : "",
                         };
                         tempStockData.push(tempSTData);
                     }
@@ -1484,7 +1490,7 @@ class CustomProductRepo {
                             id: elementDBStock.id,
                             name: "Fabric",
                             qentity: elementDBStock.qentity,
-                            unitType: elementDBStock.unitType,
+                            unitType: unitTypeName ? unitTypeName.name : "",
                         };
                         tempStockData.push(tempSTData);
                     }
@@ -2157,12 +2163,13 @@ class CustomProductRepo {
                         const tempStockData = [];
                         yield Promise.all(dbStockItem.map((elementDBStock) => __awaiter(this, void 0, void 0, function* () {
                             const subOptionDataName = yield SubOption_1.SubOption.findOne({ where: { id: elementDBStock.id } });
+                            const unitTypeName = yield UnitType_1.UnitType.findOne({ where: { id: elementDBStock.unitType } });
                             if (subOptionDataName) {
                                 const tempSTData = {
                                     id: elementDBStock.id,
                                     name: subOptionDataName.title,
                                     qentity: elementDBStock.qentity,
-                                    unitType: elementDBStock.unitType,
+                                    unitType: unitTypeName ? unitTypeName.name : "",
                                 };
                                 tempStockData.push(tempSTData);
                             }
@@ -2171,7 +2178,7 @@ class CustomProductRepo {
                                     id: elementDBStock.id,
                                     name: "Fabric",
                                     qentity: elementDBStock.qentity,
-                                    unitType: elementDBStock.unitType,
+                                    unitType: unitTypeName ? unitTypeName.name : "",
                                 };
                                 tempStockData.push(tempSTData);
                             }
@@ -2313,12 +2320,13 @@ class CustomProductRepo {
                             const tempStockData = [];
                             yield Promise.all(dbStockItem.map((elementDBStock) => __awaiter(this, void 0, void 0, function* () {
                                 const subOptionDataName = yield SubOption_1.SubOption.findOne({ where: { id: elementDBStock.id } });
+                                const unitTypeName = yield UnitType_1.UnitType.findOne({ where: { id: elementDBStock.unitType } });
                                 if (subOptionDataName) {
                                     const tempSTData = {
                                         id: elementDBStock.id,
                                         name: subOptionDataName.title,
                                         qentity: elementDBStock.qentity,
-                                        unitType: elementDBStock.unitType,
+                                        unitType: unitTypeName ? unitTypeName.name : "",
                                     };
                                     tempStockData.push(tempSTData);
                                 }
@@ -2327,7 +2335,7 @@ class CustomProductRepo {
                                         id: elementDBStock.id,
                                         name: "Fabric",
                                         qentity: elementDBStock.qentity,
-                                        unitType: elementDBStock.unitType,
+                                        unitType: unitTypeName ? unitTypeName.name : "",
                                     };
                                     tempStockData.push(tempSTData);
                                 }
@@ -2490,12 +2498,13 @@ class CustomProductRepo {
                             const tempStockData = [];
                             yield Promise.all(dbStockItem.map((elementDBStock) => __awaiter(this, void 0, void 0, function* () {
                                 const subOptionDataName = yield SubOption_1.SubOption.findOne({ where: { id: elementDBStock.id } });
+                                const unitTypeName = yield UnitType_1.UnitType.findOne({ where: { id: elementDBStock.unitType } });
                                 if (subOptionDataName) {
                                     const tempSTData = {
                                         id: elementDBStock.id,
                                         name: subOptionDataName.title,
                                         qentity: elementDBStock.qentity,
-                                        unitType: elementDBStock.unitType,
+                                        unitType: unitTypeName ? unitTypeName.name : "",
                                     };
                                     tempStockData.push(tempSTData);
                                 }
@@ -2504,7 +2513,7 @@ class CustomProductRepo {
                                         id: elementDBStock.id,
                                         name: "Fabric",
                                         qentity: elementDBStock.qentity,
-                                        unitType: elementDBStock.unitType,
+                                        unitType: unitTypeName ? unitTypeName.name : "",
                                     };
                                     tempStockData.push(tempSTData);
                                 }
