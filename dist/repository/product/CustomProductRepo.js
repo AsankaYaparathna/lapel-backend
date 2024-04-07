@@ -1511,17 +1511,13 @@ class CustomProductRepo {
     addOption(model) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const customProduct = yield CustomProduct_1.CustomProduct.findOne({
-                    where: { id: model.id },
-                });
+                const customProduct = yield CustomProduct_1.CustomProduct.findOne({ where: { id: model.id } });
                 if (!customProduct) {
                     throw new Error("Data Not Found!");
                 }
                 else {
                     const optionModel = model.option;
-                    const resultOption = yield CustomProductOption_1.CustomProductOption.findOne({
-                        where: { name: optionModel.name },
-                    });
+                    const resultOption = yield CustomProductOption_1.CustomProductOption.findOne({ where: { name: optionModel.name } });
                     const opModel = model.option;
                     if (resultOption) {
                         throw new Error("This option is already exists!");
@@ -1657,9 +1653,7 @@ class CustomProductRepo {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const optionModel = model.option;
-                const resultOption = yield CustomProductOption_1.CustomProductOption.findOne({
-                    where: { id: model.id },
-                });
+                const resultOption = yield CustomProductOption_1.CustomProductOption.findOne({ where: { id: model.id } });
                 if (!resultOption) {
                     throw new Error("Option Not Found!");
                 }
