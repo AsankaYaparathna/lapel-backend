@@ -581,5 +581,27 @@ class FabricRepo {
             }
         });
     }
+    getFabricList() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const result = yield Fabric_1.Fabric.findAll();
+                if (!result || result.length === 0) {
+                    throw new Error("Data not found!");
+                }
+                const fabricList = [];
+                yield Promise.all(result.map((element) => __awaiter(this, void 0, void 0, function* () {
+                    const tempModel = {
+                        value: element.id,
+                        label: element.name,
+                    };
+                    fabricList.push(tempModel);
+                })));
+                return fabricList;
+            }
+            catch (err) {
+                throw new Error("Failed to get Fabric! | " + err.message);
+            }
+        });
+    }
 }
 exports.FabricRepo = FabricRepo;

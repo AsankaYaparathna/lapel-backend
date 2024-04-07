@@ -23,6 +23,7 @@ class MaterialRouts extends BaseRouter_1.default {
         this.router.patch("/fabric/update/:id", MaterialController_1.default.updateFabric);
         this.router.delete("/fabric/delete/:id", MaterialController_1.default.deleteFabric);
         this.router.get("/fabric/search/:id", MaterialController_1.default.fabricSearch);
+        this.router.get("/fabric/get/list", MaterialController_1.default.getFabricList);
         //Row Material
         this.router.post("/rowmaterial/create/", MaterialController_1.default.createRowMaterial);
         this.router.get("/rowmaterial/get/", MaterialController_1.default.getRowMaterial);

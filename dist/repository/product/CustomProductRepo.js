@@ -771,11 +771,34 @@ class CustomProductRepo {
                                 };
                                 tempCuProSubOpHR.push(temp);
                             })));
+                            const dbStockItem = elementCPSO.viewStockItem;
+                            const tempStockData = [];
+                            yield Promise.all(dbStockItem.map((elementDBStock) => __awaiter(this, void 0, void 0, function* () {
+                                const subOptionDataName = yield SubOption_1.SubOption.findOne({ where: { id: elementDBStock.id } });
+                                if (subOptionDataName) {
+                                    const tempSTData = {
+                                        id: elementDBStock.id,
+                                        name: subOptionDataName.title,
+                                        qentity: elementDBStock.qentity,
+                                        unitType: elementDBStock.unitType,
+                                    };
+                                    tempStockData.push(tempSTData);
+                                }
+                                else if (elementDBStock.id === 0) {
+                                    const tempSTData = {
+                                        id: elementDBStock.id,
+                                        name: "Fabric",
+                                        qentity: elementDBStock.qentity,
+                                        unitType: elementDBStock.unitType,
+                                    };
+                                    tempStockData.push(tempSTData);
+                                }
+                            })));
                             const temp = {
                                 id: elementCPSO.id,
                                 title: elementCPSO.title,
                                 price: elementCPSO.price,
-                                viewStockItem: elementCPSO.viewStockItem,
+                                viewStockItem: tempStockData,
                                 description: elementCPSO.description,
                                 image: subimage,
                                 closeUpImage: subcloseUpImage,
@@ -909,11 +932,34 @@ class CustomProductRepo {
                                 };
                                 tempCuProSubOpHR.push(temp);
                             })));
+                            const dbStockItem = elementCPSO.viewStockItem;
+                            const tempStockData = [];
+                            yield Promise.all(dbStockItem.map((elementDBStock) => __awaiter(this, void 0, void 0, function* () {
+                                const subOptionDataName = yield SubOption_1.SubOption.findOne({ where: { id: elementDBStock.id } });
+                                if (subOptionDataName) {
+                                    const tempSTData = {
+                                        id: elementDBStock.id,
+                                        name: subOptionDataName.title,
+                                        qentity: elementDBStock.qentity,
+                                        unitType: elementDBStock.unitType,
+                                    };
+                                    tempStockData.push(tempSTData);
+                                }
+                                else if (elementDBStock.id === 0) {
+                                    const tempSTData = {
+                                        id: elementDBStock.id,
+                                        name: "Fabric",
+                                        qentity: elementDBStock.qentity,
+                                        unitType: elementDBStock.unitType,
+                                    };
+                                    tempStockData.push(tempSTData);
+                                }
+                            })));
                             const temp = {
                                 id: elementCPSO.id,
                                 title: elementCPSO.title,
                                 price: elementCPSO.price,
-                                viewStockItem: elementCPSO.viewStockItem,
+                                viewStockItem: tempStockData,
                                 description: elementCPSO.description,
                                 image: subimage,
                                 closeUpImage: subcloseUpImage,
@@ -1063,11 +1109,34 @@ class CustomProductRepo {
                                 };
                                 tempCuProSubOpHR.push(temp);
                             })));
+                            const dbStockItem = elementCPSO.viewStockItem;
+                            const tempStockData = [];
+                            yield Promise.all(dbStockItem.map((elementDBStock) => __awaiter(this, void 0, void 0, function* () {
+                                const subOptionDataName = yield SubOption_1.SubOption.findOne({ where: { id: elementDBStock.id } });
+                                if (subOptionDataName) {
+                                    const tempSTData = {
+                                        id: elementDBStock.id,
+                                        name: subOptionDataName.title,
+                                        qentity: elementDBStock.qentity,
+                                        unitType: elementDBStock.unitType,
+                                    };
+                                    tempStockData.push(tempSTData);
+                                }
+                                else if (elementDBStock.id === 0) {
+                                    const tempSTData = {
+                                        id: elementDBStock.id,
+                                        name: "Fabric",
+                                        qentity: elementDBStock.qentity,
+                                        unitType: elementDBStock.unitType,
+                                    };
+                                    tempStockData.push(tempSTData);
+                                }
+                            })));
                             const temp = {
                                 id: elementCPSO.id,
                                 title: elementCPSO.title,
                                 price: elementCPSO.price,
-                                viewStockItem: elementCPSO.viewStockItem,
+                                viewStockItem: tempStockData,
                                 description: elementCPSO.description,
                                 image: subimage,
                                 closeUpImage: subcloseUpImage,
@@ -1217,11 +1286,34 @@ class CustomProductRepo {
                                 };
                                 tempCuProSubOpHR.push(temp);
                             })));
+                            const dbStockItem = elementCPSO.viewStockItem;
+                            const tempStockData = [];
+                            yield Promise.all(dbStockItem.map((elementDBStock) => __awaiter(this, void 0, void 0, function* () {
+                                const subOptionDataName = yield SubOption_1.SubOption.findOne({ where: { id: elementDBStock.id } });
+                                if (subOptionDataName) {
+                                    const tempSTData = {
+                                        id: elementDBStock.id,
+                                        name: subOptionDataName.title,
+                                        qentity: elementDBStock.qentity,
+                                        unitType: elementDBStock.unitType,
+                                    };
+                                    tempStockData.push(tempSTData);
+                                }
+                                else if (elementDBStock.id === 0) {
+                                    const tempSTData = {
+                                        id: elementDBStock.id,
+                                        name: "Fabric",
+                                        qentity: elementDBStock.qentity,
+                                        unitType: elementDBStock.unitType,
+                                    };
+                                    tempStockData.push(tempSTData);
+                                }
+                            })));
                             const temp = {
                                 id: elementCPSO.id,
                                 title: elementCPSO.title,
                                 price: elementCPSO.price,
-                                viewStockItem: elementCPSO.viewStockItem,
+                                viewStockItem: tempStockData,
                                 description: elementCPSO.description,
                                 image: subimage,
                                 closeUpImage: subcloseUpImage,
@@ -1374,11 +1466,34 @@ class CustomProductRepo {
                     };
                     tempCuProSubOpHR.push(temp);
                 })));
+                const dbStockItem = subOptionData.viewStockItem;
+                const tempStockData = [];
+                yield Promise.all(dbStockItem.map((elementDBStock) => __awaiter(this, void 0, void 0, function* () {
+                    const subOptionDataName = yield SubOption_1.SubOption.findOne({ where: { id: elementDBStock.id } });
+                    if (subOptionDataName) {
+                        const tempSTData = {
+                            id: elementDBStock.id,
+                            name: subOptionDataName.title,
+                            qentity: elementDBStock.qentity,
+                            unitType: elementDBStock.unitType,
+                        };
+                        tempStockData.push(tempSTData);
+                    }
+                    else if (elementDBStock.id === 0) {
+                        const tempSTData = {
+                            id: elementDBStock.id,
+                            name: "Fabric",
+                            qentity: elementDBStock.qentity,
+                            unitType: elementDBStock.unitType,
+                        };
+                        tempStockData.push(tempSTData);
+                    }
+                })));
                 const temp = {
                     id: subOptionData.id,
                     title: subOptionData.title,
                     price: subOptionData.price,
-                    viewStockItem: subOptionData.viewStockItem,
+                    viewStockItem: tempStockData,
                     description: subOptionData.description,
                     image: subimage,
                     closeUpImage: subcloseUpImage,
@@ -2044,11 +2159,34 @@ class CustomProductRepo {
                             };
                             tempCuProSubOpHR.push(temp);
                         })));
+                        const dbStockItem = elementCPSO.viewStockItem;
+                        const tempStockData = [];
+                        yield Promise.all(dbStockItem.map((elementDBStock) => __awaiter(this, void 0, void 0, function* () {
+                            const subOptionDataName = yield SubOption_1.SubOption.findOne({ where: { id: elementDBStock.id } });
+                            if (subOptionDataName) {
+                                const tempSTData = {
+                                    id: elementDBStock.id,
+                                    name: subOptionDataName.title,
+                                    qentity: elementDBStock.qentity,
+                                    unitType: elementDBStock.unitType,
+                                };
+                                tempStockData.push(tempSTData);
+                            }
+                            else if (elementDBStock.id === 0) {
+                                const tempSTData = {
+                                    id: elementDBStock.id,
+                                    name: "Fabric",
+                                    qentity: elementDBStock.qentity,
+                                    unitType: elementDBStock.unitType,
+                                };
+                                tempStockData.push(tempSTData);
+                            }
+                        })));
                         const temp = {
                             id: elementCPSO.id,
                             title: elementCPSO.title,
                             price: elementCPSO.price,
-                            viewStockItem: elementCPSO.viewStockItem,
+                            viewStockItem: tempStockData,
                             description: elementCPSO.description,
                             image: subimage,
                             closeUpImage: subcloseUpImage,
@@ -2177,11 +2315,34 @@ class CustomProductRepo {
                                 };
                                 tempCuProSubOpHR.push(temp);
                             })));
+                            const dbStockItem = elementCPSO.viewStockItem;
+                            const tempStockData = [];
+                            yield Promise.all(dbStockItem.map((elementDBStock) => __awaiter(this, void 0, void 0, function* () {
+                                const subOptionDataName = yield SubOption_1.SubOption.findOne({ where: { id: elementDBStock.id } });
+                                if (subOptionDataName) {
+                                    const tempSTData = {
+                                        id: elementDBStock.id,
+                                        name: subOptionDataName.title,
+                                        qentity: elementDBStock.qentity,
+                                        unitType: elementDBStock.unitType,
+                                    };
+                                    tempStockData.push(tempSTData);
+                                }
+                                else if (elementDBStock.id === 0) {
+                                    const tempSTData = {
+                                        id: elementDBStock.id,
+                                        name: "Fabric",
+                                        qentity: elementDBStock.qentity,
+                                        unitType: elementDBStock.unitType,
+                                    };
+                                    tempStockData.push(tempSTData);
+                                }
+                            })));
                             const temp = {
                                 id: elementCPSO.id,
                                 title: elementCPSO.title,
                                 price: elementCPSO.price,
-                                viewStockItem: elementCPSO.viewStockItem,
+                                viewStockItem: tempStockData,
                                 description: elementCPSO.description,
                                 image: subimage,
                                 closeUpImage: subcloseUpImage,
@@ -2331,11 +2492,34 @@ class CustomProductRepo {
                                 };
                                 tempCuProSubOpHR.push(temp);
                             })));
+                            const dbStockItem = elementCPSO.viewStockItem;
+                            const tempStockData = [];
+                            yield Promise.all(dbStockItem.map((elementDBStock) => __awaiter(this, void 0, void 0, function* () {
+                                const subOptionDataName = yield SubOption_1.SubOption.findOne({ where: { id: elementDBStock.id } });
+                                if (subOptionDataName) {
+                                    const tempSTData = {
+                                        id: elementDBStock.id,
+                                        name: subOptionDataName.title,
+                                        qentity: elementDBStock.qentity,
+                                        unitType: elementDBStock.unitType,
+                                    };
+                                    tempStockData.push(tempSTData);
+                                }
+                                else if (elementDBStock.id === 0) {
+                                    const tempSTData = {
+                                        id: elementDBStock.id,
+                                        name: "Fabric",
+                                        qentity: elementDBStock.qentity,
+                                        unitType: elementDBStock.unitType,
+                                    };
+                                    tempStockData.push(tempSTData);
+                                }
+                            })));
                             const temp = {
                                 id: elementCPSO.id,
                                 title: elementCPSO.title,
                                 price: elementCPSO.price,
-                                viewStockItem: elementCPSO.viewStockItem,
+                                viewStockItem: tempStockData,
                                 description: elementCPSO.description,
                                 image: subimage,
                                 closeUpImage: subcloseUpImage,
