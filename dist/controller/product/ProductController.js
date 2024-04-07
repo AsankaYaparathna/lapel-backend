@@ -187,12 +187,54 @@ class ProductController {
             }
         });
     }
+    updateCustomProductOptionBackViewByName(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const modal = req.body;
+                modal.name = req.params["id"];
+                const user = yield new CustomProductRepo_1.CustomProductRepo().updateCustomProductOptionBackViewByName(modal);
+                res.status(200).json({
+                    status: user ? true : false,
+                    message: user ? "Successfully!" : "Data Not Found!",
+                    data: user ? modal : null,
+                });
+            }
+            catch (err) {
+                res.status(400).json({
+                    status: false,
+                    message: "" + err,
+                    data: null,
+                });
+            }
+        });
+    }
     updateCustomProductOptionFrontView(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const modal = req.body;
                 modal.customProductId = parseInt(req.params["id"], 10);
                 const user = yield new CustomProductRepo_1.CustomProductRepo().updateCustomProductOptionFrontView(modal);
+                res.status(200).json({
+                    status: user ? true : false,
+                    message: user ? "Successfully!" : "Data Not Found!",
+                    data: user ? modal : null,
+                });
+            }
+            catch (err) {
+                res.status(400).json({
+                    status: false,
+                    message: "" + err,
+                    data: null,
+                });
+            }
+        });
+    }
+    updateCustomProductOptionFrontViewByName(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const modal = req.body;
+                modal.name = req.params["id"];
+                const user = yield new CustomProductRepo_1.CustomProductRepo().updateCustomProductOptionFrontViewByName(modal);
                 res.status(200).json({
                     status: user ? true : false,
                     message: user ? "Successfully!" : "Data Not Found!",

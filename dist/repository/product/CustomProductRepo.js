@@ -1872,9 +1872,57 @@ class CustomProductRepo {
             }
         });
     }
+    updateCustomProductOptionFrontViewByName(model) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const prodName = model.name;
+                const resultProduct = yield CustomProduct_1.CustomProduct.findOne({ where: { name: prodName }, });
+                if (!resultProduct) {
+                    throw new Error("Custom Product Not Found!");
+                }
+                const modelData = model;
+                yield modelData.forEach((element) => __awaiter(this, void 0, void 0, function* () {
+                    const resultOption = yield CustomProductOption_1.CustomProductOption.findOne({ where: { id: element.id }, });
+                    if (!resultOption) {
+                        throw new Error("Option Not Found!");
+                    }
+                    resultOption.frontViewOrder = element.frontViewOrder;
+                    yield resultOption.save();
+                }));
+                return true;
+            }
+            catch (err) {
+                throw new Error("Failed to update Option front view order! | " + err.message);
+            }
+        });
+    }
     updateCustomProductOptionBackView(model) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                const modelData = model;
+                yield modelData.forEach((element) => __awaiter(this, void 0, void 0, function* () {
+                    const resultOption = yield CustomProductOption_1.CustomProductOption.findOne({ where: { id: element.id }, });
+                    if (!resultOption) {
+                        throw new Error("Option Not Found!");
+                    }
+                    resultOption.backViewOrder = element.backViewOrder;
+                    yield resultOption.save();
+                }));
+                return true;
+            }
+            catch (err) {
+                throw new Error("Failed to update Option back view order! | " + err.message);
+            }
+        });
+    }
+    updateCustomProductOptionBackViewByName(model) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const prodName = model.name;
+                const resultProduct = yield CustomProduct_1.CustomProduct.findOne({ where: { name: prodName }, });
+                if (!resultProduct) {
+                    throw new Error("Custom Product Not Found!");
+                }
                 const modelData = model;
                 yield modelData.forEach((element) => __awaiter(this, void 0, void 0, function* () {
                     const resultOption = yield CustomProductOption_1.CustomProductOption.findOne({ where: { id: element.id }, });
