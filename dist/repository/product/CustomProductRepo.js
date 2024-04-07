@@ -781,7 +781,7 @@ class CustomProductRepo {
                                     const tempSTData = {
                                         id: elementDBStock.id,
                                         name: subOptionDataName.title,
-                                        qentity: elementDBStock.qentity,
+                                        quentity: elementDBStock.qentity,
                                         unitType: unitTypeName ? unitTypeName.name : "",
                                     };
                                     tempStockData.push(tempSTData);
@@ -790,7 +790,7 @@ class CustomProductRepo {
                                     const tempSTData = {
                                         id: elementDBStock.id,
                                         name: "Fabric",
-                                        qentity: elementDBStock.qentity,
+                                        quentity: elementDBStock.qentity,
                                         unitType: unitTypeName ? unitTypeName.name : "",
                                     };
                                     tempStockData.push(tempSTData);
@@ -943,7 +943,7 @@ class CustomProductRepo {
                                     const tempSTData = {
                                         id: elementDBStock.id,
                                         name: subOptionDataName.title,
-                                        qentity: elementDBStock.qentity,
+                                        quentity: elementDBStock.qentity,
                                         unitType: unitTypeName ? unitTypeName.name : "",
                                     };
                                     tempStockData.push(tempSTData);
@@ -952,7 +952,7 @@ class CustomProductRepo {
                                     const tempSTData = {
                                         id: elementDBStock.id,
                                         name: "Fabric",
-                                        qentity: elementDBStock.qentity,
+                                        quentity: elementDBStock.qentity,
                                         unitType: unitTypeName ? unitTypeName.name : "",
                                     };
                                     tempStockData.push(tempSTData);
@@ -1121,7 +1121,7 @@ class CustomProductRepo {
                                     const tempSTData = {
                                         id: elementDBStock.id,
                                         name: subOptionDataName.title,
-                                        qentity: elementDBStock.qentity,
+                                        quentity: elementDBStock.qentity,
                                         unitType: unitTypeName ? unitTypeName.name : "",
                                     };
                                     tempStockData.push(tempSTData);
@@ -1130,7 +1130,7 @@ class CustomProductRepo {
                                     const tempSTData = {
                                         id: elementDBStock.id,
                                         name: "Fabric",
-                                        qentity: elementDBStock.qentity,
+                                        quentity: elementDBStock.qentity,
                                         unitType: unitTypeName ? unitTypeName.name : "",
                                     };
                                     tempStockData.push(tempSTData);
@@ -1299,7 +1299,7 @@ class CustomProductRepo {
                                     const tempSTData = {
                                         id: elementDBStock.id,
                                         name: subOptionDataName.title,
-                                        qentity: elementDBStock.qentity,
+                                        quentity: elementDBStock.qentity,
                                         unitType: unitTypeName ? unitTypeName.name : "",
                                     };
                                     tempStockData.push(tempSTData);
@@ -1308,7 +1308,7 @@ class CustomProductRepo {
                                     const tempSTData = {
                                         id: elementDBStock.id,
                                         name: "Fabric",
-                                        qentity: elementDBStock.qentity,
+                                        quentity: elementDBStock.qentity,
                                         unitType: unitTypeName ? unitTypeName.name : "",
                                     };
                                     tempStockData.push(tempSTData);
@@ -1480,7 +1480,7 @@ class CustomProductRepo {
                         const tempSTData = {
                             id: elementDBStock.id,
                             name: subOptionDataName.title,
-                            qentity: elementDBStock.qentity,
+                            quentity: elementDBStock.qentity,
                             unitType: unitTypeName ? unitTypeName.name : "",
                         };
                         tempStockData.push(tempSTData);
@@ -1489,7 +1489,7 @@ class CustomProductRepo {
                         const tempSTData = {
                             id: elementDBStock.id,
                             name: "Fabric",
-                            qentity: elementDBStock.qentity,
+                            quentity: elementDBStock.qentity,
                             unitType: unitTypeName ? unitTypeName.name : "",
                         };
                         tempStockData.push(tempSTData);
@@ -2168,7 +2168,7 @@ class CustomProductRepo {
                                 const tempSTData = {
                                     id: elementDBStock.id,
                                     name: subOptionDataName.title,
-                                    qentity: elementDBStock.qentity,
+                                    quentity: elementDBStock.qentity,
                                     unitType: unitTypeName ? unitTypeName.name : "",
                                 };
                                 tempStockData.push(tempSTData);
@@ -2177,7 +2177,7 @@ class CustomProductRepo {
                                 const tempSTData = {
                                     id: elementDBStock.id,
                                     name: "Fabric",
-                                    qentity: elementDBStock.qentity,
+                                    quentity: elementDBStock.qentity,
                                     unitType: unitTypeName ? unitTypeName.name : "",
                                 };
                                 tempStockData.push(tempSTData);
@@ -2325,7 +2325,7 @@ class CustomProductRepo {
                                     const tempSTData = {
                                         id: elementDBStock.id,
                                         name: subOptionDataName.title,
-                                        qentity: elementDBStock.qentity,
+                                        quentity: elementDBStock.qentity,
                                         unitType: unitTypeName ? unitTypeName.name : "",
                                     };
                                     tempStockData.push(tempSTData);
@@ -2334,7 +2334,7 @@ class CustomProductRepo {
                                     const tempSTData = {
                                         id: elementDBStock.id,
                                         name: "Fabric",
-                                        qentity: elementDBStock.qentity,
+                                        quentity: elementDBStock.qentity,
                                         unitType: unitTypeName ? unitTypeName.name : "",
                                     };
                                     tempStockData.push(tempSTData);
@@ -2503,7 +2503,7 @@ class CustomProductRepo {
                                     const tempSTData = {
                                         id: elementDBStock.id,
                                         name: subOptionDataName.title,
-                                        qentity: elementDBStock.qentity,
+                                        quentity: elementDBStock.qentity,
                                         unitType: unitTypeName ? unitTypeName.name : "",
                                     };
                                     tempStockData.push(tempSTData);
@@ -2512,7 +2512,7 @@ class CustomProductRepo {
                                     const tempSTData = {
                                         id: elementDBStock.id,
                                         name: "Fabric",
-                                        qentity: elementDBStock.qentity,
+                                        quentity: elementDBStock.qentity,
                                         unitType: unitTypeName ? unitTypeName.name : "",
                                     };
                                     tempStockData.push(tempSTData);
