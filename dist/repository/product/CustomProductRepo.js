@@ -661,14 +661,14 @@ class CustomProductRepo {
     delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const customProduct = yield CustomProduct_1.CustomProduct.findAll({ where: { id: id } });
+                const customProduct = yield CustomProduct_1.CustomProduct.findAll({ where: { id: id }, order: [['id', 'ASC']] });
                 if (!customProduct || customProduct.length === 0) {
                     throw new Error("Data not found!");
                 }
                 yield CustomProduct_1.CustomProduct.destroy({ where: { id: id } });
                 yield Promise.all(customProduct.map((elementCP) => __awaiter(this, void 0, void 0, function* () {
                     const optionData = yield CustomProductOption_1.CustomProductOption.findAll({
-                        where: { customProductId: elementCP.id },
+                        where: { customProductId: elementCP.id }, order: [['id', 'ASC']]
                     });
                     yield CustomProductOption_1.CustomProductOption.destroy({
                         where: { customProductId: elementCP.id },
@@ -679,7 +679,7 @@ class CustomProductRepo {
                             where: { optionId: elementCPO.id },
                         });
                         const subOptionData = yield SubOption_1.SubOption.findAll({
-                            where: { optionId: elementCPO.id },
+                            where: { optionId: elementCPO.id }, order: [['id', 'ASC']]
                         });
                         yield SubOption_1.SubOption.destroy({ where: { optionId: elementCPO.id } });
                         yield Promise.all(subOptionData.map((elementCPSO) => __awaiter(this, void 0, void 0, function* () {
@@ -691,7 +691,7 @@ class CustomProductRepo {
                                 where: { subOptionId: elementCPSO.id },
                             });
                             const subOptionFabData = yield SubOptionFabric_1.SubOptionFabric.findAll({
-                                where: { subOptionId: elementCPSO.id },
+                                where: { subOptionId: elementCPSO.id }, order: [['id', 'ASC']]
                             });
                             yield SubOptionFabric_1.SubOptionFabric.destroy({
                                 where: { subOptionId: elementCPSO.id },
@@ -722,22 +722,22 @@ class CustomProductRepo {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const tempCuProduct = [];
-                const customProduct = yield CustomProduct_1.CustomProduct.findAll({ where: { id: id } });
+                const customProduct = yield CustomProduct_1.CustomProduct.findAll({ where: { id: id }, order: [['id', 'ASC']] });
                 if (!customProduct || customProduct.length === 0) {
                     throw new Error("Data not found!");
                 }
                 yield Promise.all(customProduct.map((elementCP) => __awaiter(this, void 0, void 0, function* () {
                     const tempCuProOp = [];
-                    const optionData = yield CustomProductOption_1.CustomProductOption.findAll({ where: { customProductId: elementCP.id } });
+                    const optionData = yield CustomProductOption_1.CustomProductOption.findAll({ where: { customProductId: elementCP.id }, order: [['id', 'ASC']] });
                     yield Promise.all(optionData.map((elementCPO) => __awaiter(this, void 0, void 0, function* () {
                         const optionImage = (yield Images_1.Image.findOne({ where: { id: elementCPO.image } }));
                         const tempCuProSubOp = [];
-                        const subOptionData = yield SubOption_1.SubOption.findAll({ where: { optionId: elementCPO.id } });
+                        const subOptionData = yield SubOption_1.SubOption.findAll({ where: { optionId: elementCPO.id }, order: [['id', 'ASC']] });
                         yield Promise.all(subOptionData.map((elementCPSO) => __awaiter(this, void 0, void 0, function* () {
                             const subimage = (yield Images_1.Image.findOne({ where: { id: elementCPSO.image }, }));
                             const subcloseUpImage = (yield Images_1.Image.findOne({ where: { id: elementCPSO.closeUpImage }, }));
                             const tempCuProSubOpFab = [];
-                            const subOptionFabData = yield SubOptionFabric_1.SubOptionFabric.findAll({ where: { subOptionId: elementCPSO.id }, });
+                            const subOptionFabData = yield SubOptionFabric_1.SubOptionFabric.findAll({ where: { subOptionId: elementCPSO.id }, order: [['id', 'ASC']] });
                             yield Promise.all(subOptionFabData.map((elementCPSOF) => __awaiter(this, void 0, void 0, function* () {
                                 const front = (yield Images_1.Image.findOne({
                                     where: { id: elementCPSOF.front },
@@ -763,7 +763,7 @@ class CustomProductRepo {
                                 tempCuProSubOpFab.push(tempFab);
                             })));
                             const tempCuProSubOpHR = [];
-                            const subOptionHideRuleData = yield SubOptionHidenRule_1.SubOptionHidenRule.findAll({ where: { subOptionId: elementCPSO.id }, });
+                            const subOptionHideRuleData = yield SubOptionHidenRule_1.SubOptionHidenRule.findAll({ where: { subOptionId: elementCPSO.id }, order: [['id', 'ASC']] });
                             yield Promise.all(subOptionHideRuleData.map((elementCPSOFHR) => __awaiter(this, void 0, void 0, function* () {
                                 const temp = {
                                     id: elementCPSOFHR.id,
@@ -806,11 +806,12 @@ class CustomProductRepo {
                                 closeUpImage: subcloseUpImage,
                                 hideRules: tempCuProSubOpHR,
                                 fabric: tempCuProSubOpFab,
+                                order: elementCPSO.order,
                             };
                             tempCuProSubOp.push(temp);
                         })));
                         const tempCuProOpHR = [];
-                        const subOptionHideRuleData = yield OptionHidenRule_1.OptionHidenRule.findAll({ where: { optionId: elementCPO.id } });
+                        const subOptionHideRuleData = yield OptionHidenRule_1.OptionHidenRule.findAll({ where: { optionId: elementCPO.id }, order: [['id', 'ASC']] });
                         yield Promise.all(subOptionHideRuleData.map((elementCPSOFHR) => __awaiter(this, void 0, void 0, function* () {
                             const hideData = yield SubOption_1.SubOption.findOne({ where: { id: elementCPSOFHR.ruleId } });
                             const temp = {
@@ -884,22 +885,22 @@ class CustomProductRepo {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const tempCuProduct = [];
-                const customProduct = yield CustomProduct_1.CustomProduct.findAll({ where: { name: id } });
+                const customProduct = yield CustomProduct_1.CustomProduct.findAll({ where: { name: id }, order: [['id', 'ASC']] });
                 if (!customProduct || customProduct.length === 0) {
                     throw new Error("Data not found!");
                 }
                 yield Promise.all(customProduct.map((elementCP) => __awaiter(this, void 0, void 0, function* () {
                     const tempCuProOp = [];
-                    const optionData = yield CustomProductOption_1.CustomProductOption.findAll({ where: { customProductId: elementCP.id } });
+                    const optionData = yield CustomProductOption_1.CustomProductOption.findAll({ where: { customProductId: elementCP.id }, order: [['id', 'ASC']] });
                     yield Promise.all(optionData.map((elementCPO) => __awaiter(this, void 0, void 0, function* () {
                         const optionImage = (yield Images_1.Image.findOne({ where: { id: elementCPO.image } }));
                         const tempCuProSubOp = [];
-                        const subOptionData = yield SubOption_1.SubOption.findAll({ where: { optionId: elementCPO.id } });
+                        const subOptionData = yield SubOption_1.SubOption.findAll({ where: { optionId: elementCPO.id }, order: [['id', 'ASC']] });
                         yield Promise.all(subOptionData.map((elementCPSO) => __awaiter(this, void 0, void 0, function* () {
                             const subimage = (yield Images_1.Image.findOne({ where: { id: elementCPSO.image }, }));
                             const subcloseUpImage = (yield Images_1.Image.findOne({ where: { id: elementCPSO.closeUpImage }, }));
                             const tempCuProSubOpFab = [];
-                            const subOptionFabData = yield SubOptionFabric_1.SubOptionFabric.findAll({ where: { subOptionId: elementCPSO.id }, });
+                            const subOptionFabData = yield SubOptionFabric_1.SubOptionFabric.findAll({ where: { subOptionId: elementCPSO.id }, order: [['id', 'ASC']] });
                             yield Promise.all(subOptionFabData.map((elementCPSOF) => __awaiter(this, void 0, void 0, function* () {
                                 const front = (yield Images_1.Image.findOne({
                                     where: { id: elementCPSOF.front },
@@ -925,7 +926,7 @@ class CustomProductRepo {
                                 tempCuProSubOpFab.push(tempFab);
                             })));
                             const tempCuProSubOpHR = [];
-                            const subOptionHideRuleData = yield SubOptionHidenRule_1.SubOptionHidenRule.findAll({ where: { subOptionId: elementCPSO.id }, });
+                            const subOptionHideRuleData = yield SubOptionHidenRule_1.SubOptionHidenRule.findAll({ where: { subOptionId: elementCPSO.id }, order: [['id', 'ASC']] });
                             yield Promise.all(subOptionHideRuleData.map((elementCPSOFHR) => __awaiter(this, void 0, void 0, function* () {
                                 const temp = {
                                     id: elementCPSOFHR.id,
@@ -968,11 +969,12 @@ class CustomProductRepo {
                                 closeUpImage: subcloseUpImage,
                                 hideRules: tempCuProSubOpHR,
                                 fabric: tempCuProSubOpFab,
+                                order: elementCPSO.order,
                             };
                             tempCuProSubOp.push(temp);
                         })));
                         const tempCuProOpHR = [];
-                        const subOptionHideRuleData = yield OptionHidenRule_1.OptionHidenRule.findAll({ where: { optionId: elementCPO.id } });
+                        const subOptionHideRuleData = yield OptionHidenRule_1.OptionHidenRule.findAll({ where: { optionId: elementCPO.id }, order: [['id', 'ASC']] });
                         yield Promise.all(subOptionHideRuleData.map((elementCPSOFHR) => __awaiter(this, void 0, void 0, function* () {
                             const hideData = yield SubOption_1.SubOption.findOne({ where: { id: elementCPSOFHR.ruleId } });
                             const temp = {
@@ -1046,7 +1048,7 @@ class CustomProductRepo {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const tempCuProduct = [];
-                const customProduct = yield CustomProduct_1.CustomProduct.findAll({ where: { id: id } });
+                const customProduct = yield CustomProduct_1.CustomProduct.findAll({ where: { id: id }, order: [['id', 'ASC']] });
                 if (!customProduct || customProduct.length === 0) {
                     throw new Error("Data not found!");
                 }
@@ -1055,7 +1057,7 @@ class CustomProductRepo {
                     var styleV = typeName === "style";
                     var accentV = typeName === "accent";
                     const optionData = yield CustomProductOption_1.CustomProductOption.findAll({
-                        where: { customProductId: elementCP.id, style: styleV, accent: accentV }
+                        where: { customProductId: elementCP.id, style: styleV, accent: accentV }, order: [['id', 'ASC']]
                     });
                     yield Promise.all(optionData.map((elementCPO) => __awaiter(this, void 0, void 0, function* () {
                         const optionImage = (yield Images_1.Image.findOne({
@@ -1063,7 +1065,7 @@ class CustomProductRepo {
                         }));
                         const tempCuProSubOp = [];
                         const subOptionData = yield SubOption_1.SubOption.findAll({
-                            where: { optionId: elementCPO.id },
+                            where: { optionId: elementCPO.id }, order: [['id', 'ASC']]
                         });
                         yield Promise.all(subOptionData.map((elementCPSO) => __awaiter(this, void 0, void 0, function* () {
                             const subimage = (yield Images_1.Image.findOne({
@@ -1074,7 +1076,7 @@ class CustomProductRepo {
                             }));
                             const tempCuProSubOpFab = [];
                             const subOptionFabData = yield SubOptionFabric_1.SubOptionFabric.findAll({
-                                where: { subOptionId: elementCPSO.id },
+                                where: { subOptionId: elementCPSO.id }, order: [['id', 'ASC']]
                             });
                             yield Promise.all(subOptionFabData.map((elementCPSOF) => __awaiter(this, void 0, void 0, function* () {
                                 const front = (yield Images_1.Image.findOne({
@@ -1102,7 +1104,7 @@ class CustomProductRepo {
                             })));
                             const tempCuProSubOpHR = [];
                             const subOptionHideRuleData = yield SubOptionHidenRule_1.SubOptionHidenRule.findAll({
-                                where: { subOptionId: elementCPSO.id },
+                                where: { subOptionId: elementCPSO.id }, order: [['id', 'ASC']]
                             });
                             yield Promise.all(subOptionHideRuleData.map((elementCPSOFHR) => __awaiter(this, void 0, void 0, function* () {
                                 const temp = {
@@ -1146,12 +1148,13 @@ class CustomProductRepo {
                                 closeUpImage: subcloseUpImage,
                                 hideRules: tempCuProSubOpHR,
                                 fabric: tempCuProSubOpFab,
+                                order: elementCPSO.order,
                             };
                             tempCuProSubOp.push(temp);
                         })));
                         const tempCuProOpHR = [];
                         const subOptionHideRuleData = yield OptionHidenRule_1.OptionHidenRule.findAll({
-                            where: { optionId: elementCPO.id },
+                            where: { optionId: elementCPO.id }, order: [['id', 'ASC']]
                         });
                         yield Promise.all(subOptionHideRuleData.map((elementCPSOFHR) => __awaiter(this, void 0, void 0, function* () {
                             const hideData = yield SubOption_1.SubOption.findOne({ where: { id: elementCPSOFHR.ruleId } });
@@ -1233,7 +1236,7 @@ class CustomProductRepo {
                 yield Promise.all(customProduct.map((elementCP) => __awaiter(this, void 0, void 0, function* () {
                     const tempCuProOp = [];
                     const optionData = yield CustomProductOption_1.CustomProductOption.findAll({
-                        where: { customProductId: elementCP.id },
+                        where: { customProductId: elementCP.id }, order: [['id', 'ASC']]
                     });
                     yield Promise.all(optionData.map((elementCPO) => __awaiter(this, void 0, void 0, function* () {
                         const optionImage = (yield Images_1.Image.findOne({
@@ -1241,7 +1244,7 @@ class CustomProductRepo {
                         }));
                         const tempCuProSubOp = [];
                         const subOptionData = yield SubOption_1.SubOption.findAll({
-                            where: { optionId: elementCPO.id },
+                            where: { optionId: elementCPO.id }, order: [['id', 'ASC']]
                         });
                         yield Promise.all(subOptionData.map((elementCPSO) => __awaiter(this, void 0, void 0, function* () {
                             const subimage = (yield Images_1.Image.findOne({
@@ -1252,7 +1255,7 @@ class CustomProductRepo {
                             }));
                             const tempCuProSubOpFab = [];
                             const subOptionFabData = yield SubOptionFabric_1.SubOptionFabric.findAll({
-                                where: { subOptionId: elementCPSO.id },
+                                where: { subOptionId: elementCPSO.id }, order: [['id', 'ASC']]
                             });
                             yield Promise.all(subOptionFabData.map((elementCPSOF) => __awaiter(this, void 0, void 0, function* () {
                                 const front = (yield Images_1.Image.findOne({
@@ -1280,7 +1283,7 @@ class CustomProductRepo {
                             })));
                             const tempCuProSubOpHR = [];
                             const subOptionHideRuleData = yield SubOptionHidenRule_1.SubOptionHidenRule.findAll({
-                                where: { subOptionId: elementCPSO.id },
+                                where: { subOptionId: elementCPSO.id }, order: [['id', 'ASC']]
                             });
                             yield Promise.all(subOptionHideRuleData.map((elementCPSOFHR) => __awaiter(this, void 0, void 0, function* () {
                                 const temp = {
@@ -1330,7 +1333,7 @@ class CustomProductRepo {
                         })));
                         const tempCuProOpHR = [];
                         const subOptionHideRuleData = yield OptionHidenRule_1.OptionHidenRule.findAll({
-                            where: { optionId: elementCPO.id },
+                            where: { optionId: elementCPO.id }, order: [['id', 'ASC']]
                         });
                         yield Promise.all(subOptionHideRuleData.map((elementCPSOFHR) => __awaiter(this, void 0, void 0, function* () {
                             const hideData = yield SubOption_1.SubOption.findOne({ where: { id: elementCPSOFHR.ruleId } });
@@ -1433,7 +1436,7 @@ class CustomProductRepo {
                 }));
                 const tempCuProSubOpFab = [];
                 const subOptionFabData = yield SubOptionFabric_1.SubOptionFabric.findAll({
-                    where: { subOptionId: subOptionData.id },
+                    where: { subOptionId: subOptionData.id }, order: [['id', 'ASC']]
                 });
                 yield Promise.all(subOptionFabData.map((elementCPSOF) => __awaiter(this, void 0, void 0, function* () {
                     const front = (yield Images_1.Image.findOne({
@@ -1461,7 +1464,7 @@ class CustomProductRepo {
                 })));
                 const tempCuProSubOpHR = [];
                 const subOptionHideRuleData = yield SubOptionHidenRule_1.SubOptionHidenRule.findAll({
-                    where: { subOptionId: subOptionData.id },
+                    where: { subOptionId: subOptionData.id }, order: [['id', 'ASC']]
                 });
                 yield Promise.all(subOptionHideRuleData.map((elementCPSOFHR) => __awaiter(this, void 0, void 0, function* () {
                     const temp = {
@@ -1505,6 +1508,7 @@ class CustomProductRepo {
                     closeUpImage: subcloseUpImage,
                     hideRules: tempCuProSubOpHR,
                     fabric: tempCuProSubOpFab,
+                    order: subOptionData.order,
                 };
                 cuProSubOp.push(temp);
                 return yield cuProSubOp;
@@ -1700,7 +1704,7 @@ class CustomProductRepo {
                 const subOpModel = optionModel.subOptions;
                 //const subOption = subOpModel as SubOption[];
                 const subOption = yield SubOption_1.SubOption.findAll({
-                    where: { optionId: resultOption.id },
+                    where: { optionId: resultOption.id }, order: [['id', 'ASC']]
                 });
                 yield subOption.forEach((subElement) => __awaiter(this, void 0, void 0, function* () {
                     const resultSubOption = yield SubOption_1.SubOption.findOne({
@@ -1850,7 +1854,7 @@ class CustomProductRepo {
                         var k = 0;
                         //const subOptionFabric = subOptionModel.fabric as SubOptionFabric[];
                         const subOptionFabric = yield SubOptionFabric_1.SubOptionFabric.findAll({
-                            where: { subOptionId: resultSubOption.id },
+                            where: { subOptionId: resultSubOption.id }, order: [['id', 'ASC']]
                         });
                         yield subOptionFabric.forEach((fabElement) => __awaiter(this, void 0, void 0, function* () {
                             const subOptionFabricModel = subOptionModel.fabric[k];
@@ -2067,7 +2071,7 @@ class CustomProductRepo {
                 yield Images_1.Image.destroy({ where: { id: resultOption.image } });
                 yield OptionHidenRule_1.OptionHidenRule.destroy({ where: { optionId: resultOption.id } });
                 const subOption = yield SubOption_1.SubOption.findAll({
-                    where: { optionId: resultOption.id },
+                    where: { optionId: resultOption.id }, order: [['id', 'ASC']]
                 });
                 yield subOption.forEach((subElement) => __awaiter(this, void 0, void 0, function* () {
                     yield SubOption_1.SubOption.destroy({ where: { id: subElement.id } });
@@ -2077,7 +2081,7 @@ class CustomProductRepo {
                         where: { subOptionId: subElement.id },
                     });
                     const subOptionFabric = yield SubOptionFabric_1.SubOptionFabric.findAll({
-                        where: { subOptionId: subElement.id },
+                        where: { subOptionId: subElement.id }, order: [['id', 'ASC']]
                     });
                     yield subOptionFabric.forEach((fabElement) => __awaiter(this, void 0, void 0, function* () {
                         yield SubOptionFabric_1.SubOptionFabric.destroy({ where: { id: fabElement.id } });
@@ -2099,7 +2103,7 @@ class CustomProductRepo {
             try {
                 const tempCuProOp = [];
                 const optionData = yield CustomProductOption_1.CustomProductOption.findAll({
-                    where: { id: id },
+                    where: { id: id }, order: [['id', 'ASC']]
                 });
                 if (!optionData || optionData.length === 0) {
                     throw new Error("Option data not found!");
@@ -2110,7 +2114,7 @@ class CustomProductRepo {
                     }));
                     const tempCuProSubOp = [];
                     const subOptionData = yield SubOption_1.SubOption.findAll({
-                        where: { optionId: elementCPO.id },
+                        where: { optionId: elementCPO.id }, order: [['id', 'ASC']]
                     });
                     yield Promise.all(subOptionData.map((elementCPSO) => __awaiter(this, void 0, void 0, function* () {
                         const subimage = (yield Images_1.Image.findOne({
@@ -2121,7 +2125,7 @@ class CustomProductRepo {
                         }));
                         const tempCuProSubOpFab = [];
                         const subOptionFabData = yield SubOptionFabric_1.SubOptionFabric.findAll({
-                            where: { subOptionId: elementCPSO.id },
+                            where: { subOptionId: elementCPSO.id }, order: [['id', 'ASC']]
                         });
                         yield Promise.all(subOptionFabData.map((elementCPSOF) => __awaiter(this, void 0, void 0, function* () {
                             const front = (yield Images_1.Image.findOne({
@@ -2149,7 +2153,7 @@ class CustomProductRepo {
                         })));
                         const tempCuProSubOpHR = [];
                         const subOptionHideRuleData = yield SubOptionHidenRule_1.SubOptionHidenRule.findAll({
-                            where: { subOptionId: elementCPSO.id },
+                            where: { subOptionId: elementCPSO.id }, order: [['id', 'ASC']]
                         });
                         yield Promise.all(subOptionHideRuleData.map((elementCPSOFHR) => __awaiter(this, void 0, void 0, function* () {
                             const temp = {
@@ -2193,12 +2197,13 @@ class CustomProductRepo {
                             closeUpImage: subcloseUpImage,
                             hideRules: tempCuProSubOpHR,
                             fabric: tempCuProSubOpFab,
+                            order: elementCPSO.order,
                         };
                         tempCuProSubOp.push(temp);
                     })));
                     const tempCuProOpHR = [];
                     const subOptionHideRuleData = yield OptionHidenRule_1.OptionHidenRule.findAll({
-                        where: { optionId: elementCPO.id },
+                        where: { optionId: elementCPO.id }, order: [['id', 'ASC']]
                     });
                     yield Promise.all(subOptionHideRuleData.map((elementCPSOFHR) => __awaiter(this, void 0, void 0, function* () {
                         const hideData = yield SubOption_1.SubOption.findOne({ where: { id: elementCPSOFHR.ruleId } });
@@ -2237,7 +2242,7 @@ class CustomProductRepo {
     getCustomProductOptionByProdId(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const optionData = yield CustomProductOption_1.CustomProductOption.findAll({ where: { customProductId: id }, });
+                const optionData = yield CustomProductOption_1.CustomProductOption.findAll({ where: { customProductId: id }, order: [['id', 'ASC']] });
                 if (!optionData || optionData.length === 0) {
                     throw new Error("Option data not found!");
                 }
@@ -2252,14 +2257,14 @@ class CustomProductRepo {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const tempCuProduct = [];
-                const customProduct = yield CustomProduct_1.CustomProduct.findAll({ where: { id: prodId } });
+                const customProduct = yield CustomProduct_1.CustomProduct.findAll({ where: { id: prodId }, order: [['id', 'ASC']] });
                 if (!customProduct || customProduct.length === 0) {
                     throw new Error("Data not found!");
                 }
                 yield Promise.all(customProduct.map((elementCP) => __awaiter(this, void 0, void 0, function* () {
                     const tempCuProOp = [];
                     const optionData = yield CustomProductOption_1.CustomProductOption.findAll({
-                        where: { id: optionId },
+                        where: { id: optionId }, order: [['id', 'ASC']]
                     });
                     yield Promise.all(optionData.map((elementCPO) => __awaiter(this, void 0, void 0, function* () {
                         const optionImage = (yield Images_1.Image.findOne({
@@ -2267,7 +2272,7 @@ class CustomProductRepo {
                         }));
                         const tempCuProSubOp = [];
                         const subOptionData = yield SubOption_1.SubOption.findAll({
-                            where: { optionId: elementCPO.id },
+                            where: { optionId: elementCPO.id }, order: [['id', 'ASC']]
                         });
                         yield Promise.all(subOptionData.map((elementCPSO) => __awaiter(this, void 0, void 0, function* () {
                             const subimage = (yield Images_1.Image.findOne({
@@ -2278,7 +2283,7 @@ class CustomProductRepo {
                             }));
                             const tempCuProSubOpFab = [];
                             const subOptionFabData = yield SubOptionFabric_1.SubOptionFabric.findAll({
-                                where: { subOptionId: elementCPSO.id },
+                                where: { subOptionId: elementCPSO.id }, order: [['id', 'ASC']]
                             });
                             yield Promise.all(subOptionFabData.map((elementCPSOF) => __awaiter(this, void 0, void 0, function* () {
                                 const front = (yield Images_1.Image.findOne({
@@ -2306,7 +2311,7 @@ class CustomProductRepo {
                             })));
                             const tempCuProSubOpHR = [];
                             const subOptionHideRuleData = yield SubOptionHidenRule_1.SubOptionHidenRule.findAll({
-                                where: { subOptionId: elementCPSO.id },
+                                where: { subOptionId: elementCPSO.id }, order: [['id', 'ASC']]
                             });
                             yield Promise.all(subOptionHideRuleData.map((elementCPSOFHR) => __awaiter(this, void 0, void 0, function* () {
                                 const temp = {
@@ -2350,12 +2355,13 @@ class CustomProductRepo {
                                 closeUpImage: subcloseUpImage,
                                 hideRules: tempCuProSubOpHR,
                                 fabric: tempCuProSubOpFab,
+                                order: elementCPSO.order,
                             };
                             tempCuProSubOp.push(temp);
                         })));
                         const tempCuProOpHR = [];
                         const subOptionHideRuleData = yield OptionHidenRule_1.OptionHidenRule.findAll({
-                            where: { optionId: elementCPO.id },
+                            where: { optionId: elementCPO.id }, order: [['id', 'ASC']]
                         });
                         yield Promise.all(subOptionHideRuleData.map((elementCPSOFHR) => __awaiter(this, void 0, void 0, function* () {
                             const hideData = yield SubOption_1.SubOption.findOne({ where: { id: elementCPSOFHR.ruleId } });
@@ -2430,14 +2436,14 @@ class CustomProductRepo {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const tempCuProduct = [];
-                const customProduct = yield CustomProduct_1.CustomProduct.findAll({ where: { name: prodId } });
+                const customProduct = yield CustomProduct_1.CustomProduct.findAll({ where: { name: prodId }, order: [['id', 'ASC']] });
                 if (!customProduct || customProduct.length === 0) {
                     throw new Error("Data not found!");
                 }
                 yield Promise.all(customProduct.map((elementCP) => __awaiter(this, void 0, void 0, function* () {
                     const tempCuProOp = [];
                     const optionData = yield CustomProductOption_1.CustomProductOption.findAll({
-                        where: { id: optionId },
+                        where: { id: optionId }, order: [['id', 'ASC']]
                     });
                     yield Promise.all(optionData.map((elementCPO) => __awaiter(this, void 0, void 0, function* () {
                         const optionImage = (yield Images_1.Image.findOne({
@@ -2445,7 +2451,7 @@ class CustomProductRepo {
                         }));
                         const tempCuProSubOp = [];
                         const subOptionData = yield SubOption_1.SubOption.findAll({
-                            where: { optionId: elementCPO.id },
+                            where: { optionId: elementCPO.id }, order: [['id', 'ASC']]
                         });
                         yield Promise.all(subOptionData.map((elementCPSO) => __awaiter(this, void 0, void 0, function* () {
                             const subimage = (yield Images_1.Image.findOne({
@@ -2456,7 +2462,7 @@ class CustomProductRepo {
                             }));
                             const tempCuProSubOpFab = [];
                             const subOptionFabData = yield SubOptionFabric_1.SubOptionFabric.findAll({
-                                where: { subOptionId: elementCPSO.id },
+                                where: { subOptionId: elementCPSO.id }, order: [['id', 'ASC']]
                             });
                             yield Promise.all(subOptionFabData.map((elementCPSOF) => __awaiter(this, void 0, void 0, function* () {
                                 const front = (yield Images_1.Image.findOne({
@@ -2484,7 +2490,7 @@ class CustomProductRepo {
                             })));
                             const tempCuProSubOpHR = [];
                             const subOptionHideRuleData = yield SubOptionHidenRule_1.SubOptionHidenRule.findAll({
-                                where: { subOptionId: elementCPSO.id },
+                                where: { subOptionId: elementCPSO.id }, order: [['id', 'ASC']]
                             });
                             yield Promise.all(subOptionHideRuleData.map((elementCPSOFHR) => __awaiter(this, void 0, void 0, function* () {
                                 const temp = {
@@ -2528,12 +2534,13 @@ class CustomProductRepo {
                                 closeUpImage: subcloseUpImage,
                                 hideRules: tempCuProSubOpHR,
                                 fabric: tempCuProSubOpFab,
+                                order: elementCPSO.order,
                             };
                             tempCuProSubOp.push(temp);
                         })));
                         const tempCuProOpHR = [];
                         const subOptionHideRuleData = yield OptionHidenRule_1.OptionHidenRule.findAll({
-                            where: { optionId: elementCPO.id },
+                            where: { optionId: elementCPO.id }, order: [['id', 'ASC']]
                         });
                         yield Promise.all(subOptionHideRuleData.map((elementCPSOFHR) => __awaiter(this, void 0, void 0, function* () {
                             const hideData = yield SubOption_1.SubOption.findOne({ where: { id: elementCPSOFHR.ruleId } });
@@ -2609,14 +2616,14 @@ class CustomProductRepo {
             try {
                 const optionData = yield CustomProductOption_1.CustomProductOption.findAll({
                     where: { customProductId: id },
-                    attributes: ['id', 'name'],
+                    attributes: ['id', 'name'], order: [['id', 'ASC']]
                 });
                 if (!optionData) {
                     throw new Error("Option data not found!");
                 }
                 let tempOpData = [];
                 yield Promise.all(optionData.map((optionData) => __awaiter(this, void 0, void 0, function* () {
-                    const subOptionData = yield SubOption_1.SubOption.findAll({ where: { optionId: optionData.id }, attributes: ['id', 'title'] });
+                    const subOptionData = yield SubOption_1.SubOption.findAll({ where: { optionId: optionData.id }, attributes: ['id', 'title'], order: [['id', 'ASC']] });
                     if (!subOptionData) {
                         throw new Error("Sub Option data not found!");
                     }
@@ -2648,7 +2655,7 @@ class CustomProductRepo {
             try {
                 const subOptionData = yield SubOption_1.SubOption.findAll({
                     where: { optionId: id },
-                    attributes: ['id', 'title'],
+                    attributes: ['id', 'title'], order: [['id', 'ASC']]
                 });
                 if (!subOptionData) {
                     throw new Error("Sub Option data not found!");
