@@ -611,7 +611,7 @@ class CustomProductRepo {
                 }
             }
             catch (err) {
-                throw new Error("Failed to add Option! | " + err.message);
+                throw new Error("Failed to update Option! | " + err.message);
             }
         });
     }
