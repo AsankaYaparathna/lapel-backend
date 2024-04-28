@@ -30,8 +30,8 @@ __decorate([
     __metadata("design:type", String)
 ], CustomProductOption.prototype, "name", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.STRING, field: "image" }),
-    __metadata("design:type", String)
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.JSON, field: "image" }),
+    __metadata("design:type", Object)
 ], CustomProductOption.prototype, "image", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.BOOLEAN, field: "style" }),

@@ -35,20 +35,20 @@ __decorate([
     __metadata("design:type", String)
 ], SubOptionFabric.prototype, "name", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.STRING, field: "front" }),
-    __metadata("design:type", String)
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.JSON, field: "front" }),
+    __metadata("design:type", Object)
 ], SubOptionFabric.prototype, "front", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.STRING, field: "frontFull" }),
-    __metadata("design:type", String)
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.JSON, field: "frontFull" }),
+    __metadata("design:type", Object)
 ], SubOptionFabric.prototype, "frontFull", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.STRING, field: "back" }),
-    __metadata("design:type", String)
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.JSON, field: "back" }),
+    __metadata("design:type", Object)
 ], SubOptionFabric.prototype, "back", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.STRING, field: "backFull" }),
-    __metadata("design:type", String)
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.JSON, field: "backFull" }),
+    __metadata("design:type", Object)
 ], SubOptionFabric.prototype, "backFull", void 0);
 exports.SubOptionFabric = SubOptionFabric = __decorate([
     (0, sequelize_typescript_1.Table)({ tableName: "LAPEL_CUSTOM_PRODUCT_SUB_OPTION_FABRIC",

@@ -41,12 +41,12 @@ __decorate([
     __metadata("design:type", String)
 ], SubOption.prototype, "description", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.STRING, field: "image" }),
-    __metadata("design:type", String)
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.JSON, field: "image" }),
+    __metadata("design:type", Object)
 ], SubOption.prototype, "image", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.STRING, field: "closeUpImage" }),
-    __metadata("design:type", String)
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.JSON, field: "closeUpImage" }),
+    __metadata("design:type", Object)
 ], SubOption.prototype, "closeUpImage", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.JSON, field: "hideRules" }),

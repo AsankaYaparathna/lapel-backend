@@ -536,11 +536,12 @@ class CustomProductRepo {
                 }
                 optionModel.frontViewOrder = yield new CustomProductRepo().getFrontAndBackOrder("frontViewOrder", customProduct.id);
                 optionModel.backViewOrder = yield new CustomProductRepo().getFrontAndBackOrder("backViewOrder", customProduct.id);
-                const image = optionModel.image !== null ? yield cloudinary_1.v2.uploader.upload(optionModel.image.imageData.path) : null;
+                optionModel.image.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(optionModel.image);
+                optionModel.image.imageData = null;
                 const customProductOption = yield CustomProductOption_1.CustomProductOption.create({
                     customProductId: customProduct.id,
                     name: optionModel.name,
-                    image: image !== null ? image.url : "",
+                    image: optionModel.image,
                     style: optionModel.style,
                     accent: optionModel.accent,
                     contrast: optionModel.contrast,
@@ -556,26 +557,32 @@ class CustomProductRepo {
                 });
                 for (const element of optionModel.subOptions) {
                     element.order = yield new CustomProductRepo().getSuboptionOrder(customProductOption.id);
-                    const image = element.image !== null ? yield cloudinary_1.v2.uploader.upload(element.image.imageData.path) : null;
-                    const closeUpImage = element.closeUpImage !== null ? yield cloudinary_1.v2.uploader.upload(element.closeUpImage.imageData.path) : null;
+                    element.image.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(element.image);
+                    element.image.imageData = null;
+                    element.closeUpImage.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(element.closeUpImage);
+                    element.closeUpImage.imageData = null;
                     const subOption = yield SubOption_1.SubOption.create({
                         optionId: customProductOption.id,
                         title: element.title,
                         price: element.price,
                         viewStockItem: element.viewStockItem,
                         description: element.description,
-                        image: image != null ? image.url : "",
-                        closeUpImage: closeUpImage != null ? closeUpImage.url : "",
+                        image: element.image,
+                        closeUpImage: element.closeUpImage,
                         hideRules: element.hideRules,
                         fabric: element.fabric,
                         order: element.order,
                         isDefault: element.isDefault || false,
                     });
                     for (const fabric of element.fabric) {
-                        fabric.front = fabric.front !== null ? yield (yield cloudinary_1.v2.uploader.upload(fabric.front.imageData.path)).url : null;
-                        fabric.frontFull = fabric.frontFull !== null ? yield (yield cloudinary_1.v2.uploader.upload(fabric.frontFull.imageData.path)).url : null;
-                        fabric.back = fabric.back !== null ? yield (yield cloudinary_1.v2.uploader.upload(fabric.back.imageData.path)).url : null;
-                        fabric.back = fabric.backFull !== null ? yield (yield cloudinary_1.v2.uploader.upload(fabric.backFull.imageData.path)).url : null;
+                        fabric.front.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.front);
+                        fabric.front.imageData = null;
+                        fabric.frontFull.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.frontFull);
+                        fabric.frontFull.imageData = null;
+                        fabric.back.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.back);
+                        fabric.back.imageData = null;
+                        fabric.backFull.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.backFull);
+                        fabric.backFull.imageData = null;
                     }
                 }
                 return customProductOption;
@@ -583,6 +590,14 @@ class CustomProductRepo {
             catch (err) {
                 throw new Error("Failed to add Option! | " + err.message);
             }
+        });
+    }
+    uploadImageToCloudinary(image) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (image && Object.keys(image.imageData).length !== 0) {
+                return yield (yield cloudinary_1.v2.uploader.upload(image.imageData.path)).url;
+            }
+            return null;
         });
     }
     updateCustomProductByName(model, productName) {
@@ -598,9 +613,10 @@ class CustomProductRepo {
                     if (!resultOption) {
                         throw new Error("Option is not exists!");
                     }
-                    const image = optionModel.image !== null ? yield cloudinary_1.v2.uploader.upload(optionModel.image.imageData.path) : null;
+                    optionModel.image.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(optionModel.image);
+                    optionModel.image.imageData = null;
                     resultOption.name = optionModel.name;
-                    resultOption.image = image !== null ? image.url : "";
+                    resultOption.image = optionModel.image;
                     resultOption.style = optionModel.style;
                     resultOption.accent = optionModel.accent;
                     resultOption.contrast = optionModel.contrast;
@@ -617,26 +633,32 @@ class CustomProductRepo {
                     yield SubOption_1.SubOption.destroy({ where: { optionId: resultOption.id } });
                     for (const element of optionModel.subOptions) {
                         element.order = yield new CustomProductRepo().getSuboptionOrder(resultOption.id);
-                        const image = element.image !== null ? yield cloudinary_1.v2.uploader.upload(element.image.imageData.path) : null;
-                        const closeUpImage = element.closeUpImage !== null ? yield cloudinary_1.v2.uploader.upload(element.closeUpImage.imageData.path) : null;
+                        element.image.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(element.image);
+                        element.image.imageData = null;
+                        element.closeUpImage.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(element.closeUpImage);
+                        element.closeUpImage.imageData = null;
                         const subOption = yield SubOption_1.SubOption.create({
                             optionId: resultOption.id,
                             title: element.title,
                             price: element.price,
                             viewStockItem: element.viewStockItem,
                             description: element.description,
-                            image: image != null ? image.url : "",
-                            closeUpImage: closeUpImage != null ? closeUpImage.url : "",
+                            image: element.image,
+                            closeUpImage: element.closeUpImage,
                             hideRules: element.hideRules,
                             fabric: element.fabric,
                             order: element.order,
                             isDefault: element.isDefault || false,
                         });
                         for (const fabric of element.fabric) {
-                            fabric.front = fabric.front !== null ? yield (yield cloudinary_1.v2.uploader.upload(fabric.front.imageData.path)).url : null;
-                            fabric.frontFull = fabric.frontFull !== null ? yield (yield cloudinary_1.v2.uploader.upload(fabric.frontFull.imageData.path)).url : null;
-                            fabric.back = fabric.back !== null ? yield (yield cloudinary_1.v2.uploader.upload(fabric.back.imageData.path)).url : null;
-                            fabric.back = fabric.backFull !== null ? yield (yield cloudinary_1.v2.uploader.upload(fabric.backFull.imageData.path)).url : null;
+                            fabric.front.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.front);
+                            fabric.front.imageData = null;
+                            fabric.frontFull.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.frontFull);
+                            fabric.frontFull.imageData = null;
+                            fabric.back.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.back);
+                            fabric.back.imageData = null;
+                            fabric.backFull.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.backFull);
+                            fabric.backFull.imageData = null;
                         }
                     }
                     return model;
