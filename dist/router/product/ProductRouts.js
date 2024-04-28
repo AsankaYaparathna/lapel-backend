@@ -49,7 +49,7 @@ class ProductRouts extends BaseRouter_1.default {
         this.router.get("/custom/suboption/defaultLoading/:id", ProductController_1.default.getCustomProductSubOptionHideRules);
         //V2
         this.router.post("/custom/create/:id", ProductController_1.default.createCustomProductByName);
-        this.router.post("/custom/update/:name/:id", ProductController_1.default.updateCustomProductByName);
+        this.router.patch("/custom/update/:name/:id", ProductController_1.default.updateCustomProductByName);
     }
 }
 exports.default = new ProductRouts().router;
