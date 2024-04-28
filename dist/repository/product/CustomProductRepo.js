@@ -10,7 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CustomProductRepo = void 0;
-const Images_1 = require("../../model/Common/Images");
 const CustomProduct_1 = require("../../model/Product/Custom Product/CustomProduct");
 const CustomProductOption_1 = require("../../model/Product/Custom Product/CustomProductOption");
 const SubOption_1 = require("../../model/Product/Custom Product/SubOption");
@@ -385,23 +384,56 @@ class CustomProductRepo {
     getCustomProductOptionByProdName(prodId, optionId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const customProduct = yield CustomProduct_1.CustomProduct.findAll({ where: { name: prodId }, order: [["id", "ASC"]], });
-                if (!customProduct || customProduct.length === 0) {
-                    throw new Error("Data not found!");
+                const optionData = yield CustomProductOption_1.CustomProductOption.findAll({ where: { id: optionId }, order: [["id", "ASC"]] });
+                if (!optionData || optionData.length === 0) {
+                    throw new Error("Option data not found!");
                 }
-                yield Promise.all(customProduct.map((elementCP) => __awaiter(this, void 0, void 0, function* () {
-                    const optionData = yield CustomProductOption_1.CustomProductOption.findAll({ where: { id: optionId }, order: [["id", "ASC"]], });
-                    yield Promise.all(optionData.map((elementCPO) => __awaiter(this, void 0, void 0, function* () {
-                        const optionImage = (yield Images_1.Image.findOne({ where: { id: elementCPO.image } }));
-                        const subOptionData = yield SubOption_1.SubOption.findAll({ where: { optionId: elementCPO.id }, order: [["id", "ASC"]] });
-                        elementCPO.subOptions = subOptionData;
+                const tempOption = [];
+                yield Promise.all(optionData.map((elementCPO) => __awaiter(this, void 0, void 0, function* () {
+                    const tempSubOption = [];
+                    const subOptionData = yield SubOption_1.SubOption.findAll({ where: { optionId: elementCPO.id }, order: [["id", "ASC"]] });
+                    yield Promise.all(subOptionData.map((elementCPSO) => __awaiter(this, void 0, void 0, function* () {
+                        const data = {
+                            id: elementCPSO.id,
+                            optionId: elementCPSO.optionId,
+                            title: elementCPSO.title,
+                            price: elementCPSO.price,
+                            viewStockItem: elementCPSO.viewStockItem,
+                            description: elementCPSO.description,
+                            image: elementCPSO.image,
+                            closeUpImage: elementCPSO.closeUpImage,
+                            hideRules: elementCPSO.hideRules,
+                            fabric: elementCPSO.fabric,
+                            order: elementCPSO.order,
+                            isDefault: elementCPSO.isDefault,
+                        };
+                        tempSubOption.push(data);
                     })));
-                    elementCP.options = optionData;
+                    let opData = {
+                        id: elementCPO.id,
+                        customProductId: elementCPO.customProductId,
+                        name: elementCPO.name,
+                        image: elementCPO.image,
+                        style: elementCPO.style,
+                        accent: elementCPO.accent,
+                        contrast: elementCPO.contrast,
+                        optionGroup: elementCPO.optionGroup,
+                        hidden: elementCPO.hidden,
+                        front: elementCPO.front,
+                        back: elementCPO.back,
+                        description: elementCPO.description,
+                        frontViewOrder: elementCPO.frontViewOrder,
+                        backViewOrder: elementCPO.backViewOrder,
+                        hideRules: elementCPO.hideRules,
+                        defaultLoadingOption: elementCPO.defaultLoadingOption,
+                        subOptions: tempSubOption,
+                    };
+                    tempOption.push(opData);
                 })));
-                return yield customProduct;
+                return yield tempOption;
             }
             catch (err) {
-                throw new Error("Failed to get Custom Product! | " + err.message);
+                throw new Error("Failed to get Option! | " + err.message);
             }
         });
     }
