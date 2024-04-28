@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const AuthController_1 = __importDefault(require("../../controller/auth/AuthController"));
-const MaterialController_1 = __importDefault(require("../../controller/material/MaterialController"));
+const MaterialController_1 = __importDefault(require("../../controller/common/material/MaterialController"));
 const BaseRouter_1 = __importDefault(require("../base/BaseRouter"));
 class MaterialRouts extends BaseRouter_1.default {
     routes() {

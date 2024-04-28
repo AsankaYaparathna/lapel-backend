@@ -103,6 +103,7 @@ class Database {
         this.PG_PORT = process.env.PGPORT;
         this.PG_USERNAME = process.env.PGUSERNAME;
         this.PG_PASSWORD = process.env.PGPASSWORD;
+        this.DB_ENGIBE = process.env.DBENGINE;
         this.ConnectToPostgreSQL();
     }
     ConnectToPostgreSQL() {
@@ -113,7 +114,7 @@ class Database {
                 password: this.PG_PASSWORD,
                 host: this.PG_HOST,
                 port: this.PG_PORT,
-                dialect: "postgres",
+                dialect: "postgres", //"mysql","postgres",
                 models: [
                     Auth_1.Auth,
                     User_1.User,
@@ -139,10 +140,10 @@ class Database {
             this.sequelize
                 .authenticate()
                 .then(() => {
-                console.log(" ✅ PostgreSQL connection has been established successfully. ✅ ");
+                console.log(" ✅ Database connection has been established successfully. ✅ ");
             })
                 .catch((err) => {
-                console.log(" ❌ Unable to connect to the postgreSQL database. ❌ ", err);
+                console.log(" ❌ Unable to connect to the Database. ❌ ", err);
             });
         });
     }

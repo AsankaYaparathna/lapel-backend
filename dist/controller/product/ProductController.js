@@ -124,48 +124,6 @@ class ProductController {
         });
     }
     //option
-    addCustomProductOption(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const modal = req.body;
-                modal.id = parseInt(req.params["id"], 10);
-                const user = yield new CustomProductRepo_1.CustomProductRepo().addOption(modal);
-                res.status(200).json({
-                    status: true,
-                    message: "Successfully added Option!",
-                    data: user,
-                });
-            }
-            catch (err) {
-                res.status(400).json({
-                    status: false,
-                    message: "" + err,
-                    data: null,
-                });
-            }
-        });
-    }
-    updateCustomProductOption(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const modal = req.body;
-                modal.id = parseInt(req.params["id"], 10);
-                const user = yield new CustomProductRepo_1.CustomProductRepo().updateOption(modal);
-                res.status(200).json({
-                    status: user ? true : false,
-                    message: user ? "Successfully!" : "Data Not Found!",
-                    data: user ? modal : null,
-                });
-            }
-            catch (err) {
-                res.status(400).json({
-                    status: false,
-                    message: "" + err,
-                    data: null,
-                });
-            }
-        });
-    }
     updateCustomProductOptionBackView(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -489,6 +447,35 @@ class ProductController {
                     message: "" + err,
                     data: null,
                 });
+            }
+        });
+    }
+    //v2
+    createCustomProductByName(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const modal = req.body;
+                const productName = req.params["id"];
+                const result = yield new CustomProductRepo_1.CustomProductRepo().createCustomProductByName(modal, productName);
+                res.status(200).json({ status: true, message: "Successfully added Option!", data: result });
+            }
+            catch (err) {
+                res.status(400).json({ status: false, message: "" + err, data: null });
+            }
+        });
+    }
+    updateCustomProductByName(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const modal = req.body;
+                const productName = req.params["name"];
+                const optionId = req.params["id"];
+                modal.id = optionId;
+                const result = yield new CustomProductRepo_1.CustomProductRepo().updateCustomProductByName(modal, productName);
+                res.status(200).json({ status: true, message: "Successfully update Option!", data: result });
+            }
+            catch (err) {
+                res.status(400).json({ status: false, message: "" + err, data: null });
             }
         });
     }

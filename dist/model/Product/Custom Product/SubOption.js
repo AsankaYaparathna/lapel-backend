@@ -12,9 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SubOption = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
 const CustomProductOption_1 = require("./CustomProductOption");
-const Images_1 = require("../../Common/Images");
-const SubOptionHidenRule_1 = require("./SubOptionHidenRule");
-const SubOptionFabric_1 = require("./SubOptionFabric");
 let SubOption = class SubOption extends sequelize_typescript_1.Model {
 };
 exports.SubOption = SubOption;
@@ -44,25 +41,23 @@ __decorate([
     __metadata("design:type", String)
 ], SubOption.prototype, "description", void 0);
 __decorate([
-    (0, sequelize_typescript_1.ForeignKey)(() => Images_1.Image),
-    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.INTEGER, field: "image" }),
-    __metadata("design:type", Number)
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.STRING, field: "image" }),
+    __metadata("design:type", String)
 ], SubOption.prototype, "image", void 0);
 __decorate([
-    (0, sequelize_typescript_1.ForeignKey)(() => Images_1.Image),
-    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.INTEGER, field: "closeUpImage" }),
-    __metadata("design:type", Number)
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.STRING, field: "closeUpImage" }),
+    __metadata("design:type", String)
 ], SubOption.prototype, "closeUpImage", void 0);
 __decorate([
-    (0, sequelize_typescript_1.HasMany)(() => SubOptionHidenRule_1.SubOptionHidenRule, { foreignKey: "hideRules" }),
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.JSON, field: "hideRules" }),
     __metadata("design:type", Array)
 ], SubOption.prototype, "hideRules", void 0);
 __decorate([
-    (0, sequelize_typescript_1.HasMany)(() => SubOptionFabric_1.SubOptionFabric, { foreignKey: "fabric" }),
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.JSON, field: "fabric" }),
     __metadata("design:type", Array)
 ], SubOption.prototype, "fabric", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.INTEGER, field: "image1" }),
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.INTEGER, field: "order" }),
     __metadata("design:type", Number)
 ], SubOption.prototype, "order", void 0);
 __decorate([

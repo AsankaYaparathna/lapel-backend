@@ -415,7 +415,7 @@ class UserController {
                 res.status(200).json({
                     status: true,
                     message: "Successfully!",
-                    data: modal,
+                    data: JSON.parse(JSON.stringify(modal)),
                 });
             }
             catch (err) {

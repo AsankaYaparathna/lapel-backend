@@ -13,7 +13,6 @@ exports.SubOptionFabric = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
 const SubOption_1 = require("./SubOption");
 const CustomId_1 = require("../../Common/CustomId");
-const Images_1 = require("../../Common/Images");
 let SubOptionFabric = class SubOptionFabric extends sequelize_typescript_1.Model {
 };
 exports.SubOptionFabric = SubOptionFabric;
@@ -36,24 +35,20 @@ __decorate([
     __metadata("design:type", String)
 ], SubOptionFabric.prototype, "name", void 0);
 __decorate([
-    (0, sequelize_typescript_1.ForeignKey)(() => Images_1.Image),
-    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.INTEGER, field: "front" }),
-    __metadata("design:type", Number)
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.STRING, field: "front" }),
+    __metadata("design:type", String)
 ], SubOptionFabric.prototype, "front", void 0);
 __decorate([
-    (0, sequelize_typescript_1.ForeignKey)(() => Images_1.Image),
-    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.INTEGER, field: "frontFull" }),
-    __metadata("design:type", Number)
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.STRING, field: "frontFull" }),
+    __metadata("design:type", String)
 ], SubOptionFabric.prototype, "frontFull", void 0);
 __decorate([
-    (0, sequelize_typescript_1.ForeignKey)(() => Images_1.Image),
-    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.INTEGER, field: "back" }),
-    __metadata("design:type", Number)
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.STRING, field: "back" }),
+    __metadata("design:type", String)
 ], SubOptionFabric.prototype, "back", void 0);
 __decorate([
-    (0, sequelize_typescript_1.ForeignKey)(() => Images_1.Image),
-    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.INTEGER, field: "backFull" }),
-    __metadata("design:type", Number)
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.STRING, field: "backFull" }),
+    __metadata("design:type", String)
 ], SubOptionFabric.prototype, "backFull", void 0);
 exports.SubOptionFabric = SubOptionFabric = __decorate([
     (0, sequelize_typescript_1.Table)({ tableName: "LAPEL_CUSTOM_PRODUCT_SUB_OPTION_FABRIC",

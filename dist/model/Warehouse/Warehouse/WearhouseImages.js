@@ -16,10 +16,8 @@ const Wearhouse_1 = require("./Wearhouse");
 let WarehouseImage = class WarehouseImage extends sequelize_typescript_1.Model {
 };
 exports.WarehouseImage = WarehouseImage;
-WarehouseImage.WAREHOUSE_IMAGE_TABLE_NAME = "LAPEL_WAREHOUSE_IMAGE";
-WarehouseImage.WAREHOUSE_IMAGE_ID = "id";
 __decorate([
-    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.INTEGER, primaryKey: true, autoIncrement: true, field: WarehouseImage.WAREHOUSE_IMAGE_ID }),
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.INTEGER, primaryKey: true, autoIncrement: true, field: "id" }),
     __metadata("design:type", Number)
 ], WarehouseImage.prototype, "id", void 0);
 __decorate([

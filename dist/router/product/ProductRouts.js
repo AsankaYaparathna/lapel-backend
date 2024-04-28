@@ -22,8 +22,8 @@ class ProductRouts extends BaseRouter_1.default {
         this.router.get("/custom/getByProdId/:prodId/:opId", ProductController_1.default.getCustomProductOptionByProdIds);
         this.router.get("/custom/getByProdName/:prodId/:opId", ProductController_1.default.getCustomProductOptionByProdName);
         this.router.patch("/custom/update/:id", ProductController_1.default.updateCustomProduct);
-        this.router.post("/custom/option/add/:id", ProductController_1.default.addCustomProductOption);
-        this.router.patch("/custom/option/update/:id", ProductController_1.default.updateCustomProductOption);
+        //this.router.post("/custom/option/add/:id", ProductController.addCustomProductOption);
+        // this.router.patch("/custom/option/update/:id", ProductController.updateCustomProductOption);
         this.router.delete("/custom/option/delete/:id", ProductController_1.default.deleteCustomProductOption);
         this.router.get("/custom/option/getById/:id", ProductController_1.default.getCustomProductOption);
         this.router.get("/custom/option/getByProdIdId/:id", ProductController_1.default.getCustomProductOptionByProdId);
@@ -47,7 +47,9 @@ class ProductRouts extends BaseRouter_1.default {
         this.router.get("/custom/option/defaultLoading/:id", ProductController_1.default.getCustomProductHideRules);
         this.router.get("/custom/suboption/hiderule/:id", ProductController_1.default.getCustomProductSubOptionHideRules);
         this.router.get("/custom/suboption/defaultLoading/:id", ProductController_1.default.getCustomProductSubOptionHideRules);
-        //Rady made
+        //V2
+        this.router.post("/custom/create/:id", ProductController_1.default.createCustomProductByName);
+        this.router.post("/custom/update/:name/:id", ProductController_1.default.updateCustomProductByName);
     }
 }
 exports.default = new ProductRouts().router;

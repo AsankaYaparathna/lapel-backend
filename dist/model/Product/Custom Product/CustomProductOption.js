@@ -12,8 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CustomProductOption = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
 const CustomProduct_1 = require("./CustomProduct");
-const Images_1 = require("../../Common/Images");
-const OptionHidenRule_1 = require("./OptionHidenRule");
 const SubOption_1 = require("./SubOption");
 let CustomProductOption = class CustomProductOption extends sequelize_typescript_1.Model {
 };
@@ -32,9 +30,8 @@ __decorate([
     __metadata("design:type", String)
 ], CustomProductOption.prototype, "name", void 0);
 __decorate([
-    (0, sequelize_typescript_1.ForeignKey)(() => Images_1.Image),
-    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.INTEGER, field: "image" }),
-    __metadata("design:type", Number)
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.STRING, field: "image" }),
+    __metadata("design:type", String)
 ], CustomProductOption.prototype, "image", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.BOOLEAN, field: "style" }),
@@ -69,18 +66,13 @@ __decorate([
     __metadata("design:type", String)
 ], CustomProductOption.prototype, "description", void 0);
 __decorate([
-    (0, sequelize_typescript_1.HasMany)(() => OptionHidenRule_1.OptionHidenRule, { foreignKey: "hideRules" }),
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.JSON, field: "hideRules" }),
     __metadata("design:type", Array)
 ], CustomProductOption.prototype, "hideRules", void 0);
 __decorate([
-    (0, sequelize_typescript_1.ForeignKey)(() => SubOption_1.SubOption),
-    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.INTEGER, field: "defaultLoadingOption" }),
-    __metadata("design:type", Number)
-], CustomProductOption.prototype, "defaultLoadingOption", void 0);
-__decorate([
-    (0, sequelize_typescript_1.HasMany)(() => SubOption_1.SubOption, { foreignKey: "subOptions" }),
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.JSON, field: "defaultLoadingOption" }),
     __metadata("design:type", Array)
-], CustomProductOption.prototype, "subOptions", void 0);
+], CustomProductOption.prototype, "defaultLoadingOption", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.INTEGER, field: "frontViewOrder" }),
     __metadata("design:type", Number)
@@ -89,6 +81,10 @@ __decorate([
     (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.INTEGER, field: "backViewOrder" }),
     __metadata("design:type", Number)
 ], CustomProductOption.prototype, "backViewOrder", void 0);
+__decorate([
+    (0, sequelize_typescript_1.HasMany)(() => SubOption_1.SubOption, { foreignKey: "subOptions" }),
+    __metadata("design:type", Array)
+], CustomProductOption.prototype, "subOptions", void 0);
 exports.CustomProductOption = CustomProductOption = __decorate([
     (0, sequelize_typescript_1.Table)({ tableName: "LAPEL_CUSTOM_PRODUCT_OPTION",
         timestamps: true,
