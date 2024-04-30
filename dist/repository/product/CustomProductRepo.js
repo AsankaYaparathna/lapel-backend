@@ -537,7 +537,7 @@ class CustomProductRepo {
                 optionModel.frontViewOrder = yield new CustomProductRepo().getFrontAndBackOrder("frontViewOrder", customProduct.id);
                 optionModel.backViewOrder = yield new CustomProductRepo().getFrontAndBackOrder("backViewOrder", customProduct.id);
                 optionModel.image.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(optionModel.image);
-                optionModel.image.imageData = null;
+                optionModel.image.imageData = "";
                 const customProductOption = yield CustomProductOption_1.CustomProductOption.create({
                     customProductId: customProduct.id,
                     name: optionModel.name,
@@ -558,9 +558,19 @@ class CustomProductRepo {
                 for (const element of optionModel.subOptions) {
                     element.order = yield new CustomProductRepo().getSuboptionOrder(customProductOption.id);
                     element.image.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(element.image);
-                    element.image.imageData = null;
+                    element.image.imageData = "";
                     element.closeUpImage.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(element.closeUpImage);
-                    element.closeUpImage.imageData = null;
+                    element.closeUpImage.imageData = "";
+                    for (const fabric of element.fabric) {
+                        fabric.front.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.front);
+                        fabric.front.imageData = "";
+                        fabric.frontFull.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.frontFull);
+                        fabric.frontFull.imageData = "";
+                        fabric.back.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.back);
+                        fabric.back.imageData = "";
+                        fabric.backFull.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.backFull);
+                        fabric.backFull.imageData = "";
+                    }
                     const subOption = yield SubOption_1.SubOption.create({
                         optionId: customProductOption.id,
                         title: element.title,
@@ -574,16 +584,6 @@ class CustomProductRepo {
                         order: element.order,
                         isDefault: element.isDefault || false,
                     });
-                    for (const fabric of element.fabric) {
-                        fabric.front.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.front);
-                        fabric.front.imageData = null;
-                        fabric.frontFull.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.frontFull);
-                        fabric.frontFull.imageData = null;
-                        fabric.back.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.back);
-                        fabric.back.imageData = null;
-                        fabric.backFull.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.backFull);
-                        fabric.backFull.imageData = null;
-                    }
                 }
                 return customProductOption;
             }
@@ -595,7 +595,7 @@ class CustomProductRepo {
     uploadImageToCloudinary(image) {
         return __awaiter(this, void 0, void 0, function* () {
             if (image && Object.keys(image.imageData).length !== 0) {
-                return yield (yield cloudinary_1.v2.uploader.upload(image.imageData.path)).url;
+                return yield (yield cloudinary_1.v2.uploader.upload(image.imageData.file.path)).url;
             }
             return null;
         });
@@ -614,7 +614,7 @@ class CustomProductRepo {
                         throw new Error("Option is not exists!");
                     }
                     optionModel.image.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(optionModel.image);
-                    optionModel.image.imageData = null;
+                    optionModel.image.imageData = "";
                     resultOption.name = optionModel.name;
                     resultOption.image = optionModel.image;
                     resultOption.style = optionModel.style;
@@ -634,9 +634,19 @@ class CustomProductRepo {
                     for (const element of optionModel.subOptions) {
                         element.order = yield new CustomProductRepo().getSuboptionOrder(resultOption.id);
                         element.image.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(element.image);
-                        element.image.imageData = null;
+                        element.image.imageData = "";
                         element.closeUpImage.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(element.closeUpImage);
-                        element.closeUpImage.imageData = null;
+                        element.closeUpImage.imageData = "";
+                        for (const fabric of element.fabric) {
+                            fabric.front.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.front);
+                            fabric.front.imageData = "";
+                            fabric.frontFull.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.frontFull);
+                            fabric.frontFull.imageData = "";
+                            fabric.back.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.back);
+                            fabric.back.imageData = "";
+                            fabric.backFull.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.backFull);
+                            fabric.backFull.imageData = "";
+                        }
                         const subOption = yield SubOption_1.SubOption.create({
                             optionId: resultOption.id,
                             title: element.title,
@@ -650,16 +660,6 @@ class CustomProductRepo {
                             order: element.order,
                             isDefault: element.isDefault || false,
                         });
-                        for (const fabric of element.fabric) {
-                            fabric.front.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.front);
-                            fabric.front.imageData = null;
-                            fabric.frontFull.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.frontFull);
-                            fabric.frontFull.imageData = null;
-                            fabric.back.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.back);
-                            fabric.back.imageData = null;
-                            fabric.backFull.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.backFull);
-                            fabric.backFull.imageData = null;
-                        }
                     }
                     return model;
                 }
