@@ -597,7 +597,7 @@ class CustomProductRepo {
             if (image && Object.keys(image.imageData).length !== 0) {
                 return yield (yield cloudinary_1.v2.uploader.upload(image.imageData.file.path)).url;
             }
-            return null;
+            return "";
         });
     }
     updateCustomProductByName(model, productName) {
