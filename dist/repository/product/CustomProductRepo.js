@@ -594,7 +594,7 @@ class CustomProductRepo {
     }
     uploadImageToCloudinary(image) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (image && Object.keys(image.imageData).length !== 0) {
+            if (image !== null && Object.keys(image.imageData).length !== 0) {
                 return yield (yield cloudinary_1.v2.uploader.upload(image.imageData.file.path)).url;
             }
             return "";
