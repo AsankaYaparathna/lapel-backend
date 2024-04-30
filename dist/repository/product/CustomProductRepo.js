@@ -536,8 +536,10 @@ class CustomProductRepo {
                 }
                 optionModel.frontViewOrder = yield new CustomProductRepo().getFrontAndBackOrder("frontViewOrder", customProduct.id);
                 optionModel.backViewOrder = yield new CustomProductRepo().getFrontAndBackOrder("backViewOrder", customProduct.id);
-                optionModel.image.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(optionModel.image);
-                optionModel.image.imageData = "";
+                if (optionModel.image !== null) {
+                    optionModel.image.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(optionModel.image);
+                    optionModel.image.imageData = "";
+                }
                 const customProductOption = yield CustomProductOption_1.CustomProductOption.create({
                     customProductId: customProduct.id,
                     name: optionModel.name,
@@ -557,24 +559,36 @@ class CustomProductRepo {
                 });
                 for (const element of optionModel.subOptions) {
                     element.order = yield new CustomProductRepo().getSuboptionOrder(customProductOption.id);
-                    element.image.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(element.image);
-                    element.image.imageData = "";
-                    element.closeUpImage.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(element.closeUpImage);
-                    element.closeUpImage.imageData = "";
+                    if (element.image !== null) {
+                        element.image.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(element.image);
+                        element.image.imageData = "";
+                    }
+                    if (element.closeUpImage !== null) {
+                        element.closeUpImage.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(element.closeUpImage);
+                        element.closeUpImage.imageData = "";
+                    }
                     for (const fabric of element.fabric) {
-                        fabric.front.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.front);
-                        fabric.front.imageData = "";
-                        fabric.frontFull.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.frontFull);
-                        fabric.frontFull.imageData = "";
-                        fabric.back.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.back);
-                        fabric.back.imageData = "";
-                        fabric.backFull.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.backFull);
-                        fabric.backFull.imageData = "";
+                        if (fabric.front !== null) {
+                            fabric.front.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.front);
+                            fabric.front.imageData = "";
+                        }
+                        if (fabric.frontFull !== null) {
+                            fabric.frontFull.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.frontFull);
+                            fabric.frontFull.imageData = "";
+                        }
+                        if (fabric.back !== null) {
+                            fabric.back.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.back);
+                            fabric.back.imageData = "";
+                        }
+                        if (fabric.backFull !== null) {
+                            fabric.backFull.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.backFull);
+                            fabric.backFull.imageData = "";
+                        }
                     }
                     const subOption = yield SubOption_1.SubOption.create({
                         optionId: customProductOption.id,
                         title: element.title,
-                        price: element.price,
+                        price: isNaN(parseFloat(element.price)) ? 0 : element.price,
                         viewStockItem: element.viewStockItem,
                         description: element.description,
                         image: element.image,
@@ -594,11 +608,11 @@ class CustomProductRepo {
     }
     uploadImageToCloudinary(image) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(image);
             if (image !== null && Object.keys(image.imageData).length !== 0) {
-                return yield (yield cloudinary_1.v2.uploader.upload(image.imageData.file.path)).url;
+                const result = yield cloudinary_1.v2.uploader.upload(image.imageData.file.path);
+                return result.url;
             }
-            return "";
+            return null;
         });
     }
     updateCustomProductByName(model, productName) {
@@ -614,8 +628,10 @@ class CustomProductRepo {
                     if (!resultOption) {
                         throw new Error("Option is not exists!");
                     }
-                    optionModel.image.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(optionModel.image);
-                    optionModel.image.imageData = "";
+                    if (optionModel.image !== null) {
+                        optionModel.image.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(optionModel.image);
+                        optionModel.image.imageData = "";
+                    }
                     resultOption.name = optionModel.name;
                     resultOption.image = optionModel.image;
                     resultOption.style = optionModel.style;
@@ -634,19 +650,31 @@ class CustomProductRepo {
                     yield SubOption_1.SubOption.destroy({ where: { optionId: resultOption.id } });
                     for (const element of optionModel.subOptions) {
                         element.order = yield new CustomProductRepo().getSuboptionOrder(resultOption.id);
-                        element.image.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(element.image);
-                        element.image.imageData = "";
-                        element.closeUpImage.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(element.closeUpImage);
-                        element.closeUpImage.imageData = "";
+                        if (element.image !== null) {
+                            element.image.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(element.image);
+                            element.image.imageData = "";
+                        }
+                        if (element.closeUpImage !== null) {
+                            element.closeUpImage.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(element.closeUpImage);
+                            element.closeUpImage.imageData = "";
+                        }
                         for (const fabric of element.fabric) {
-                            fabric.front.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.front);
-                            fabric.front.imageData = "";
-                            fabric.frontFull.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.frontFull);
-                            fabric.frontFull.imageData = "";
-                            fabric.back.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.back);
-                            fabric.back.imageData = "";
-                            fabric.backFull.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.backFull);
-                            fabric.backFull.imageData = "";
+                            if (fabric.front !== null) {
+                                fabric.front.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.front);
+                                fabric.front.imageData = "";
+                            }
+                            if (fabric.frontFull !== null) {
+                                fabric.frontFull.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.frontFull);
+                                fabric.frontFull.imageData = "";
+                            }
+                            if (fabric.back !== null) {
+                                fabric.back.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.back);
+                                fabric.back.imageData = "";
+                            }
+                            if (fabric.backFull !== null) {
+                                fabric.backFull.imageURL = yield new CustomProductRepo().uploadImageToCloudinary(fabric.backFull);
+                                fabric.backFull.imageData = "";
+                            }
                         }
                         const subOption = yield SubOption_1.SubOption.create({
                             optionId: resultOption.id,
