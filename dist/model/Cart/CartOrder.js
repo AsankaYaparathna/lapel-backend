@@ -8,13 +8,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CartOrder = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
 const User_1 = require("../Customer/User");
 let CartOrder = class CartOrder extends sequelize_typescript_1.Model {
     static generateCustomId(instance) {
-        instance.customId = "ORD" + instance.id.toString().padStart(4, '0');
+        return __awaiter(this, void 0, void 0, function* () {
+            instance.customId = "ORD" + instance.id.toString().padStart(4, '0');
+            yield instance.save();
+        });
     }
 };
 exports.CartOrder = CartOrder;
@@ -22,6 +34,10 @@ __decorate([
     (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.INTEGER, primaryKey: true, autoIncrement: true, field: "id" }),
     __metadata("design:type", Number)
 ], CartOrder.prototype, "id", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.STRING, unique: true, field: "customId" }),
+    __metadata("design:type", String)
+], CartOrder.prototype, "customId", void 0);
 __decorate([
     (0, sequelize_typescript_1.ForeignKey)(() => User_1.User),
     (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.INTEGER, field: "customerId" }),
@@ -96,14 +112,10 @@ __decorate([
     __metadata("design:type", String)
 ], CartOrder.prototype, "specialNote", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.STRING, unique: true }),
-    __metadata("design:type", String)
-], CartOrder.prototype, "customId", void 0);
-__decorate([
     sequelize_typescript_1.AfterCreate,
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [CartOrder]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], CartOrder, "generateCustomId", null);
 exports.CartOrder = CartOrder = __decorate([
     (0, sequelize_typescript_1.Table)({ tableName: "LAPEL_USER_CART_ORDER", timestamps: true, updatedAt: 'updatedAt', createdAt: 'createdAt' })

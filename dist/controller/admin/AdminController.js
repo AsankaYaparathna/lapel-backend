@@ -24,7 +24,7 @@ class AdminController {
                 }
                 else {
                     res
-                        .status(200)
+                        .status(401)
                         .json({ status: false, message: "Login Failed! Password is incorrect", data: null });
                 }
             }
