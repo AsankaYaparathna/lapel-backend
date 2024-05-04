@@ -95,6 +95,7 @@ const CartOrderLog_1 = require("../model/Cart/CartOrderLog");
 const MaterialStockLog_1 = require("../model/Metirial/Stock/MaterialStockLog");
 const ShopUser_1 = require("../model/shop/ShopUser");
 const OrderStstus_1 = require("../model/Cart/OrderStstus");
+const Transactions_1 = require("../model/Cart/Transactions");
 dotenv.config();
 class Database {
     constructor() {
@@ -135,7 +136,7 @@ class Database {
                     ShirtBodyMeasurement_1.ShirtBodyMeasurement, ShirtStandardSize_1.ShirtStandardSize, ShirtCopyFavorite_1.ShirtCopyFavorite,
                     TrouserBodyMeasurement_1.TrouserBodyMeasurement, TrouserStandardSize_1.TrouserStandardSize, TrouserCopyFavorite_1.TrouserCopyFavorite,
                     WaistcoatBodyMeasurement_1.WaistcoatBodyMeasurement, WaistcoatStandardSize_1.WaistcoatStandardSize,
-                    Cart_1.Cart, CartOrder_1.CartOrder, OrderInvoice_1.OrderInvoice, CartOrderLog_1.CartOrderLog, OrderStstus_1.OrderStatus
+                    Cart_1.Cart, CartOrder_1.CartOrder, OrderInvoice_1.OrderInvoice, CartOrderLog_1.CartOrderLog, OrderStstus_1.OrderStatus, Transactions_1.Transactions
                 ]
             });
             this.sequelize

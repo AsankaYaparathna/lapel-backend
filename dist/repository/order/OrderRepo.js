@@ -19,6 +19,7 @@ const PackageElement_1 = require("../../model/Product/Packages/PackageElement");
 const Utils_1 = require("../../utils/Utils");
 const OrderLogsRepo_1 = require("./OrderLogsRepo");
 const OrderStstus_1 = require("../../model/Cart/OrderStstus");
+const Transactions_1 = require("../../model/Cart/Transactions");
 class OrderRepo {
     checkout(model) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -397,6 +398,83 @@ class OrderRepo {
             }
             catch (err) {
                 throw new Error("Failed to get order status! | " + err.message);
+            }
+        });
+    }
+    updateExtraChagesAndDiscount(model, id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                ;
+                ;
+                const data = yield CartOrder_1.CartOrder.findOne({ where: { id: id } });
+                if (!data) {
+                    throw new Error("Data not found!");
+                }
+                if (model.type === "discount") {
+                    const oldData = data.orderDiscount;
+                    const newData = { ammount: model.ammount, type: model.method, description: model.description, };
+                    oldData.push(newData);
+                    data.orderDiscount = oldData;
+                    yield data.save();
+                }
+                else if (model.type === "extracharges") {
+                    const oldData = data.orderExtraCharges;
+                    const newData = { ammount: model.ammount, type: model.method, description: model.description, };
+                    oldData.push(newData);
+                    data.orderExtraCharges = oldData;
+                    yield data.save();
+                }
+                return true;
+            }
+            catch (err) {
+                throw new Error("Failed to update order discount & extra charges! | " + err.message);
+            }
+        });
+    }
+    advancedUpdation(model, id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                ;
+                const data = yield CartOrder_1.CartOrder.findOne({ where: { id: id } });
+                if (!data) {
+                    throw new Error("Data not found!");
+                }
+                const oldData = data.payment;
+                oldData.paymentMethod = model.paymentMethod;
+                data.payment = oldData;
+                yield data.save();
+                return true;
+            }
+            catch (err) {
+                throw new Error("Failed to update order discount & extra charges! | " + err.message);
+            }
+        });
+    }
+    getTransactionHistory(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const dbModel = yield Transactions_1.Transactions.findAll({ where: { orderId: id } });
+                if (!dbModel) {
+                    throw new Error("Data not found!");
+                }
+                return yield dbModel;
+            }
+            catch (err) {
+                throw new Error("Failed to get order data! | " + err.message);
+            }
+        });
+    }
+    getPricingSummary(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const dbModel = yield Transactions_1.Transactions.findAll({ where: { orderId: id } });
+                if (!dbModel) {
+                    throw new Error("Data not found!");
+                }
+                return yield dbModel;
+            }
+            catch (err) {
+                throw new Error("Failed to get order data! | " + err.message);
             }
         });
     }
