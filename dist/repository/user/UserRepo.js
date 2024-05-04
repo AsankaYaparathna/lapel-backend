@@ -237,8 +237,6 @@ class UserRepo {
                 if (image) {
                     result.avatar = image;
                 }
-                result.billing = JSON.parse(result.billing);
-                result.delivery = JSON.parse(result.delivery);
                 return result;
             }
             catch (err) {
@@ -267,10 +265,6 @@ class UserRepo {
                 if (!result) {
                     throw new Error("Data not found!");
                 }
-                yield Promise.all(result.map((element) => __awaiter(this, void 0, void 0, function* () {
-                    element.billing = JSON.parse(element.billing);
-                    element.delivery = JSON.parse(element.delivery);
-                })));
                 return result;
             }
             catch (err) {

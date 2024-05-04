@@ -18,6 +18,7 @@ const CustomProduct_1 = require("../../model/Product/Custom Product/CustomProduc
 const PackageElement_1 = require("../../model/Product/Packages/PackageElement");
 const Utils_1 = require("../../utils/Utils");
 const OrderLogsRepo_1 = require("./OrderLogsRepo");
+const OrderStstus_1 = require("../../model/Cart/OrderStstus");
 class OrderRepo {
     checkout(model) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -61,7 +62,8 @@ class OrderRepo {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const dbModel = yield CartOrder_1.CartOrder.findAll();
-                return yield dbModel;
+                const result = dbModel.map((order) => (Object.assign(Object.assign({}, order.toJSON()), { deliveryDate: order.deliveryDate.toISOString().split('T')[0] })));
+                return result;
             }
             catch (err) {
                 throw new Error("Failed to get order! | " + err.message);
@@ -367,6 +369,34 @@ class OrderRepo {
             }
             catch (err) {
                 throw new Error("Failed to get invoice! | " + err.message);
+            }
+        });
+    }
+    getOrderSummaryByUserId(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const dbModel = yield CartOrder_1.CartOrder.findAll({ where: { customerId: id }, attributes: ['id', 'customId'] });
+                if (!dbModel) {
+                    throw new Error("Data not found!");
+                }
+                return yield dbModel;
+            }
+            catch (err) {
+                throw new Error("Failed to get order data! | " + err.message);
+            }
+        });
+    }
+    getOrderStatus() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const dbModel = yield OrderStstus_1.OrderStatus.findAll({ attributes: ['id', 'name'] });
+                if (!dbModel) {
+                    throw new Error("Data not found!");
+                }
+                return yield dbModel;
+            }
+            catch (err) {
+                throw new Error("Failed to get order status! | " + err.message);
             }
         });
     }

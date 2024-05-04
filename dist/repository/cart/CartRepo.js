@@ -121,7 +121,8 @@ class CartRepo {
                 if (!dbUser) {
                     throw new Error("User not found!");
                 }
-                const dbModel = yield Cart_1.Cart.findAll({ where: { id: dbUser.id } });
+                console.log(dbUser);
+                const dbModel = yield Cart_1.Cart.findAll({ where: { customerId: dbUser.id } });
                 if (!dbModel) {
                     throw new Error("Data not found!");
                 }

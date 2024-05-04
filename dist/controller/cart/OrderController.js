@@ -269,5 +269,28 @@ class OrderController {
             }
         });
     }
+    getOrderSummaryByUserId(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const id = parseInt(req.params["id"], 10);
+                const modal = yield new OrderRepo_1.OrderRepo().getOrderSummaryByUserId(id);
+                res.status(200).json({ status: true, message: "Successfully!", data: modal });
+            }
+            catch (err) {
+                res.status(400).json({ status: false, message: "" + err, data: null });
+            }
+        });
+    }
+    getOrderStatus(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const modal = yield new OrderRepo_1.OrderRepo().getOrderStatus();
+                res.status(200).json({ status: true, message: "Successfully!", data: modal });
+            }
+            catch (err) {
+                res.status(400).json({ status: false, message: "" + err, data: null });
+            }
+        });
+    }
 }
 exports.default = new OrderController();

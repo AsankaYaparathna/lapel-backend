@@ -35,7 +35,7 @@ __decorate([
     __metadata("design:type", Number)
 ], CartOrder.prototype, "id", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.STRING, unique: true, field: "customId" }),
+    (0, sequelize_typescript_1.Column)({ type: sequelize_typescript_1.DataType.STRING, field: "customId" }),
     __metadata("design:type", String)
 ], CartOrder.prototype, "customId", void 0);
 __decorate([

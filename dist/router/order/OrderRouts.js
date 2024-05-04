@@ -28,6 +28,8 @@ class OrderRouts extends BaseRouter_1.default {
         this.router.get("/log/get/", OrderController_1.default.logsGet);
         this.router.get("/log/getByLogId/:id", OrderController_1.default.orderLogsGet);
         this.router.get("/log/getByOrderId/:id", OrderController_1.default.orderLogsGetByOrderId);
+        this.router.get("/summary/getByUserID/:id", OrderController_1.default.getOrderSummaryByUserId);
+        this.router.get("/ststus", OrderController_1.default.getOrderStatus);
     }
 }
 exports.default = new OrderRouts().router;
