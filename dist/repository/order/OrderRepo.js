@@ -279,6 +279,14 @@ class OrderRepo {
                     orderDiscount: model.orderDiscount,
                     orderExtraCharges: model.orderExtraCharges,
                 });
+                const paymentData = model.payment;
+                const newTransaction = yield Transactions_1.Transactions.create({
+                    transactionType: "Checkout",
+                    orderId: newCreatedModel.id,
+                    paymentMethod: paymentData.paymentMethod,
+                    ammount: paymentData.ammount,
+                    description: "Checkout time paid ammount"
+                });
                 const logModel = {
                     orderId: newCreatedModel.id,
                     user: model.log.user,
@@ -287,7 +295,7 @@ class OrderRepo {
                 };
                 yield new OrderLogsRepo_1.OrderLogsRepo().create(logModel);
                 if (!newCreatedModel) {
-                    throw new Error("Failed to checkout order! | ");
+                    throw new Error("Failed to checkout order!");
                 }
                 const lastModel = yield OrderInvoice_1.OrderInvoice.findOne({ order: [['createdAt', 'DESC']] });
                 const invoiceNo = yield (0, Utils_1.generateInvoiceNo)(lastModel);
@@ -434,19 +442,17 @@ class OrderRepo {
     advancedUpdation(model, id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                ;
-                const data = yield CartOrder_1.CartOrder.findOne({ where: { id: id } });
-                if (!data) {
-                    throw new Error("Data not found!");
-                }
-                const oldData = data.payment;
-                oldData.paymentMethod = model.paymentMethod;
-                data.payment = oldData;
-                yield data.save();
-                return true;
+                const newTransaction = yield Transactions_1.Transactions.create({
+                    transactionType: model.type,
+                    orderId: id,
+                    paymentMethod: model.paymentMethod,
+                    ammount: model.ammount,
+                    description: model.description
+                });
+                return yield newTransaction;
             }
             catch (err) {
-                throw new Error("Failed to update order discount & extra charges! | " + err.message);
+                throw new Error("Failed to update! | " + err.message);
             }
         });
     }
