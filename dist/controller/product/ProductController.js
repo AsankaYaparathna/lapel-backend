@@ -373,6 +373,17 @@ class ProductController {
             }
         });
     }
+    getElement(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const modal = yield new PackageRepo_1.PackageRepo().getElement(req.body);
+                res.status(200).json({ status: true, message: "Successfully!", data: modal });
+            }
+            catch (err) {
+                res.status(400).json({ status: false, message: "" + err, data: null });
+            }
+        });
+    }
     getPackageById(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

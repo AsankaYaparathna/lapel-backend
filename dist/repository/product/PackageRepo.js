@@ -17,6 +17,7 @@ const PackageImages_1 = require("../../model/Product/Packages/PackageImages");
 const PackageProfImages_1 = require("../../model/Product/Packages/PackageProfImages");
 const PackageElement_1 = require("../../model/Product/Packages/PackageElement");
 const MeasurementPackage_1 = require("../../model/Product/Packages/MeasurementPackage");
+const CustomProductOption_1 = require("../../model/Product/Custom Product/CustomProductOption");
 class PackageRepo {
     create(model) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -339,6 +340,33 @@ class PackageRepo {
             }
             catch (err) {
                 throw new Error("Failed to get Custom Product! | " + err.message);
+            }
+        });
+    }
+    getElement(model) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const data = model;
+                const elementModel = [];
+                yield Promise.all(data.map((element) => __awaiter(this, void 0, void 0, function* () {
+                    const customProduct = yield CustomProduct_1.CustomProduct.findOne({ where: { name: element.element } });
+                    if (!customProduct) {
+                        throw new Error("Data not found!");
+                    }
+                    const optionData = yield CustomProductOption_1.CustomProductOption.findAll({ where: { customProductId: customProduct.id }, order: [["id", "ASC"]] });
+                    optionData.map((elementOp) => __awaiter(this, void 0, void 0, function* () {
+                        const newElement = {
+                            opttionId: elementOp.id,
+                            optionName: elementOp.name,
+                            element: customProduct.name
+                        };
+                        elementModel.push(newElement);
+                    }));
+                })));
+                return yield elementModel;
+            }
+            catch (err) {
+                throw new Error("Failed to get Elements! | " + err.message);
             }
         });
     }

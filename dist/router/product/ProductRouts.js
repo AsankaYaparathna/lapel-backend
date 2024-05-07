@@ -36,6 +36,7 @@ class ProductRouts extends BaseRouter_1.default {
         //package
         this.router.post("/custom/package/create/", ProductController_1.default.createPackage);
         this.router.get("/custom/package/get/", ProductController_1.default.getPackage);
+        this.router.get("/custom/package/get/elements", ProductController_1.default.getElement);
         this.router.get("/custom/package/getById/:id", ProductController_1.default.getPackageById);
         this.router.patch("/custom/package/update/:id", ProductController_1.default.updatePackage);
         this.router.delete("/custom/package/delete/:id", ProductController_1.default.deletePackage);

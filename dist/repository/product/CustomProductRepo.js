@@ -493,9 +493,7 @@ class CustomProductRepo {
     }
     getFrontAndBackOrder(type, id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const resultOption = yield CustomProductOption_1.CustomProductOption.findAll({
-                where: { customProductId: id },
-            });
+            const resultOption = yield CustomProductOption_1.CustomProductOption.findAll({ where: { customProductId: id }, });
             let maxOrder = 0;
             if (resultOption && resultOption.length > 0) {
                 if (type === "frontViewOrder") {
