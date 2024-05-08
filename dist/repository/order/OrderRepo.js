@@ -384,11 +384,38 @@ class OrderRepo {
     getOrderSummaryByUserId(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const dbModel = yield CartOrder_1.CartOrder.findAll({ where: { customerId: id }, attributes: ['id', 'customId'] });
+                ;
+                ;
+                ;
+                let s = 1;
+                let b = 0;
+                let t = 0;
+                let w = 0;
+                let c = 0;
+                const dbModel = yield CartOrder_1.CartOrder.findOne({ where: { id: id } });
                 if (!dbModel) {
                     throw new Error("Data not found!");
                 }
-                return yield dbModel;
+                // const cartList = dbModel.cartIdList as cartIdList[];
+                // await Promise.all(
+                //   cartList.map(async (model) => {
+                //       const catId = model.cartIdList as cartId[];
+                //       await Promise.all(
+                //         catId.map(async (model2) => {
+                //           const dbCartData = await Cart.findOne({ where: { id : model2.cartId }});
+                //           if(dbCartData){
+                //             const pkgData = await PackageElement.findAll({ where: { packageId : dbCartData.packageId }});
+                //           }
+                //       }));
+                // }));
+                const orderSummary = {
+                    shirt: "S" + s,
+                    blazer: "B" + b,
+                    trouser: "T" + t,
+                    waistCoat: "W" + w,
+                    casualBlazer: "C" + c
+                };
+                return yield orderSummary;
             }
             catch (err) {
                 throw new Error("Failed to get order data! | " + err.message);
@@ -473,10 +500,16 @@ class OrderRepo {
     getPricingSummary(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const dbModel = yield Transactions_1.Transactions.findAll({ where: { orderId: id } });
-                if (!dbModel) {
-                    throw new Error("Data not found!");
-                }
+                // const dbModel = await Transactions.findAll({ where: { orderId : id }});
+                // if (!dbModel) { throw new Error("Data not found!"); }
+                const dbModel = [{
+                        item: "shirt",
+                        ids: "s052",
+                        additinals: "",
+                        coast: "",
+                        pricing: 3500,
+                        total: 3500,
+                    }];
                 return yield dbModel;
             }
             catch (err) {

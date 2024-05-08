@@ -285,7 +285,7 @@ class OrderController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const id = parseInt(req.params["id"], 10);
-                const modal = yield new OrderRepo_1.OrderRepo().getOrderSummaryByUserId(id);
+                const modal = yield new OrderRepo_1.OrderRepo().getTransactionHistory(id);
                 res.status(200).json({ status: true, message: "Successfully!", data: modal });
             }
             catch (err) {
@@ -332,7 +332,7 @@ class OrderController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const id = parseInt(req.params["id"], 10);
-                const modal = yield new OrderRepo_1.OrderRepo().getOrderSummaryByUserId(id);
+                const modal = yield new OrderRepo_1.OrderRepo().getPricingSummary(id);
                 res.status(200).json({ status: true, message: "Successfully!", data: modal });
             }
             catch (err) {
