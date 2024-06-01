@@ -152,8 +152,8 @@ class ShowroomRepo {
                     const showroomTemp = {
                         id: element.id,
                         name: element.name,
-                        address: JSON.parse(element.address),
-                        contactNo: JSON.parse(element.contactNo),
+                        address: element.address,
+                        contactNo: element.contactNo,
                         googleLocation: element.googleLocation,
                         description: element.description,
                         imageList: imgList,
@@ -190,8 +190,8 @@ class ShowroomRepo {
                     const showroomTemp = {
                         id: element.id,
                         name: element.name,
-                        address: JSON.parse(element.address),
-                        contactNo: JSON.parse(element.contactNo),
+                        address: element.address,
+                        contactNo: element.contactNo,
                         googleLocation: element.googleLocation,
                         description: element.description,
                         imageList: imgList,
