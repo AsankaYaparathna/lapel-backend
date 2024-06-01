@@ -358,7 +358,9 @@ class PackageRepo {
                         const newElement = {
                             opttionId: elementOp.id,
                             optionName: elementOp.name,
-                            element: customProduct.name
+                            element: customProduct.name,
+                            frontFullOrder: { All: optionData.length, order: elementOp.frontViewOrder },
+                            backFullOrder: { All: optionData.length, order: elementOp.backViewOrder }
                         };
                         elementModel.push(newElement);
                     }));

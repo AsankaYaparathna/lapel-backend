@@ -126,7 +126,7 @@ class WarehouseRepo {
                     const wwaerhouseTemp = {
                         id: element.id,
                         name: element.name,
-                        address: JSON.parse(element.address),
+                        address: element.address,
                         contactNo: element.contactNo,
                         description: element.description,
                         imageList: imgList,
@@ -160,7 +160,7 @@ class WarehouseRepo {
                     const wwaerhouseTemp = {
                         id: element.id,
                         name: element.name,
-                        address: JSON.parse(element.address),
+                        address: element.address,
                         contactNo: element.contactNo,
                         description: element.description,
                         imageList: imgList,
